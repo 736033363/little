@@ -1,0 +1,898 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title>js手册</title>
+<meta name='keywords' content=''>
+<meta name='description' content=''>
+<meta name='viewport' content='width=device-width,initial-scale=1.0'>
+<link rel='shortcut icon' href='../img/sun_48.ico'>
+<style>
+/* 单行代码 */
+.u-code{display:block;padding:2px 4px;border-radius:4px;font-size:90%;color:#c7254e;background-color:#f9f2f4;white-space:normal;word-wrap:break-word;/* 长单词换行，防止溢出 */}
+/* 多行代码 参考zhangxinxu */
+.u-code2{position:relative;display:block;line-height:1.3;padding:0 15px 0 40px;margin:10px 0;box-sizing:border-box;background:#e4f0f5;white-space:pre-wrap;}
+.u-code2::before{position:absolute;top:0;bottom:0;/* 配合top:0定义了此元素的高度，hidden才能生效 */left:0;overflow:hidden;padding-right:5px;border-right:3px solid #3f87a6;background:#fff;content:'01.\A 02.\A 03.\A 04.\A 05.\A 06.\A 07.\A 08.\A 09.\A 10.\A 11.\A 12.\A 13.\A 14.\A 15.\A 16.\A 17.\A 18.\A 19.\A 20.\A 21.\A 22.\A 23.\A 24.\A 25.\A 26.\A 27.\A 28.\A 29.\A 30.\A 31.\A 32.\A 33.\A 34.\A 35.\A 36.\A 37.\A 38.\A 39.\A 40.\A 41.\A 42.\A 43.\A 44.\A 45.\A 46.\A 47.\A 48.\A 49.\A 50.\A 51.\A 52.\A 53.\A 54.\A 55.\A 56.\A 57.\A 58.\A 59.\A 60.\A 61.\A 62.\A 63.\A 64.\A 65.\A 66.\A 67.\A 68.\A 69.\A 70.\A 71.\A 72.\A 73.\A 74.\A 75.\A 76.\A 77.\A 78.\A 79.\A 80.\A 81.\A 82.\A 83.\A 84.\A 85.\A 86.\A 87.\A 88.\A 89.\A 90.\A 91.\A 92.\A 93.\A 94.\A 95.\A 96.\A 97.\A 98.\A 99';/* \A 控制字符的换行 */}
+.f-pre{white-space:pre-wrap;}
+</style>
+</head>
+<body>
+<article>
+  <header>
+    <h1>js手册</h1>
+
+    <aside>
+      <p>
+        <i>链接</i>
+      </p>
+      <ul>
+        <li><a href="https://developer.mozilla.org/zh-CN/docs/Web/JavaScript" target='_blank'>js教程_mdn</a></li>
+        <li>
+          <a href="https://developer.mozilla.org/zh-CN/docs/Web/API" target="_blank">Web API 接口 mdn</a>
+        </li>
+        <li>
+          <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Document_Object_Model" target="_blank">dom api mdn</a>
+        </li>
+        <li>
+          <a href="https://developer.mozilla.org/zh-CN/docs/Web/Events" target="_blank">事件类型一览表 mdn</a>
+        </li>
+        <li><a href="https://jex.im/regulex" target='_blank'>正则图形化工具</a></li>
+        <li>
+          <a href="https://kangax.github.io/compat-table/es5/" target='_blank'>浏览器对ecma支持程度</a>
+        </li>
+        <li>
+          <a href="../js/ADS-final-verbose.js" target='_blank'>ADS-final-verbose.js</a>
+        </li>
+        <li>
+          <a href="../js/js-library.js" target='_blank'>js-library.js</a>
+        </li>
+      </ul>
+
+      <p><i>书籍</i></p>
+      <ul>
+        <li>《javascript高级程序设计》</li>
+        <li>《javascript dom高级程序设计》</li>
+        <li>《javascript框架设计》</li>
+      </ul>
+    </aside>
+    <nav>
+      <i>目录</i>
+      <ul>
+        <li><a href="#array">数组</a></li>
+        <li><a href="#string">字符串</a></li>
+        <li><a href="#date">日期</a></li>
+        <li><a href="#json">JSON</a></li>
+        <li><a href="#type">类型</a></li>
+        <li><a href="#object">Object</a></li>
+        <li><a href="#reg">正则</a></li>
+        <li><a href="#scope">作用域</a></li>
+        <li><a href="#number">数值</a></li>
+        <li><a href="#ajax">ajax</a></li>
+        <li><a href="#style">样式</a></li>
+        <li><a href="#event">事件</a></li>
+        <li><a href="#class">类</a></li>
+        <li><a href="#dom">dom</a></li>
+        <li><a href="#debug">调试</a></li>
+        <li><a href="#animation">动画</a></li>
+      </ul>
+    </nav>
+  </header>
+  <section>
+    <h2 id='array'>数组</h2>
+<div class="f-pre">
+  slice能将类对象、Dom对象转为数组（<cite>mdn</cite>）
+
+  forEach、indexOf在ie9中才支持，都是全等匹配（<cite>菜鸟</cite>）
+</div>
+  </section>
+  <section>
+    <h2 id='string'>字符串</h2>
+<div class="f-pre">
+  indexOf()/lastIndexOf()，检索，不支持正则
+    ("Blue Whale".indexOf("", 111)) => 10 fromeIndex >= str.length则返回字符长度
+    ("Blue Whale".indexOf("Whale", -99)) => 5 fromeIndex < 0则查找整个字符串
+
+  substring比slice更复杂，优先使用slice
+
+  replace非常强大
+
+  trim，ie9+
+
+  相对concat，强烈建议使用+=
+
+  toLocaleUpperCase()比toUpperCase()更保险
+
+  match，返回数组或空（暂放）
+</div>
+  </section>
+  <section>
+    <h2 id='date'>日期</h2>
+<div class="f-pre">
+  所有浏览器都支持的日期格式：new Date('年/月/日 时:分:秒 ')
+
+  Date.now() === +(new Date())
+
+  常用方法（都有对应的UTC，几乎都有对应的set方法-不能设置星期）
+    new Date()，创建日期
+    getFullYear()，四位数字的年
+    getMonth()，0~11
+    getDate()，1~31
+    getDay()，周日开始，返回0~6
+    getHours()，0~23
+    getSeconds()，0~59
+    getTime()，等同于+(new Date())或(new Date()).valueOf()
+
+  UTC - 世界时间（下面的日期格式化工具就很少用到UTC）
+
+  new Date()会根据参数默认调用Date.parse(string)或Date.UTC(year, month, day, hour,..)
+    new Date('2016/12/6 18:00:00') 自动调用Date.parse()
+    new Date('2016', '12', '6') 自动调用Date.UTC()
+
+  将日期转为字符串的方法在浏览器中不能显示一致的信息，用处不大，例如toString()、toUTCString()、toLocaleString()
+</div>
+  </section>
+  <section>
+    <h2 id='json'>JSON</h2>
+<div class="f-pre">
+  JSON属性必须是双引号
+
+  JSON.stringify(value[, replacer [, space]])，replacer如果是数组表示过滤，若为null表示不过滤，如果replacer是函数，则表示每个属性都会调用该函数进行转换；space表示空格的多少，如果是字符串则表示用该字符串替代4个空格。
+
+  JSON.parse(text[, reviver])，reviver如果是函数，则规定了原始值如何被解析改造
+</div>
+  </section>
+  <section>
+    <h2 id='type'>类型</h2>
+<div class="f-pre">
+  typeof只返回6种值：'undfined'、'string'、'number'、'boolean'、'object'、'function'
+
+  优先使用parseInt和parseFloat，后者没有第二个参数，只解析十进制。Number转换规则较复杂，尽量不要使用，Number()等同于+()
+
+  非空字符串为true
+
+  (10).toString(16) => 'a'
+
+</div>
+  </section>
+  <section>
+    <h2 id='object'>Object</h2>
+<div class="f-pre">
+  常用方法
+    defineProperty/defineProperties，给对象添加属性并指定该属性的配置
+    create，以现有对象为原型创建对象
+    hasOwnProperty
+    isPropertyOf
+    propertyIsEnumerable，即是否可用for...in遍历出来
+    getOwnPropertyNames
+    keys，返回可枚举属性的数组
+
+  in操作符，是否可以访问该属性，例如'toString' in {} => true
+
+  基础包装对象有String、Number、Boolean，主要给基本类型提供能力
+  基本包装对象与普通对象最大区别是对象的生命周期
+
+  uri编码
+    encodeURI()，不会对属于自身的特殊字符进行编码，例如有# : / ?
+    encodeURIComponent()，都会编码
+    前者通常针对整个uri，后者是对uri的某一段，更常见的是对查询的字符串参数编码，而不是基础uri。
+
+  eval()就是一个完整的js解析器
+
+  防篡改对象，一旦把对象定义为防篡改，就无法撤销；分为三级：
+    // 级别一，不可扩展对象，即不能添加属性和方法(可以删除属性)
+    var person = {name:'aaron'};
+    person.age = 18;
+    console.info(Object.isExtensible(person)); // true 能否扩展
+    Object.preventExtensions(person);
+    person.phone = 13301023999; // 无效 - 严格模式下会报错
+    console.warn(person.phone); // undefined
+    // 级别二，密封（不可删除），包括级别一
+    var person = {name:'aaron', age: 18};
+    Object.preventExtensions(person);
+    delete person.age;
+    !Object.isSealed(person) && Object.seal(person);
+    delete person.name;
+    console.log(person.name); // aaron-删除失败
+    // 最高级别，冻结，不可扩展、不可删除、不可修改
+    var person = {name:'aaron'};
+    Object.freeze(person); // 冻结
+
+  建议用setTimeout来模拟setInterval
+</div>
+  </section>
+  <section>
+    <h2 id='reg'>正则</h2>
+<div class="f-pre">
+  <i>构造函数</i>都是字符串，例如new RegExp('a', 'g')
+
+  字面量中<i>m需要配合g</i>
+    ("<\n>\n<\n>").match(/^<|^>/m) => ["<"]
+    ("<\n>\n<\n>").match(/^<|^>/mg) => ["<", ">", "<", ">"]
+
+  元字符有<code>( [ { \ ^ $ | ) ? * + . ] }</code>，这些都是正则语法的一部分，如果需要匹配这些元字符，就得用反斜杠去除特殊性；如果是构造函数，<i>一个反斜杠就得改为两个反斜杠</i>
+    (/\[bc\]at/).test('[bc]at') => true
+    (new RegExp("\\[bc\\]at")).test('[bc]at') => true
+
+  [\u4e00-\u9fa5] 单个汉字
+
+  反向引用
+    ("apple, orange, cherry, peach").match(/apple(,)\sorange\1/g) => ["apple, orange,"]
+    ("1234 5678").replace(/(.{4}) (.{4})/g, "$2 $1") => "5678 1234"
+
+  匹配一个字符
+    /[1]/ 匹配1这个字符
+    /[^12]/ 不是1或2的一个字符
+    /[a-c1-3]/ 匹配一个字符（a或b或c或1或2或3）
+
+  快捷键
+    \r 回车
+    \n 换行
+    . 匹配任何字符除了换行和回车（等于 [^\r\n]）
+    \d 数字（等于[0-9]）；\D 非数字
+    \w 单词（等于[A-z0-9_]）；\W 非单词
+    \s 空白（[ \r\n\x0B\f\t]）；\S 非空白
+
+  量词
+    ? 匹配0或1次
+    * 匹配0或多次
+    + 匹配1或多次
+    {n} 匹配n次
+    {n, m} [n, m]
+    {n,}  >=n
+
+  贪婪量词就是全部吃进去，匹配失败再吐出，例如"baddad".match(/([bd]ad?)*/) => ["baddad", "dad"]。还有对应的惰性量词（一口一口的吃）
+
+  分组，例如('dogdogdogdog').match(/(dog){2}/g) => ["dogdog", "dogdog"]
+
+  方法
+    test
+
+    exec，专为捕获组而设计，返回数组或null。若返回数组，数组第一项是匹配的值，接着是第1,2...N组子表达式，附带input和index（匹配项在字符串中的位置）；非全局则每次从头开始匹配，全局则依次往后匹配；
+      var reg = /((.)(.))/g;
+      var ret = reg.exec('abcdefg');
+      output:
+      ret => ["ab", "ab", "a", "b"]
+      ret.input =>"abcdefg"
+      ret.index => 0
+
+    String.prototype.match()，返回数组或null。非全局和exec方法相同，全局没有index和input属性。
+
+  边界
+    ^，以什么开头，例如/^a/.test('apple') => true
+    $，以什么结尾
+    \b 单词边界，\B 非单词边界
+      ('orange banner').match(/(\w+)\b(\w+)/) => null，正确的写法是('orange banner').match(/\b(\w+)/) => ["orange", "orange"]
+
+  反向引用(?:x)，非捕获性分组
+    var color = "#990000";
+    /#(?:\d+)/.test(color);
+    RegExp.$1; => ""
+
+  前瞻，匹配时抢先去看一下，但不捕获。有(?!exp)和(?=exp)
+    ('bedroom').match(/(bed(?=room))/) => ["bed", "bed"]
+</div>
+  </section>
+  <section>
+    <h2 id='scope'>作用域</h2>
+<div class="f-pre">
+  js运行需要执行环境，有全局执行环境、函数执行环境、eval执行环境（不讨论）
+    var i = 1;
+    function Fn1(){
+        function Fn2(){
+            alert(i);
+        }
+        Fn2();
+    }
+    Fn1();
+
+    代码执行过程如下：
+
+      创建全局执行环境
+      执行Fn1则创建Fn1执行环境
+      在Fn1内执行Fn2则创建Fn2执行环境
+      从Fn2执行环境开始寻找变量i（会依次向外）
+      销毁执行环境Fn2、Fn1
+      销毁全局执行环境
+
+    上面例子的作用域链就是Fn2变量对象->Fn1变量对象->全局变量对象。其中Fn2函数内的变量i就是随着作用域链往外查找
+
+  变量对象，每个执行环境对应一个变量对象，变量对象的属性是参数名、局部变量
+
+  全局执行环境，简单理解为window对象
+
+  执行环境，所有代码执行完毕会销毁执行环境，每次函数的调用都会创建一个新的执行环境
+
+  一段js脚本从载入浏览器到执行经过了哪些步骤？
+    < script src="1.js">
+    /* 1.js的内容如下 */
+    var i = 10;
+    if()
+    }
+    if(1){
+        alert(not_defined); // 执行其错误，将不执行这个代码段下面的代码
+    }
+    if(1){alert('继续');}
+    < /script>
+
+    < script>
+    alert(i);
+    function say(msg){
+      function sayInner(msg){
+          alert(msg + "  " + j);
+      }
+      sayInner(msg);
+    }
+    say("hello world"); // 报错。j没有在全局执行环境所对应的“变量对象”中
+    < /script>
+
+    < script>
+    var j=100;
+    say("hello world"); // hello world 100
+    < /script>
+
+    step1: 读入一个代码段（例如< script>...< /script>、或< script src="1.js">< /script>）
+    step2: 语法解析，有错则跳转到step5——这个代码段中声明的变量都不再存在
+    step3: 创建全局执行环境（对var变量和function定义做“预解析”）
+    step4: 执行代码段（调用函数、执行eval都会创建新的执行环境），有错则报错，仍会继续（执行下一个代码段）--非语法解析错误，声明的变量和方法可以使用
+    step5: 如果有下一个代码段则读入下一个代码段，重复step2
+    step6: 结束
+</div>
+  </section>
+  <section>
+    <h2 id='number'>数值</h2>
+<div class="f-pre">
+  toFixed (1.236).toFixed(2) => '1.24'
+  floor()，向下取舍
+  ceil()，向上取舍
+  round()，四舍五入
+  random() 返回数值 [0,1) Math.floor(Math.random() * 10 + 1) => [1,10]
+</div>
+  </section>
+  <section>
+    <h2 id='ajax'>ajax</h2>
+    <p>详见《javascript高级程序设计》即可</p>
+  </section>
+  <section>
+    <h2 id='style'>样式</h2>
+    <p>设置元素样式、获取元素样式、切换元素可见性，请看ADS-final-verbose.js第五章</p>
+  </section>
+  <section>
+    <h2 id='event'>事件</h2>
+<div class="f-pre">
+  <a href="http://www.runoob.com/jsref/dom-obj-event.html" target='_blank'>菜鸟 dom事件</a>
+
+  <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Event" target="_blank">Event对象 mdn</a>
+
+  <a href="https://developer.mozilla.org/en-US/docs/Web/API/MouseEvent" target="_blank">MouseEvent对象 mdn</a>
+
+  鼠标单击事件的执行顺序：mousedown -> mouseup -> click -> mousedown -> mouseup -> click -> dblclick
+
+  change，值改变时触发，适用于input、textarea、select，不同于input，失去焦点时如果值有改变就触发
+</div>
+  </section>
+  <section>
+    <h2 id='class'>类</h2>
+<div class="f-pre">
+  <a href="https://github.com/RubyLouvre/JS.Class">JS.class 司徒正美</a>
+
+  自身模拟类
+    function Person(){
+      var privateAttribute = '私有属性';
+      this.name = '特权属性';
+    }
+    Person.prototype.say = function(){
+      // 共有属性
+    }
+    Person.id = '静态属性';
+
+  极简主义法
+    下面例子实现了继承、数据共享、私有数据，没有使用prototype、this
+      var Animal = {　　　　
+          createNew: function() {　　　　　　
+              var animal = {};　　　　　　
+              animal.sleep = function() {
+                  alert("睡懒觉");
+              };　　　　　　
+              return animal;　　　　
+          }　　
+      };
+
+      var Cat = {　　
+        /* 数据共享，多个对象引用同一个，其中一个对象改变该属性，
+        所有对象都能看到改变 */
+          sound: "喵喵",
+          createNew: function() {　　　　　
+            // 继承　
+              var cat = Animal.createNew();
+              // 私有数据
+              var sex = 'man';　　　　　　
+              cat.makeSound = function() {
+                  alert(Cat.sound);
+              };　　　　　　
+              cat.changeSound = function(x) {
+                  Cat.sound = x;
+              };　　　　　　
+              return cat;　　　　
+          }　　
+      };
+</div>
+  </section>
+  <section>
+    <h2 id='dom'>dom</h2>
+<div class="f-pre">
+  继承关系
+    Node -> Element -> HTMLElement -> HTMLAnchorElement
+    Node -> Document -> HTMLDocument
+
+  // 获取元素在文档中的位置
+  function getPositionInDocument(element){
+    var x= element.getBoundingClientRect().left +
+    (document.documentElement.scrollLeft || document.body.scrollLeft);
+    var y= element.getBoundingClientRect().top +
+    (document.documentElement.scrollTop || document.body.scrollTop)
+    return {x: x, y: y};
+  }
+
+  网页可见区域的尺寸见ADS-final-verbose.js第二章
+
+  <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element/scrollHeight#判定元素是否滚动到底">判断元素是否滚动到底 mdn</a>
+
+  cloneNode，若为false则不克隆任何子节点
+  insertBefore(newElement, referenceElement)，如果referenceElement是null，新节点则插入parentElement末尾节点
+  appendChild
+</div>
+  </section>
+  <section>
+    <h2 id='debug'>调试</h2>
+<div class="f-pre">
+  console对象 mdn
+</div>
+  </section>
+  <section>
+    <h2 id='animation'>动画</h2>
+    <p>见<a href="js缓动公式.html">js缓动公式</a></p>
+  </section>
+</article>
+
+</body>
+</html>
+
+<!--
+es5：over
+js库:over
+js设计模式
+es6
+vue
+
+ -->
+
+ <!--
+数组
+
+  /* 对象数组排序 */
+  function createCompareFunction(name, isReverse/*boolean*/){
+    return function(v1, v2){
+      v1 = v1[name];
+      v2 = v2[name];
+      var _isReverse = !!isReverse ? -1 : 1;
+      var rt = v1 < v2 ? -1 : (v1 > v2 ? 1 : 0);
+      return rt * _isReverse;
+    };
+  };
+
+字符串
+
+  startsWith，以xx开头
+  repeat，重复
+  byteLen，字节长度
+  truncate，字符串截断
+  capitalize，首字母大写
+  escapeHTML，html转义
+  unescapeHTML，html反转义
+  easyTemplate，轻量模板
+  camelize，将字符串转为驼峰
+  uncamelize，将驼峰式字符串转为 word-word 形式
+
+类型
+
+  类型方法设计思路：
+
+  var class2type = {
+    "null": "Null",
+    "NaN": "NaN",
+    "undefined": "Undefined",
+    "[object HTMLDocument]": "Document",
+    "[object HTMLCollection]": "NodeList",
+    "[object global]": "Window"
+  };
+  var toString = class2type.toString;
+  // 给class2type添加键值
+  "Boolean,Number,String,Function,Array,Date,RegExp,Window,Document,Arguments,
+  NodeList".replace(/[^, ]+/g, function(name) {
+      class2type["[object " + name + "]"] = name;
+  });
+  var type = function(obj, str) {
+     // ie9+几乎都在class2type中匹配到对应类型
+     var result = class2type[(obj == null || obj !== obj) ?
+     obj : toString.call(obj)] || obj.nodeName || "#";
+     if (result.charAt(0) === "#") {
+         if (obj == obj.document && obj.document != obj) {
+            result = "Window";
+         } else if (obj.nodeType === 9) {
+            result = "Document";
+         } else if (obj.callee) {
+            result = "Arguments";
+         } else if (isFinite(obj.length) && obj.item) {
+            result = "NodeList";
+         } else {
+            result = toString.call(obj).slice(8, -1);
+         }
+     }
+     if (str) {
+         return str === result;
+     }
+     return result;
+  };
+
+表单
+  设计思路：
+    对表单字段的名和值进行url编码
+    不发送禁用的表单字段
+    radio或checkbox默认值为on —— ie7和chrome都是
+    不发送type为button、submit和reset的按钮
+    只发送勾选的复选框和单选按钮
+    复选框每个值是一个条目，同名例如：Bike=1&Bike=2
+    select，只传选中项，没有value则传文本；（jQ没选中传 name=，只传值不传文本）
+    隐藏字段也传递（jQ中若没值传递 name=）
+  function serialize(form) {
+      var rt = [];
+      // 遍历form.elements
+      for (var i = 0, l = form.elements.length; i < l; i++) {
+          var filed = form.elements[i];
+          if(!filed.name || filed.disabled){
+            continue;
+          }
+          switch (filed.type) {
+              case 'select-one':
+              case 'select-multiple':
+                  var opts = filed.options;
+                  for (var _i = 0, _l = opts.length; _i < _l; _i++) {
+                      opt = opts[_i];
+                      if (opt.selected) {
+                          rt.push(encodeURIComponent(filed.name) + '=' + encodeURIComponent(opt.value || opt.text));
+                      }
+                  }
+                  break;
+              case 'undefined':
+              case 'file': // 不清楚file是如何传值的
+              case 'submit':
+              case 'reset':
+              case 'button':
+                  break;
+              case 'radio':
+              case 'checkbox':
+                  if (!filed.checked) {
+                      break;
+                  };
+              default:
+                  rt.push(encodeURIComponent(filed.name) + '=' + encodeURIComponent(filed.value));
+                  break;
+          }
+      }
+      return rt.join('&');
+  }
+
+
+/*
+提供了日期相关方法
+  format，格式化，例如format(new Date(),'yyyy-a') => 2017-下午
+  isLeapYear，判断是否为闰年
+  getDatePeriod，获取两个日期相差几天
+  getFirstDateInMonth，获取日期当前月第一天
+  getLastDateInMonth，获取日期当前月最后一天
+  getFirstDateInQuarter，所在季度第一天
+  getLastDateInQuarter，所在季度最后一天
+  getDaysInMonth，当前月份天数
+
+frome 司徒正美《javascript框架设计》
+*/
+var dateTool = {
+  format: (function(formats) {
+    function toInt(str) {
+        return parseInt(str, 10);
+    }
+      /*
+       * 填充数字或截断多余数字
+       * trim - digits < value.length时是否截断
+       * padNumber(1, 3) -> 001
+     * padNumber(1, 3) -> -001
+       * padNumber(12345,2, true) -> 45
+       */
+      function padNumber(value, digits, trim) {
+          var neg = '';
+          if (value < 0) {
+              neg = '-';
+              value = -value;
+          }
+          value = '' + value;
+          while (value.length < digits){
+            // 位数不够则左填充0
+            value = '0' + value;
+          }
+          // digits < value
+          if (trim){
+            value = value.substr(value.length - digits);
+          }
+          return neg + value;
+      }
+      /*
+       * 创建日期格式的函数 - 处理年、日、时、分、秒和部分月的格式化
+       * data - 日期对象
+       * name - 是方法，例如yyyy格式对应getFullYear
+       * size - 指定返回字符串长度
+       * offset - 偏移量。例如17点偏移-12 => 5
+       * 例如
+       *  yyyy: dateGetter('FullYear', 4),  // getFullYear()
+       *  yy: dateGetter('FullYear', 2, 0, true), // 2001 -> 01 234567 -> 67
+       *  hh: dateGetter('Hours', 2, -12), // 等同下面的同sss 只是0h会转化成12 13转化成1
+       */
+      function dateGetter(name, size, offset, trim) {
+          return function(date) {
+              var value = date['get' + name]();
+              if (offset > 0 || value > -offset){
+                value += offset;
+              }
+              if (value === 0 && offset === -12) {
+                  value = 12;
+              }
+
+              return padNumber(value, size, trim);
+          };
+      }
+      /* 创建日期格式的函数 - 对应 MMMM MMM EEEE EEE 这4种格式
+       * 思想：直接匹配，例如月份0转为1月
+     * name - Month/Day
+     * shortForm - boolean
+     */
+      function dateStrGetter(name, shortForm) {
+        // formats - 所传的参数对象
+          return function(date, formats) {
+              var value = date['get' + name](); // 如 data.getDay()
+              var get = (shortForm ? ('SHORT' + name) : name).toUpperCase();
+              return formats[get][value];
+          };
+      }
+      // 时区格式函数
+      function timeZoneGetter(date) {
+          var zone = -1 * date.getTimezoneOffset();
+          var paddedZone = (zone >= 0) ? "+" : "";
+          paddedZone += padNumber(Math[zone > 0 ? 'floor' : 'ceil'](zone / 60), 2) + padNumber(Math.abs(zone % 60), 2);
+          return paddedZone;
+      }
+      // 上午下午函数
+      function ampmGetter(date, formats) {
+          return date.getHours() < 12 ? formats.AMPMS[0] : formats.AMPMS[1];
+      }
+      // 格式配置
+      var DATE_FORMATS = {
+          yyyy: dateGetter('FullYear', 4),  // getFullYear()
+          yy: dateGetter('FullYear', 2, 0, true), // 2001 -> 01
+          y: dateGetter('FullYear', 1), // getFullYear() + padNumber
+          MMMM: dateStrGetter('Month'), // 7月
+          MMM: dateStrGetter('Month', true), // 7月 根据date.getMonth(), 对应SHORTMONTH
+          MM: dateGetter('Month', 2, 1), // 07 最后的1是改成我们平时所说的月份[1,12]。等同下面的同sss
+          M: dateGetter('Month', 1, 1), // 7 等同下面的同sss
+          dd: dateGetter('Date', 2), // 08 等同下面的同sss
+          d: dateGetter('Date', 1), // 8 一月中的某一天 等同下面的同sss
+          // HH 与 hh 的区别是 hh是12位基准，而HH已24为基准
+          HH: dateGetter('Hours', 2),
+          H: dateGetter('Hours', 1),
+          hh: dateGetter('Hours', 2, -12), // 等同下面的同sss 只是0h会转化成12 13转化成1
+          h: dateGetter('Hours', 1, -12), // 等同下面的同sss
+          mm: dateGetter('Minutes', 2), // 等同下面的同sss
+          m: dateGetter('Minutes', 1), // 等同下面的同sss
+          ss: dateGetter('Seconds', 2), // 04 等同下面的同sss
+          s: dateGetter('Seconds', 1), // 4 等同下面的同sss
+          // while ISO 8601 requires fractions to be prefixed with `.` or `,`
+          // we can be just safely rely on using `sss` since we currently don't support single or two digit fractions
+          sss: dateGetter('Milliseconds', 3), // 毫秒如 300 原理：date.getMilliseconds() + padNumber
+          EEEE: dateStrGetter('Day'), // 星期二 ，对应DAY
+          EEE: dateStrGetter('Day', true),// 周二 根据date.getDay(), 对应SHORTDAY
+          a: ampmGetter, // 上午或下午
+          Z: timeZoneGetter // +0800 返回时区
+      };
+      // 将日期格式指令字符串提取出一个一个的单个指令
+      var DATE_FORMATS_SPLIT = /((?:[^yMdHhmsaZE']+)|(?:'(?:[^']|'')*')|(?:E+|y+|M+|d+|H+|h+|m+|s+|a|Z))(.*)/,
+          NUMBER_STRING = /^\d+$/;
+      var R_ISO8601_STR = /^(\d{4})-?(\d\d)-?(\d\d)(?:T(\d\d)(?::?(\d\d)(?::?(\d\d)(?:\.(\d+))?)?)?(Z|([+-])(\d\d):?(\d\d))?)?$/;
+      // 1        2       3         4          5          6          7          8  9     10      11
+
+      function jsonStringToDate(string) {
+          var match;
+          if (match = string.match(R_ISO8601_STR)) {
+              var date = new Date(0),
+                  tzHour = 0,
+                  tzMin = 0,
+                  dateSetter = match[8] ? date.setUTCFullYear : date.setFullYear,
+                  timeSetter = match[8] ? date.setUTCHours : date.setHours;
+              if (match[9]) {
+                  tzHour = toInt(match[9] + match[10]);
+                  tzMin = toInt(match[9] + match[11]);
+              }
+              dateSetter.call(date, toInt(match[1]), toInt(match[2]) - 1, toInt(match[3]));
+              timeSetter.call(date, toInt(match[4] || 0) - tzHour, toInt(match[5] || 0) - tzMin, toInt(match[6] || 0), toInt(match[7] || 0));
+              return date;
+          }
+          return string;
+      }
+      return function(date, format) {
+          var text = '',
+              parts = [],
+              fn, match;
+          format = format || 'mediumDate';
+          format = formats[format] || format;
+          if (typeof(date) === "string") {
+              if (NUMBER_STRING.test(date)) {
+                  date = toInt(date);
+              } else {
+                  date = jsonStringToDate(date);
+              }
+          }
+
+          if (typeof date === "number") {
+              date = new Date(date);
+          }
+          if (Object.prototype.toString.call(date) !== "[object Date]") {
+              return;
+          }
+
+          while (format) { // 例如ah:mm
+            // ah:mm => ["ah:mm", "a", "h:mm", index: 0, input: "ah:mm"]
+              match = DATE_FORMATS_SPLIT.exec(format);
+              if (match) {
+                  parts = parts.concat(match.slice(1));
+                  format = parts.pop();
+              } else {
+                  parts.push(format);
+                  format = null;
+              }
+          }
+          /*
+           * 将格式字符串解析为单个格式 ah:mm => [].concat(parts) => ["a", "h", ":", "mm"]
+           * 单个命令就执行一次
+           * 'yyyy-a' => 2016-下午
+           */
+          forEach([].concat(parts), function(value) {
+              // DATE_FORMATS 是所有格式例如yyyy/yy...
+              fn = DATE_FORMATS[value];
+              // ':' 这类非格式则进行字符串处理。例如 ':' => : 'x:x' => x:x
+              text += fn ? fn(date, formats) : value.replace(/(^'|'$)/g, '').replace(/''/g, "'");
+          });
+          return text;
+      };
+  })({
+      "AMPMS": {
+          "0": "上午",
+          "1": "下午"
+      },
+      "DAY": {
+          "0": "星期日",
+          "1": "星期一",
+          "2": "星期二",
+          "3": "星期三",
+          "4": "星期四",
+          "5": "星期五",
+          "6": "星期六"
+      },
+      "MONTH": {
+          "0": "1月",
+          "1": "2月",
+          "2": "3月",
+          "3": "4月",
+          "4": "5月",
+          "5": "6月",
+          "6": "7月",
+          "7": "8月",
+          "8": "9月",
+          "9": "10月",
+          "10": "11月",
+          "11": "12月"
+      },
+      "SHORTDAY": {
+          "0": "周日",
+          "1": "周一",
+          "2": "周二",
+          "3": "周三",
+          "4": "周四",
+          "5": "周五",
+          "6": "周六"
+      },
+      "SHORTMONTH": {
+          "0": "1月",
+          "1": "2月",
+          "2": "3月",
+          "3": "4月",
+          "4": "5月",
+          "5": "6月",
+          "6": "7月",
+          "7": "8月",
+          "8": "9月",
+          "9": "10月",
+          "10": "11月",
+          "11": "12月"
+      },
+      "fullDate": "y年M月d日EEEE",
+      "longDate": "y年M月d日",
+      "medium": "yyyy-M-d ah:mm:ss",
+      "mediumDate": "yyyy-M-d",
+      "mediumTime": "ah:mm:ss",
+      "short": "yy-M-d ah:mm",
+      "shortDate": "yy-M-d",
+      "shortTime": "ah:mm"
+  }),
+  /*
+  * 判断是否为闰年
+  * 思想 - 判断该年二月是否有29天
+  */
+  isLeapYear: function(date){
+    return new Date(date.getFullYear(), 2, 0).getDate() === 29;
+  },
+  /*
+  * 获取两个日期相差几天
+  * 思想 - 毫秒数之差
+  * 参数 - 支持日期、毫秒字符串
+  * 注意 - 会出现小数
+  */
+  getDatePeriod: function(start, finish){
+    // abs - 绝对值; * 转为数字 ;
+    return Math.abs(start * 1 - finish * 1) / 1000 / 60 / 60 / 24;
+  },
+  /*
+  * 获取日期当前月第一天
+  * 思想 - 直接获取所传日期所在年、月的第一天
+  * return - 一个新日期对象
+  */
+  getFirstDateInMonth: function(date){
+    return new Date(date.getFullYear(), date.getMonth(), 1);
+  },
+  /*
+  * 获取日期当前月最后一天
+  * 思想 - 直接获取所传日期所在年、月的下一月，日期在往前推一天
+  * return - 一个新日期对象
+  */
+  getLastDateInMonth: function(date){
+    // 所在月的最后天。传入一个Date类型的日期
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0);
+  },
+  /*
+  * 所在季度第一天
+  * 思想 - 获取日期所在季度的第一月的第一天
+  * 传参 - 日期对象
+  * 0/1/2取0 3/4/5取1
+  * return - 新日期
+  */
+  getFirstDateInQuarter: function(date){
+    return new Date(date.getFullYear(), ~~(date.getMonth() / 3) * 3, 1);
+  },
+  /*
+  * 所在季度最后一天
+  * 思想 - 获取日期所在下一季度第一月的第一天，再往前推一天
+  * 传参 - 日期对象
+  * 0/1/2取0 3/4/5取1
+  * return - 新日期
+  */
+  getLastDateInQuarter: function(date){
+    return new Date(date.getFullYear(), ~~(date.getMonth() / 3) * 3 + 3, 0);
+  },
+  /*
+  * 取得当天月份的天数
+  * 思想 - 创建日期（所传日期对象下一月第0天），获取天数
+  * return -
+  */
+  getDaysInMonth: function(date){
+    return new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  }
+};
+
+Crypto 接口提供了基本的加密功能
+  -->

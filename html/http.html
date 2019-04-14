@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>http</title>
+</head>
+<body style='white-space:pre-wrap;'>
+
+主要参考：《HTTP权威指南》、《计算机网络谢希仁》
+
+状态码
+  204（No Content 没有实体主体部分）
+  301
+  302（重定向，301和302用得最多）
+  304 这个资源没有发生变化，并不在发送响应体
+  403（Forbidden 请求被服务器拒绝。拒绝原因可以在相应实体中描述）
+  404（Not Found 服务器说我对这个一无所知）
+  405（Method Not Allowed 请求的方法不允许，并在响应中通过Allow告诉支持的方法）
+  413 Request Entity Too Large
+  414 Request URI Too Long
+  500（Internal Server Error 服务器遇到了妨碍给请求提供服务的错误）
+  501 （Not Implemented 客户端发起的请求超出服务器的能力范围，例如服务器不支持的请求方法）
+
+首部参考
+  Accept: text/*, image/gif, image/jpeg; q=1（通知服务器可以接收那些媒体类型）
+  content-type: text/html; charset=utf-8（媒体类型，与Accept对应）
+  User-Agent
+  Accept-Language: en;q=0.7, en-gb;q=0.5
+  Accept-Ranges: bytes（告知客户端是否支持请求资源的某个范围，不支持则返回none）
+  Content-Range: bytes 500-999 / 5400（请求传输某范围内的文档时，给出结果）
+  Authorization（向服务端回应自己的身体验证信息）
+  Date: Thu, 28 Feb 2019 02:30:53 GMT（给出报文创建的日期和时间。缓存在评估响应的新鲜度时用，包含最好）
+  Accept-Encoding:gzip,deflate
+  Content-Encoding:gzip
+  If-Modified-Since: Wed, 22 Feb 2006 04:15:54 GMT （请求首部用来发送条件请求）
+  Expires: Wed, 05 Oct 2016 19:16:20 GMT（http1.0）
+  Cache-Control: （缓存指令。http1.1，要做的事和Expires本质上是一样的，这里是相对时间，建议使用）
+    Cache-Control: no-store（不缓存）
+    Cache-Control: no-cache（更确切的名字 do-
+    not-serve-from-cache-without-revalidation，本地可以缓存，但在与原始服务器进行新鲜度校验前不能提供给客户端）
+    Cache-Control: max-age=0（服务器请求缓存不要缓存）
+    Cache-Control: s-maxage=3600（与max-age类似，仅适用于共有缓存）
+  Connection: Keep-alive（长连接）
+  Content-Length:1195（长度）
+  Etag: "10c24bc-4ab-457e1clf"（http1.1引入，比最新修改日期更灵活，组件的标识）
+  If-None-Match: W/"v2.6"（与Etag匹配，支持弱校验）
+  Content-Location: (absoluteURL | relativeURL) （报文内容的url，如果 URL 是相对的，就应该相对于 Content-Base 首部加以解释）
+  Location: url（重定向）
+  Host: ucenter.17zuoye.com（告诉服务器，客户端想要访问哪台主机及端口，分期乐官网没有找到host）
+  Pragma:no-cache（随报文发送一些指令，可以包含任何内容，通常用于控制缓存，和 Cache-Control:no-cache 等价。HTTP/1.1 中提供 Pragma: no-cache 首部是为了兼容于 HTTP/1.0+）
+  Public: OPTIONS, GET, HEAD, TRACE, POST（服务器告知客户端支持的方法）
+  Range: bytes=500-1500（请求某实体的部分内容时会用到。报文所包含实体的范围）
+  Referer:url（服务器就知道客户端从哪里来的，注意隐私问题）
+  Retry-After:120（告诉客户端什么时候重新发请求）
+  Server: Tengine（与User-Agent类似，服务端自报家门）
+  Set-Cookie（是Cookie的搭档）
+  Warning:113（给服务器提供一种手段，除了可以发送状态码和原因短语之外的信息）
+  Allow: GET,PUT
+
+
+
+TCP/IP 体系
+  应用层（应用层协议如FTP、HTTP）
+  运输层（TCP、UDP）
+  网际层IP
+  网络接口层
+
+http1.1 vs http1.0
+  早期每个http请求都要打开一个socket连接，这样效率很低，因为一个web页面有很多请求指向同一个服务器。http1.1 引入持久连接解决了这个问题。服务器和浏览器使用Connection头来指出对Keep-Alive的支持
+    Connection: Keep-alive
+    Connection: Keep-alive
+    默认情况，一个持久的TCP连接会一直使用，直到空闲1分钟为止
+
+三次握手建立TCP连接
+  为什么是三次而不是两次
+  《计算机网络谢希仁》
+
+管道的性能要优于持久连接
+</body>
+</html>

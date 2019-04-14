@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>es6 了解</title>
+</head>
+<body style="white-space:pre-wrap;">
+第一印象
+  es6相对于es5就好比es5相对于es3，必然是改了一些东西，加了一些东西，更加适合现在的发展
+
+参考
+  <a href="http://es6.ruanyifeng.com/#docs/intro" target='_blank'>ECMAScript 6 入门 阮一峰</a>——全面介绍es6
+
+笔记：
+
+  let和const定义变量
+    let缩小了作用域（添加了块级作用域）；声明前不能用；不许重复声明；
+    const，一旦声明得立刻初始化（常量是对象时得注意）
+
+  解构赋值
+    让变量更容易赋值（没有它做不到，只有你想不到，遇到问题再去查）
+    用法关键点：undefined才取默认值、尽量不要在模式中使用圆括号
+
+  字符串的扩展
+    startsWith()、endsWith()、includes()、repeat()、padStart()、padEnd()
+    模板字符串
+
+  正则的扩展
+    es5 先行断言 /x(?=y)/ 先行否定断言 /x(?!y)/
+    es6 后行断言 /(?<=y)x/ 后行否定断言 /(?&lt;!y)x/
+    具名组匹配
+
+  数值的扩展
+    Number.isFinite(), Number.isNaN()
+    Number.parseInt(), Number.parseFloat()
+    Number.isInteger()
+    Math上新增17个静态方法
+
+  函数的扩展
+    函数参数的默认值
+    rest参数（剩余的参数，转为了一个数组）
+    箭头函数（没有this、用别人的this去改变this会失效）
+
+  数组的扩展
+    扩展运算符（...，展开数组，实现了迭代器接口）
+    Array.from()
+    Array.of() 弥补构造函数的缺陷
+    实例方法：
+      copyWithin 内部复制
+      find、findIndex
+      fill
+      entries、keys、values
+      includes
+      flat、flatMap
+
+  对象的扩展
+    属性的简洁表示法（变量、方法）
+    属性名表达式（不能和简洁表示法公用）
+    super关键字（只能用在对象的简写方法中）
+    对象的扩展运算符（原型上的忽略）
+
+  对象的新增方法
+    Object.assign（只拷贝自身可枚举属性）
+    Object.keys()，Object.values()，Object.entries()
+
+  Symbol
+    新数据类型（唯一值、不能遍历出来）
+
+  Set 和 Map 数据结构
+    Set（类似数组，不会有重复的值，add、delete、clear、size）
+    Map（类似对象，但是值对值，get、set、delete、has）
+
+  Proxy
+    对象的代理，有13个
+
+  Reflect
+    13个静态方法（大部分与Object的方法作用相同）
+
+  Promise对象
+    先知
+
+  Iterator 和 for...of 循环
+    迭代器的作用是给所有数据类型提供统一访问机制
+
+  Generator 函数的语法
+    状态机（生成迭代器，返回的不是this，也不能用new，，yield是产出）
+    return、throw、next本质共同点都是恢复执行，并替换
+    *yield
+
+  async 函数
+    生成器的语法糖（生成器+自动执行器，返回promise）
+
+  Class 的基本用法
+    Class是es5的构造函数的语法糖（方法都会定义在prototype上）
+    静态方法（原理与es5相同，但其中this、super得注意）
+    实例属性的新写法
+    静态属性
+    new.target 属性
+
+  Class 的继承
+    super（子类构造函数得调用、静态方法内当对象使用表示父类、普通方法内当对象使用表示父类原型、当方法使用是父类）
+
+  Module 的语法
+    export和import（非常简单）
+</body>
+</html>
+<!--
+promise
+
+背景
+  setTimeout、setInterval 是通过回调函数实现异步编程的一种解决方案，顺序执行几个异步函数的结果就是层层嵌套的回调函数，随之而来的是复杂代码。而且每道程序不是一帆风顺，我们得用 try...catch 捕获，但 try...catch 只能捕获当前抛出的异常
+    function throwError(){
+      throw new Error('ERROR');
+    }
+    try{
+      setTimeout(throwError, 3000);
+    }catch(e){
+      alert(e); // 捕获不到 throwError() 中的异常
+    }
+
+为什么需要异步方案
+  setTimeout 是一种异步方案，工作中已经不能缺少它，然而该方案有缺陷。事实上 es6 对异步编程已经提供了两种解决方法：Promise 和生成器，各有优势，不能取舍。
+
+Promise/A
+  Promise/A 属于 Promise 规范，后来人们在 Promise/A 上添加了很多细节，形成了 Promise/A+，目前市场上有 3 大 Promise/A+ 库：Q、RSVP、when，那么一个完全 Promise/A 规范的库，需要什么API，直接看 when.js ，resolve、reject、notify、then、promise 都必不可少。
+
+  最成功的 Promise/A 大致：一个带有 then 方法的对象，有 3 个状态，pending、fulfilled、rejected。一开始是 pending，执行 then 方法后，会进入 fulfiled 或 rejected 状态。
+
+  then 方法可传入两个函数，一个是成功时执行（onFulfill），一个是失败时执行（onReject）。then 还有第三个参数交 onNotify，它不会改变对象状态。这三个函数都可以选，非函数时会忽略。then 方法在添加了 onFufill 或 onReject 会返回一个新的 Promise 对象，这样就能形成一个 Promise 链。
+
+使用体验
+
+  Promise 新建后就会立即执行
+    var promise = new Promise(function(resolve, reject) {
+      console.log('Promise');
+      resolve();
+    });
+
+    promise.then(function() {
+      console.log('resolve.');
+    },function() {
+      console.log('reject.');
+    });
+
+    console.log('Hi!');
+
+    // Promise - 构造函数执行时立即调用其中函数
+    // Hi!
+    // resolved - then 方法指定的回调函数会在当前脚本所有同步任务执行完成之后执行
+
+  promise最直接的好处就是链式调用。如 xx.then().then().then()，后一个会等前一个
+
+  Promise 对象的错误具有“冒泡”性质，会一直向后传递，直到被捕获为止。一般来说，不要在then方法里面定义 Reject状态的回调函数（即then的第二个参数），总是使用catch方法。
+
+  Promise.all() 用于将多个 Promise 实例包装成一个新的 Promise 实例，只有多个实例的状态都变为 fulfilled，才会调用 onFulfill 回调，否则就调用 onReject。
+
+  Promise.race() 也接收多个 Promise 实例，返回新的 Promise 实例，只要有一个 实例改变了状态，新的 Promise 实例也跟着改变
+
+  Promise.resolve() 可以将现有对象转为 Promise 对象，并且状态改为 resolved
+
+  <a href="http://www.zhangxinxu.com/wordpress/2014/02/es6-javascript-promise-%E6%84%9F%E6%80%A7%E8%AE%A4%E7%9F%A5/">ES6 JavaScript Promise的感性认知 张鑫旭</a>
+
+ -->

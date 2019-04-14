@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>性能</title>
+  <style>
+.f-pre{white-space:pre-wrap;}
+
+  </style>
+</head>
+<body>
+<h2>目录</h2>
+<nav>
+  <ul>
+    <li><a href="#高性能网站建设指南">高性能网站建设指南</a></li>
+    <li><a href="#webpagetest">webpagetest</a></li>
+  </ul>
+</nav>
+
+<section id='高性能网站建设指南'>
+  <h3>《高性能网站建设指南》</h3>
+  <p><a href="http://stevesouders.com/hpws/" target="_blank">书本例子</a></p>
+<div class="f-pre">
+绪言A&B
+
+  要精确指出事件花在哪里很有挑战，但很容易看出时间没有花在哪里——下载html文档上
+
+  压缩：
+    如果浏览器和服务器都支持，可以使用压缩来减小响应大小。浏览器使用Accept-Encoding声明支持压缩，服务器使用Content-Encoding确认响应已被压缩
+
+  条件Get请求
+    浏览器有一个副本，但不知道是否有效，于是发起条件Get请求，如果对象没有改动，返回304
+    -> If-Modified-Since: Wed, 22 Feb 2006 04:15:54 GMT
+    <- Last-Modified: Wed, 22 Feb 2006 04:15:54 GMT
+
+  Expires
+    条件Get请求仍需发送请求
+
+  Keep-Alive
+    持久连接
+    Connection: keep-alive
+
+第1章——减少HTTP请求
+
+第2章——使用内容发布网络
+  阿里云的视频介绍的比较清晰
+
+第3章——添加Expires头
+
+  Expires头
+    -> Expires: Wed, 05 Oct 2016 19:16:20 GMT（服务器告诉浏览器，在这个时间之前，你都可以使用）
+
+  Max-Age 和 mod_expires
+    -> Cache-Control: max-age=315360000
+
+第4章——压缩组件
+  -> Accept-Encoding: gzip,deflate
+  <- Content-Encoding: gzip
+
+  代理缓存
+    Vary:Accept-Encoding（Web服务器告诉代理根据一个或多个请求头来改变缓存的响应。代理就会缓存两个版本，根据请求是否指定Accept-Encoding返回相应的版本）
+
+  边缘情形
+    -> Cache-Control: Private（禁用代理）
+
+  <i>压缩脚本和样式表</i>
+
+第5章——将样式表放顶部
+
+    白屏
+    无样式内容闪烁
+
+  <i>使用Link标签将样式表放在Head中</i>
+
+第6章——将脚本放在底部
+
+  本书例子通过fiddler可以模拟放在顶部的js过10秒返回，阻塞效果完美呈现
+
+第7章——避免Css表达式
+  现在css3提供了表达式，是要避免？
+
+第8章——使用外部js和css
+
+第9章——减少DNS查找
+  使用Keep-Alive和较少的域名减少DNS查找
+
+第10章——精简javascript
+  压缩后使用精简和混淆压缩差不多大小，但精简压缩不容易出错
+
+第11章——避免重定向
+  寻找一种避免重定向的方法
+
+第12章——移除重复脚本
+
+第13章——配置ETag
+  -> If-None-Match: "10c24bc-4ab-457e1clf"
+  <- Etag: "10c24bc-4ab-457e1clf"
+
+  If-None-Match比If-Modified-Since具有更高优先级。http1.1规范，如果请求发送了这两个字段，只有两个字段都相同，才会返回304。
+
+  如果从一台服务器返回原始组件，之后又向另一台服务器发送条件Get请求，ETag是不会匹配
+
+  哪怕你已经配置了长久的Expires头，不应该出现条件Get请求，一旦用户Refresh，依然会产生条件Get请求，没办法绕过它。
+
+  <i>配置或移除ETag</i>
+
+第14章——使AJAX可以缓存
+</div>
+</section>
+<section id='webpagetest'>
+  <h3><a href="https://www.webpagetest.org" target="_blank">webpagetest</a></h3>
+
+</section>
+</body>
+</html>

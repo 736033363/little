@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title>h5初步了解</title>
+<meta name='keywords' content=''>
+<meta name='description' content=''>
+<meta name='viewport' content='width=device-width,initial-scale=1.0'>
+<link rel='shortcut icon' href='../img/sun_48.ico'>
+</head>
+<body>
+<section>
+  <h2>canvas</h2>
+  <p>功能很强大，原生api不好用。</p>
+  <h2>音频和视频</h2>
+  <p>简单用法参考①即可，复杂的用法可以参考②，例如事件、添加字幕等</p>
+  <h2>history</h2>
+  <p>有如下用法：在不刷新整个页面的前提下，从页面A转到页面B；
+  7-5例子<sup>②</sup>展示的是用history配合canvas来实现画笔的撤销。不知是否是鸡肋</p>
+  <h2>本地存储</h2>
+  <p>web Storage主要是弥补cookie的缺陷而发明；sql类型数据库，目前在工作中使用它的场景较少；indexedDB第一个例子（8-11.html<sup>②</sup>）在chrome就连接数据库失败，但在firefox中成功，所以没看完，更多例子可以参考<a href="http://www.ruanyifeng.com/blog/2018/07/indexeddb.html">阮一峰_indexedDB入门</a>。</p>
+  <h2>离线存储</h2>
+  <p>想来不难，但若需要做一个完整的产品，还需要深入研究</p>
+  <h2>文件系统</h2>
+  <p>类似java的文件操作，接口初看有些多且复杂；文件系统提供了一个永久存储空间，需要用户通过硬盘或应用删除，可以做离线视频等新功能；以后做相关产品可详细研究。</p>
+  <h2>通信</h2>
+  <p>跨文档消息传输，可以实现不同域的网页相互通信；WebSockets 提供了一个双向的，http不具备的功能，前端很简单，关键是服务端，应用场景是聊天室，以后可以研究；Server-Sent Events顾名思义，服务器端向客户端发送，例如实时股票在线数据，若有该需求，需要研究；</p>
+  <h2>WebRTC</h2>
+  <p>WebRTC，就是Web世界的实时通信。它的目标是浏览器与浏览器的实时通信，例如语音或视频聊天。getUserMedia访问本地设备（摄像头和麦克风）。这个功能点好像挺复杂，例如搭建信令、穿越防火墙等，很多东西都看不太懂，若以后需要做类似产品，需要好好研究。</p>
+  <h2>扩展XMLHttpRequest API</h2>
+  <p>接收二进制，例如保存一张图片到本地数据库；发送表单、发送Blog对象；跨域请求，在后端设置；</p>
+  <h2>多线程 Web Workers</h2>
+  <p>多线程就是前端的后台，用于有大数据需求且不影响用户操作；SharedWorker多个页面共享一个后台线程，不太懂里面的原理；若有需求需要深入研究下；</p>
+  <h2>地理位置信息</h2>
+  <p>只要浏览器和设备支持，就可以获取自己的位置，主要通过Geolocation；可以将本地位置通过Google地图显示出来；若碰到此类需求仍需仔细研究；</p>
+  <h2>拖放API和通知API</h2>
+  <p>拖放的核心就是我之前做的编辑器，若深入需要继续研究；通知需要获得用户权限，好像也需要是https；</p>
+  <h2>其他API</h2>
+  <ul>
+    <li>page visibility api</li>
+    <li>Fullscreen API，全屏/非全屏，目前没统一</li>
+    <li>鼠标指针锁定，即鼠标移动信息的一个API，特点有：鼠标不在可见，鼠标没有出界这一说法，适用于3D视角，但例子17-3<sup>②</sup>在锁定时为什么漆黑一片</li>
+    <li>requestAnimationFrame为什么更好？说通过window.requestAnimationFrame方法，当切到另一个标签，当前页面的动画会停止，会减少cpu、内存，但用setTimeout不是也会停止吗？</li>
+    <li>MutationObserver，监听元素及子元素的页面变化</li>
+    <li>promise，放在js中讲解</li>
+    <li>navigator.sendBeacon，发送一些不需要服务器响应的数据</li>
+  </ul>
+</section>
+<aside>
+  <p>①《响应式Web设计》</p>
+  <p>②《html5 与 css3 权威指南 V3》</p>
+</aside>
+</body>
+</html>

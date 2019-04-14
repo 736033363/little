@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>tool-webpack</title>
+</head>
+<body style='white-space:pre-wrap;'>
+<h1>tool-webpack</h1>
+【初步印象】
+  类似gulp的一个新的打包工具
+
+【第一把】
+  <i>既然是个工具，先用起来，记录下问题，以后再慢慢深入</i>
+
+  参考
+    <a href="http://webpack.wuhaolin.cn/" target='_blank'>深入浅出webpack</a>
+    <a href="https://www.cnblogs.com/liqiyuan/p/6246870.html" target='_blank'>webpack之傻瓜式教程及前端自动化入门</a>
+    <a href="https://blog.csdn.net/helloxiaoliang/article/details/80167075" target='_blank'>webpack4-用之初体验</a>
+    <a href="https://segmentfault.com/a/1190000006178770" target='_blank'>入门 Webpack，看这篇就够了</a>
+    <a href="https://www.html.cn/archives/9436" target='_blank'>Webpack 4 教程：从零配置到生产发布（2018）</a>
+    <a href="https://segmentfault.com/a/1190000015237322" target='_blank'>初探webpack4</a>
+
+  环境 node v8.12.0 webpack 4.11.1
+
+  我实现的功能详见 webpack-demo1（exercise/），比如：抽离css、css中引入图片、es6、css前缀、自动生成html页面、本地服务器、生成多页面、打包前先清空文件夹、开发和生成模式、压缩js
+
+  中途遇到了许多问题和莫名其妙的bug：
+    包与webpack版本不兼容
+    命令失效 webpack a.js a.target.js
+    命令行设置--devtool source-map失效，写入配置文件却可以
+    既然是默认关闭watch，为何会自动跟新
+    webpack -p 压缩混淆脚本（我的js没有压缩？）
+    webpack-cli没用起来
+    自动刷新、热加载针对某些文件（css）可能不生效，有些有效（js）
+
+  解决的问题：
+    问：url-loader处理css中的图片资源遇到的问题
+      答：https://www.jianshu.com/p/3429cd456982
+
+    问：Cannot find module '@babel/core'
+      答：https://stackoverflow.com/questions/52067944/cannot-find-module-babel-core
+
+    问：css没有removed by extract-text-webpack-plugin
+      答：既然是抽离了css，那只能用link引入，而不能在js通过require等方式引入
+
+  知识点
+    cnpm init
+    cnpm install
+    cnpm i -D xxx
+    npm run build
+    加载器从右往左解析，加载器之间通过!分隔
+
+  其他
+    提取公共组件
+</body>
+</html>

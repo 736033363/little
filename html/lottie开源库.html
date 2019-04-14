@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>lottie开源库</title>
+</head>
+<body style='white-space:pre-wrap;'>
+【背景】
+  愚人节活动终于上线了，里面加入了一些动画，使用的是lottie
+
+【初次体验】
+  1. 笼子往下掉的动画，测试发现有时笼子从中间才开始出现，原来json请求返回，但笼子图片却没有加载完成，解决方法是初始化，执行的之后直接播放
+  2. 循环播放一段失效 我要动画反复的播放前一段，测试时发现有时动画却完整的播放了，请看<a href="https://github.com/airbnb/lottie-web/issues/318" class="u-ae">issues</a>
+  3. 设计师导出的json有缺陷 我需要一段游戏如何玩的动画，我使用 lottie 播放的只有前一段，后来他在发了一遍，仍然这样
+  4. bug 当动画播完，在执行oLPerson.play()，也会触发complete
+    oLPerson = lottie.loadAnimation({
+      container: ndPerson[0],
+      renderer: 'svg',
+      loop: false,
+      autoplay: false,
+      path: sPath // the path to the animation json
+    });
+    oLPerson.addEventListener('complete', function(){});
+  5. 兼容 需要一个水波纹动画，初次输出的在某些目标手机上只看到淡淡的一圈，于是让动效输出 gif 格式，发现周围有白边（gif只有透明和不透明），接着让动效将gif外边改为背景色（即白边改为背景色）
+  6. 动画不连贯 盒子上下弹的动画，支架在某些手机上不连贯，动效于是将60帧的改为30帧，仍然不连贯
+  7. 图片 动效输出给前端的东西，图片每次都是从img_0开始，所以我需要修改图片名字，有点麻烦
+  8. 兼容2 盒子上下弹的动画，画面像闪电一般，我猜测是 lottie 控制的图片失控了，后来没有出现，就没管了
+
+【参考】
+  <a href="http://blog.csdn.net/jhl122/article/details/56665374">AE制作json文件格式动画以及lottie开源库的使用</a>
+  <a href="https://www.cnblogs.com/zamhown/p/6688369.html">大杀器Bodymovin和Lottie：把AE动画转换成HTML5/Android/iOS原生动画 </a>
+  <a href="http://airbnb.io/lottie/web/getting-started.html">lottie 文档</a>
+  <a href="https://github.com/airbnb/lottie-web">lottie github</a>
+
+</body>
+</html>

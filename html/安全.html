@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>安全</title>
+</head>
+<body style='white-space:pre-wrap;'>
+《Web应用安全权威指南》《给开发者的终极XSS防护备忘录》
+
+XSS
+  xss跨站脚本攻击
+
+  有反射型（用户需要访问恶意网站）、存储型（攻击者已经将攻击放入非安全网站，用户直接访问非安全网站即可）
+
+  可以窃取cookie、篡改网页等
+
+  对策：
+    html元素转义，属性转义
+    url格式校验后转义
+    js的字符串、事件的属性都应该先进行js转义，在进行html转义
+    输入值校验
+    给Cookie添加HttpOnly属性
+
+  <a href="http://xss-game.appspot.com/" target="_blank">google xss game</a>
+
+  消除XSS的第一步就是生成正确的html，项目开始时，只要保持警惕，避免XSS并不困难。
+
+SQL注入
+  产生地点就是调用sql的地方，策略就是占位符
+
+csrf
+  在关键处理（修改密码、修改邮箱、购买）中存在隐患，就会产生csrf跨站请求伪造的漏洞。
+
+  csrf同反射型xss非常类似
+
+  两种典型的攻击手段：输入 - 执行；输入 - 确认 - 执行；
+
+  防范：
+    在执行关键处理前再次确定此操作是真实用户所发出。可以使用令牌、referer。
+
+</body>
+</html>

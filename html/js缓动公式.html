@@ -1,0 +1,219 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>缓动公式</title>
+</head>
+<body style='white-space:pre-wrap;'>
+
+为了实现烟花缭乱的效果，必须用上数学公式，这里介绍 Robert Penner 的 30 种缓动公式，属于 flash 流派（感谢 flash 为动画所做的探索）
+
+  我用
+参考：
+  <a href="http://robertpenner.com/easing/easing_demo.html" class="u-ae">easing_demo</a>
+
+  <a href="http://easings.net/zh-cn" class="u-ae">缓动函数速查表</a>
+
+  <a href="http://www.cnblogs.com/cloudgamer/archive/2009/01/06/Tween.html" class="u-ae">JavaScript Tween算法及缓动效果</a>（司徒正美其中一套缓冲公式就是参考这里）
+
+  <a href="https://www.cnblogs.com/rubylouvre/archive/2009/09/17/1567607.html" class="u-ae">javascript的缓动效果（第2部分） 司徒正美</a>
+
+  <a href="http://www.zhangxinxu.com/wordpress/2016/12/how-use-tween-js-animation-easing/" class="u-ae">如何使用Tween.js各类原生动画运动缓动算法 张鑫旭</a>
+
+
+</body>
+</html>
+<!--
+// 格式忽略
+var Tween = {
+    Linear: function(t,b,c,d){ return c*t/d + b; },
+    Quad: {
+        easeIn: function(t,b,c,d){
+            return c*(t/=d)*t + b;
+        },
+        easeOut: function(t,b,c,d){
+            return -c *(t/=d)*(t-2) + b;
+        },
+        easeInOut: function(t,b,c,d){
+            if ((t/=d/2) < 1) return c/2*t*t + b;
+            return -c/2 * ((--t)*(t-2) - 1) + b;
+        }
+    },
+    Cubic: {
+        easeIn: function(t,b,c,d){
+            return c*(t/=d)*t*t + b;
+        },
+        easeOut: function(t,b,c,d){
+            return c*((t=t/d-1)*t*t + 1) + b;
+        },
+        easeInOut: function(t,b,c,d){
+            if ((t/=d/2) < 1) return c/2*t*t*t + b;
+            return c/2*((t-=2)*t*t + 2) + b;
+        }
+    },
+    Quart: {
+        easeIn: function(t,b,c,d){
+            return c*(t/=d)*t*t*t + b;
+        },
+        easeOut: function(t,b,c,d){
+            return -c * ((t=t/d-1)*t*t*t - 1) + b;
+        },
+        easeInOut: function(t,b,c,d){
+            if ((t/=d/2) < 1) return c/2*t*t*t*t + b;
+            return -c/2 * ((t-=2)*t*t*t - 2) + b;
+        }
+    },
+    Quint: {
+        easeIn: function(t,b,c,d){
+            return c*(t/=d)*t*t*t*t + b;
+        },
+        easeOut: function(t,b,c,d){
+            return c*((t=t/d-1)*t*t*t*t + 1) + b;
+        },
+        easeInOut: function(t,b,c,d){
+            if ((t/=d/2) < 1) return c/2*t*t*t*t*t + b;
+            return c/2*((t-=2)*t*t*t*t + 2) + b;
+        }
+    },
+    Sine: {
+        easeIn: function(t,b,c,d){
+            return -c * Math.cos(t/d * (Math.PI/2)) + c + b;
+        },
+        easeOut: function(t,b,c,d){
+            return c * Math.sin(t/d * (Math.PI/2)) + b;
+        },
+        easeInOut: function(t,b,c,d){
+            return -c/2 * (Math.cos(Math.PI*t/d) - 1) + b;
+        }
+    },
+    Expo: {
+        easeIn: function(t,b,c,d){
+            return (t==0) ? b : c * Math.pow(2, 10 * (t/d - 1)) + b;
+        },
+        easeOut: function(t,b,c,d){
+            return (t==d) ? b+c : c * (-Math.pow(2, -10 * t/d) + 1) + b;
+        },
+        easeInOut: function(t,b,c,d){
+            if (t==0) return b;
+            if (t==d) return b+c;
+            if ((t/=d/2) < 1) return c/2 * Math.pow(2, 10 * (t - 1)) + b;
+            return c/2 * (-Math.pow(2, -10 * --t) + 2) + b;
+        }
+    },
+    Circ: {
+        easeIn: function(t,b,c,d){
+            return -c * (Math.sqrt(1 - (t/=d)*t) - 1) + b;
+        },
+        easeOut: function(t,b,c,d){
+            return c * Math.sqrt(1 - (t=t/d-1)*t) + b;
+        },
+        easeInOut: function(t,b,c,d){
+            if ((t/=d/2) < 1) return -c/2 * (Math.sqrt(1 - t*t) - 1) + b;
+            return c/2 * (Math.sqrt(1 - (t-=2)*t) + 1) + b;
+        }
+    },
+    Elastic: {
+        easeIn: function(t,b,c,d,a,p){
+            if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
+            if (!a || a < Math.abs(c)) { a=c; var s=p/4; }
+            else var s = p/(2*Math.PI) * Math.asin (c/a);
+            return -(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+        },
+        easeOut: function(t,b,c,d,a,p){
+            if (t==0) return b;  if ((t/=d)==1) return b+c;  if (!p) p=d*.3;
+            if (!a || a < Math.abs(c)) { a=c; var s=p/4; }
+            else var s = p/(2*Math.PI) * Math.asin (c/a);
+            return (a*Math.pow(2,-10*t) * Math.sin( (t*d-s)*(2*Math.PI)/p ) + c + b);
+        },
+        easeInOut: function(t,b,c,d,a,p){
+            if (t==0) return b;  if ((t/=d/2)==2) return b+c;  if (!p) p=d*(.3*1.5);
+            if (!a || a < Math.abs(c)) { a=c; var s=p/4; }
+            else var s = p/(2*Math.PI) * Math.asin (c/a);
+            if (t < 1) return -.5*(a*Math.pow(2,10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )) + b;
+            return a*Math.pow(2,-10*(t-=1)) * Math.sin( (t*d-s)*(2*Math.PI)/p )*.5 + c + b;
+        }
+    },
+    Back: {
+        easeIn: function(t,b,c,d,s){
+            if (s == undefined) s = 1.70158;
+            return c*(t/=d)*t*((s+1)*t - s) + b;
+        },
+        easeOut: function(t,b,c,d,s){
+            if (s == undefined) s = 1.70158;
+            return c*((t=t/d-1)*t*((s+1)*t + s) + 1) + b;
+        },
+        easeInOut: function(t,b,c,d,s){
+            if (s == undefined) s = 1.70158;
+            if ((t/=d/2) < 1) return c/2*(t*t*(((s*=(1.525))+1)*t - s)) + b;
+            return c/2*((t-=2)*t*(((s*=(1.525))+1)*t + s) + 2) + b;
+        }
+    },
+    Bounce: {
+        easeIn: function(t,b,c,d){
+            return c - Tween.Bounce.easeOut(d-t, 0, c, d) + b;
+        },
+        easeOut: function(t,b,c,d){
+            if ((t/=d) < (1/2.75)) {
+                return c*(7.5625*t*t) + b;
+            } else if (t < (2/2.75)) {
+                return c*(7.5625*(t-=(1.5/2.75))*t + .75) + b;
+            } else if (t < (2.5/2.75)) {
+                return c*(7.5625*(t-=(2.25/2.75))*t + .9375) + b;
+            } else {
+                return c*(7.5625*(t-=(2.625/2.75))*t + .984375) + b;
+            }
+        },
+        easeInOut: function(t,b,c,d){
+            if (t < d/2) return Tween.Bounce.easeIn(t*2, 0, c, d) * .5 + b;
+            else return Tween.Bounce.easeOut(t*2-d, 0, c, d) * .5 + c*.5 + b;
+        }
+    }
+};
+// sName-算法名 模拟自由落体
+// animation(0, 400, 1000, 'Bounce.easeOut', function(nValue, bEnd){
+//     node.css('top',nValue);
+// });
+function animation(iBegin, iChange, iDuration, sName, fnCallback){
+    var iCurrentTime = 0,
+        nOld,
+        nNew;
+    sName = getArithmetic(sName);
+    _animation();
+    function _animation(){
+        var nValue;
+        nNew = +new Date();
+
+        if (nOld){
+            iCurrentTime += (nNew - nOld);
+        }
+        nOld = nNew;
+        // 不存在该算法
+        if (typeof sName !== 'function'){
+            console.error('算法不存在');
+            return;
+        }
+        nValue = sName(iCurrentTime, iBegin, iChange, iDuration);
+        if (iCurrentTime <= iDuration){
+            // 继续运动
+            fnCallback(nValue, false);
+            requestAnimationFrame(_animation);
+        } else {
+            // 动画结束
+            fnCallback(nValue, true);
+        }
+
+    }
+    // 返回函数类型表示该算法存在
+    function getArithmetic(sName){
+        var sName = sName.split('.'),
+            iLen = sName.length,
+            fnMethod;
+        if (iLen === 1){
+            fnMethod = Tween[sName[0]];
+        } else if (iLen === 2){
+            fnMethod = Tween[sName[0]] && Tween[sName[0]][sName[1]];
+        }
+        return fnMethod;
+    }
+}
+ -->

@@ -1,0 +1,116 @@
+function Widget(){
+  this.boundingBox = null; // 属性：最外层容器
+}
+Widget.prototype = {
+  on: function(sType, fnHandler){
+    if (this.fnHandler[sType] === undefined){
+      this.fnHandler[sType] = [];
+    }
+    this.fnHandler[sType].push(fnHandler);
+    return this; // 联缀语法
+  },
+  fire: function(sType, oData){
+    if (!Array.isArray(this.fnHandler[sType])){
+      return;
+    }
+    this.fnHandler[sType].forEach(function(mixItem){
+      mixItem(oData);
+    });
+  },
+  renderUI: function(){}, // 接口：添加dom节点
+  bindUI: function(){}, // 接口：添加事件
+  syncUI: function(){}, // 接口：初始化组件属性
+  render: function(ndContainer){ // 方法：渲染组件
+    this.renderUI();
+    this.fnHandler = {};
+    this.bindUI();
+    this.syncUI();
+    this.boundingBox.appendTo(ndContainer || document.body);
+  },
+  destructor: function(){}, // 接口：销毁前处理函数
+  destroy: function(){
+    this.destructor();
+    $(this.boundingBox).remove();
+  }
+};
+
+/*
+new Dialog().alert().on('alert', function(){
+  alert('alert ok');
+}).on('close', function(){
+  alert('close btn');
+}).on('alertCancel', function(){
+  alert('alert cancel');
+});
+ */
+function Dialog(){
+  this.oCfg = {
+    // 弹框HTML
+    rootHtml: '<article class="mDialog_boundingBox">...</article>',
+    sTitle: '标题',
+    sTextAlertBtn: '确定',
+    sTextAlertCancelBtn: '取消',
+    oStyle:{}, // 给 mDialog_cnt 设置css样式
+    sContent: '<h2>内容</h2>',
+    body: '', // 用户提供内容
+    alertHandler: null,
+    closeHandler: null,
+    sY: '', // 例如距离顶部50px
+    bHasClose: true, // 右上角的X按钮
+    bHasMask: true, // 使用模态
+    maskClass: '', // 修改模态样式
+    sSkinClassName: '' // 换肤
+  };
+}
+
+Dialog.prototype = $.extend(new Widget.Widget(), {
+  renderUI: function(){
+    var oCfg = this.oCfg;
+    this.boundingBox = $($.template(oCfg.rootHtml, oCfg));
+
+  },
+  bindUI: function(){
+    var that = this,
+        oCfg = that.oCfg;
+    // 触发
+    that.boundingBox.on('click', '.mDialog_alertBtn', function(){
+      that.fire('alert');
+      that.destroy();
+    }).on('click', '.mDialog_alertCancelBtn', function(){
+      that.fire('alertCancel');
+      that.destroy();
+    }).on('click', '.mDialog_close', function(){
+      that.fire('close');
+      that.destroy();
+    });
+
+    // 自定义事件
+    if (oCfg.alertHandler){
+      that.on('alert', oCfg.alertHandler);
+    }
+    if (oCfg.closeHandler){
+      that.on('close', oCfg.closeHandler);
+    }
+  },
+  syncUI: function(){
+    var oCfg = this.oCfg,
+        ndBox = this.boundingBox;
+    // 设置样式
+    ndBox.find('.mDialog_cnt').css(oCfg.oStyle);
+    if (oCfg.sY){
+      ndBox.css({transform: 'translate(-50%)', top: oCfg.sY});
+    }
+    // 换肤
+    if (oCfg.sSkinClassName){
+      ndBox.addClass(oCfg.sSkinClassName);
+    }
+    // 自定义内容，添加类mDialog_cnt
+    $(this.boundingBox[0].lastElementChild).addClass('mDialog_cnt');
+  },
+  alert: function(oCfg){
+    $.extend(this.oCfg, oCfg);
+    this.render(document.body);
+    return this; // 联缀语法
+  }
+});
+

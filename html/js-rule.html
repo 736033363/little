@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>js规范</title>
+</head>
+<body style='white-space:pre-wrap;'>
+【受欢迎的代码】
+  <strong>简单、健壮、可扩展、代码风格一致</strong>（几百行的代码却有几套风格肯定不受欢迎）
+
+【我认可的规范（众口难调）】
+  注释 必不可少，多少情况用//即可
+  命名 变量名为名词、方法以动词开始，返回布尔类型的方法以 is 开头
+  分隔单词 变量、函数用小驼峰，构造函数用大驼峰，常量全用大写单词，用_连接
+  匈牙利标记法
+    var bFound; // 布尔  var sName; // 字符串
+    var iCount; // 整数  var fMoney; // 浮点数
+    var nMoney; // 数字  var fnGetMoney; // 函数
+    var oPerson; // 对象  var reName; // 正则
+  单var形式
+  空格缩进（我选择2个）
+  使用单引号
+
+【生成注释文档】
+  优点：简单使用
+  <a href="https://underscorejs.org/docs/underscore.html">成品</a>是通过<a href="http://ashkenas.com/docco/">docco</a>生成。只需运行两句：
+
+  npm install -g docco
+  docco src/*.js
+
+【更多参考】
+  <a href="http://www.cnblogs.com/TomXu/archive/2011/12/28/2286877.html" class="u-ae">编写高质量JavaScript代码的基本要点_汤姆大叔</a>
+
+</body>
+</html>

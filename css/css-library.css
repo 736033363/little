@@ -1,0 +1,700 @@
+/* css库：设计思路详见css-library.html */
+/*
+目录
+  reset.css
+  grid.css
+  unit.css
+  module.css
+  skin.css
+  function.css
+*/
+/* reset.css */
+
+/* 将常用的元素的margin和padding清空，方便布局；之所以不用*{margin:0;padding:0;}，主要是性能问题，*{}会匹配很多废弃的元素 */
+html,body,h1,h2,h3,h4,h5,h6,div,dl,dt,dd,ul,ol,li,p,blockquote,pre,hr,figure,table,caption,th,td,form,fieldset,legend,input,button,textarea,menu{margin:0;padding:0;}
+/* 将html5的标签改为块级元素，如果是移动端开发，可能是多余的（chrome 53测试默认都是block），以防万一吧 */
+header,footer,section,article,aside,nav,hgroup,address,figure,figcaption,menu,details{display:block;}
+/* 设置table的边框 */
+table{border-collapse:collapse;border-spacing:0;}
+/* 去除加粗，文本往左 */
+caption,th{text-align:left;font-weight:normal;}
+/* 去除fieldset、iframe边框 */
+html,body,fieldset,img,iframe,abbr{border:0;}
+/* 为了语义和设计的兼顾 */
+legend{display:none;}
+/* i、em、u、s等元素的默认样式保留挺好的 */
+/* 去除下面元素的斜体 */
+/* i,cite,em,var,address,dfn{font-style:normal;} */
+/* 点击summary时有outline，不要 */
+[hidefocus],summary{outline:0;}
+/* 去除列表样式 */
+li{list-style:none;}
+/* 去除默认字体大小，继承父类即可，不喜欢normalize.css保留了字体大小 */
+h1,h2,h3,h4,h5,h6{font-size:100%;font-weight:normal;}
+/* small{font-size:100%;} */
+/* 设定sup、sub字体大小为父类的83% */
+sup,sub{font-size:83%;}
+/* chrome中pre是monospace字体，这里将以下元素字体设置为继承，否则即使设置body的字体，pre的字体还是monospace */
+pre,code,kbd,samp{font-family:inherit;}
+/* 去除" */
+/* q:before,q:after{content:none;} */
+/* 不让textarea调整尺寸 */
+textarea{resize:none;}
+/* 将手势改为default，chrome中summary的手势为auto */
+label,summary{cursor:default;}
+/* 修改为手 */
+a,button{cursor:pointer;}
+/* 将em、strong、b加粗 */
+/* em,strong,b{font-weight:bold;} */
+/* 去除del和s的删除线；去除ins和u的下划线；去除a下划线；*/
+a,a:hover{text-decoration:none;}
+/* del,ins,u,s{text-decoration:none;} */
+/* 1rem=10px */
+html{font-size:62.5%;}
+/* 设置通用字体；有的字体不能继承，例如chrome中body 16px，即使设置body字体为12px，textarea,input,button,select,keygen仍然还是13.333333px;去除textaret、input、select的outline；*/
+body,textarea,input,button,select,keygen,legend{font:14px/1.5 sans-serif,arial,\5b8b\4f53;color:#333;outline:0;/* 若使用rem代替px，p、span等标签在ie10以下文字大小将继承html，而chrome，firefox没问题 */}
+/* 将背景ragb(0,0,0,0)改为白色 */
+body{background:#fff;}
+/* 参考bootstrapV3 */
+p{margin-bottom:10px;}
+/* 注释下面内容，否则给按钮字体颜色增加很多工作量，不就是chrome点击a字体变红色，没关系 */
+/* a,a:hover{color:#333;} */
+
+/* grid.css，网格系统 */
+/* 网格容器 */
+.g-grid{box-sizing:border-box;margin-left:auto;margin-right:auto;padding-left:15px;padding-right:15px;}
+.g-grid-w1{width:86%;}
+/* 手机和平板是86%；PC和大屏下是960px */
+.g-grid-w960{width:960px;}
+/* 清除浮动 */
+.g-grid::after,.g-grid .row::after,.g-grid .clearfix::after,.g-grid .clearfix_xs::after,.g-grid .clearfix_sm::after,.g-grid .clearfix_md::after,.g-grid .clearfix_lg::after{display:block;height:0;visibility:hidden;content:'.';clear:both;}
+/* Column clearing，配合媒体查询 */
+ .g-grid .clearfix_xs,.g-grid .clearfix_sm,.g-grid .clearfix_md,.g-grid .clearfix_lg{display:none;}
+/* 行的设置 */
+.g-grid .row{box-sizing:border-box;margin-left:-15px;margin-right:-15px;margin-bottom:20px;}
+.g-grid .row .row{margin-top:10px;margin-bottom:0;}
+/* 列的设置 */
+.g-grid [class*="col_"]{position:relative;float:left;box-sizing:border-box;padding:15px;}
+.g-grid .col_1{width:8.333333333333334%;}
+.g-grid .col_2{width:16.666666666666668%;}
+.g-grid .col_3{width:25%;}
+.g-grid .col_4{width:33.333333333333336%;}
+.g-grid .col_5{width:41.666666666666664%;}
+.g-grid .col_6{width:50%;}
+.g-grid .col_7{width:58.333333333333336%;}
+.g-grid .col_8{width:66.666666666666670%;}
+.g-grid .col_9{width:75%;}
+.g-grid .col_10{width:83.333333333333330%;}
+.g-grid .col_11{width:91.666666666666670%;}
+.g-grid .col_12{width:100%;}
+/* 偏移 */
+.g-grid .offset_col_1{margin-left:8.333333333333334%;}
+.g-grid .offset_col_2{margin-left:16.666666666666668%;}
+.g-grid .offset_col_3{margin-left:25%;}
+.g-grid .offset_col_4{margin-left:33.333333333333336%;}
+.g-grid .offset_col_5{margin-left:41.666666666666664%;}
+.g-grid .offset_col_6{margin-left:50%;}
+.g-grid .offset_col_7{margin-left:58.333333333333336%;}
+.g-grid .offset_col_8{margin-left:66.666666666666670%;}
+.g-grid .offset_col_9{margin-left:75%;}
+.g-grid .offset_col_10{margin-left:83.333333333333330%;}
+.g-grid .offset_col_11{margin-left:91.666666666666670%;}
+.g-grid .offset_col_12{margin-left:100%;}
+/* pull */
+.g-grid .pull_col_1{left:8.333333333333334%;}
+.g-grid .pull_col_2{left:16.666666666666668%;}
+.g-grid .pull_col_3{left:25%;}
+.g-grid .pull_col_4{left:33.333333333333336%;}
+.g-grid .pull_col_5{left:41.666666666666664%;}
+.g-grid .pull_col_6{left:50%;}
+.g-grid .pull_col_7{left:58.333333333333336%;}
+.g-grid .pull_col_8{left:66.666666666666670%;}
+.g-grid .pull_col_9{left:75%;}
+.g-grid .pull_col_10{left:83.333333333333330%;}
+.g-grid .pull_col_11{left:91.666666666666670%;}
+.g-grid .pull_col_12{left:100%;}
+/* push */
+.g-grid .push_col_1{right:8.333333333333334%;}
+.g-grid .push_col_2{right:16.666666666666668%;}
+.g-grid .push_col_3{right:25%;}
+.g-grid .push_col_4{right:33.333333333333336%;}
+.g-grid .push_col_5{right:41.666666666666664%;}
+.g-grid .push_col_6{right:50%;}
+.g-grid .push_col_7{right:58.333333333333336%;}
+.g-grid .push_col_8{right:66.666666666666670%;}
+.g-grid .push_col_9{right:75%;}
+.g-grid .push_col_10{right:83.333333333333330%;}
+.g-grid .push_col_11{right:91.666666666666670%;}
+.g-grid .push_col_12{right:100%;}
+/* 手机 */
+@media screen and (max-width:667px){
+  /* 定制宽度 */
+  .g-grid-w2{width:100%;}
+  .g-grid .clearfix_xs{display:block;}
+  .g-grid .xs_col_1{width:8.333333333333334%;}
+  .g-grid .xs_col_2{width:16.666666666666668%;}
+  .g-grid .xs_col_3{width:25%;}
+  .g-grid .xs_col_4{width:33.333333333333336%;}
+  .g-grid .xs_col_5{width:41.666666666666664%;}
+  .g-grid .xs_col_6{width:50%;}
+  .g-grid .xs_col_7{width:58.333333333333336%;}
+  .g-grid .xs_col_8{width:66.666666666666670%;}
+  .g-grid .xs_col_9{width:75%;}
+  .g-grid .xs_col_10{width:83.333333333333330%;}
+  .g-grid .xs_col_11{width:91.666666666666670%;}
+  .g-grid .xs_col_12{width:100%;}
+  /* 偏移 */
+  .g-grid .xs_offset_col_1{margin-left:8.333333333333334%;}
+  .g-grid .xs_offset_col_2{margin-left:16.666666666666668%;}
+  .g-grid .xs_offset_col_3{margin-left:25%;}
+  .g-grid .xs_offset_col_4{margin-left:33.333333333333336%;}
+  .g-grid .xs_offset_col_5{margin-left:41.666666666666664%;}
+  .g-grid .xs_offset_col_6{margin-left:50%;}
+  .g-grid .xs_offset_col_7{margin-left:58.333333333333336%;}
+  .g-grid .xs_offset_col_8{margin-left:66.666666666666670%;}
+  .g-grid .xs_offset_col_9{margin-left:75%;}
+  .g-grid .xs_offset_col_10{margin-left:83.333333333333330%;}
+  .g-grid .xs_offset_col_11{margin-left:91.666666666666670%;}
+  .g-grid .xs_offset_col_12{margin-left:100%;}
+  /* pull */
+  .g-grid .xs_pull_col_1{left:8.333333333333334%;}
+  .g-grid .xs_pull_col_2{left:16.666666666666668%;}
+  .g-grid .xs_pull_col_3{left:25%;}
+  .g-grid .xs_pull_col_4{left:33.333333333333336%;}
+  .g-grid .xs_pull_col_5{left:41.666666666666664%;}
+  .g-grid .xs_pull_col_6{left:50%;}
+  .g-grid .xs_pull_col_7{left:58.333333333333336%;}
+  .g-grid .xs_pull_col_8{left:66.666666666666670%;}
+  .g-grid .xs_pull_col_9{left:75%;}
+  .g-grid .xs_pull_col_10{left:83.333333333333330%;}
+  .g-grid .xs_pull_col_11{left:91.666666666666670%;}
+  .g-grid .xs_pull_col_12{left:100%;}
+  /* push */
+  .g-grid .xs_push_col_1{right:8.333333333333334%;}
+  .g-grid .xs_push_col_2{right:16.666666666666668%;}
+  .g-grid .xs_push_col_3{right:25%;}
+  .g-grid .xs_push_col_4{right:33.333333333333336%;}
+  .g-grid .xs_push_col_5{right:41.666666666666664%;}
+  .g-grid .xs_push_col_6{right:50%;}
+  .g-grid .xs_push_col_7{right:58.333333333333336%;}
+  .g-grid .xs_push_col_8{right:66.666666666666670%;}
+  .g-grid .xs_push_col_9{right:75%;}
+  .g-grid .xs_push_col_10{right:83.333333333333330%;}
+  .g-grid .xs_push_col_11{right:91.666666666666670%;}
+  .g-grid .xs_push_col_12{right:100%;}
+}
+/* 平板 */
+@media screen and (min-width:668px){
+  .g-grid .clearfix_sm{display:block;}
+  .g-grid .sm_col_1{width:8.333333333333334%;}
+  .g-grid .sm_col_2{width:16.666666666666668%;}
+  .g-grid .sm_col_3{width:25%;}
+  .g-grid .sm_col_4{width:33.333333333333336%;}
+  .g-grid .sm_col_5{width:41.666666666666664%;}
+  .g-grid .sm_col_6{width:50%;}
+  .g-grid .sm_col_7{width:58.333333333333336%;}
+  .g-grid .sm_col_8{width:66.666666666666670%;}
+  .g-grid .sm_col_9{width:75%;}
+  .g-grid .sm_col_10{width:83.333333333333330%;}
+  .g-grid .sm_col_11{width:91.666666666666670%;}
+  .g-grid .sm_col_12{width:100%;}
+  /* 偏移 */
+  .g-grid .sm_offset_col_1{margin-left:8.333333333333334%;}
+  .g-grid .sm_offset_col_2{margin-left:16.666666666666668%;}
+  .g-grid .sm_offset_col_3{margin-left:25%;}
+  .g-grid .sm_offset_col_4{margin-left:33.333333333333336%;}
+  .g-grid .sm_offset_col_5{margin-left:41.666666666666664%;}
+  .g-grid .sm_offset_col_6{margin-left:50%;}
+  .g-grid .sm_offset_col_7{margin-left:58.333333333333336%;}
+  .g-grid .sm_offset_col_8{margin-left:66.666666666666670%;}
+  .g-grid .sm_offset_col_9{margin-left:75%;}
+  .g-grid .sm_offset_col_10{margin-left:83.333333333333330%;}
+  .g-grid .sm_offset_col_11{margin-left:91.666666666666670%;}
+  .g-grid .sm_offset_col_12{margin-left:100%;}
+  /* pull */
+  .g-grid .sm_pull_col_1{left:8.333333333333334%;}
+  .g-grid .sm_pull_col_2{left:16.666666666666668%;}
+  .g-grid .sm_pull_col_3{left:25%;}
+  .g-grid .sm_pull_col_4{left:33.333333333333336%;}
+  .g-grid .sm_pull_col_5{left:41.666666666666664%;}
+  .g-grid .sm_pull_col_6{left:50%;}
+  .g-grid .sm_pull_col_7{left:58.333333333333336%;}
+  .g-grid .sm_pull_col_8{left:66.666666666666670%;}
+  .g-grid .sm_pull_col_9{left:75%;}
+  .g-grid .sm_pull_col_10{left:83.333333333333330%;}
+  .g-grid .sm_pull_col_11{left:91.666666666666670%;}
+  .g-grid .sm_pull_col_12{left:100%;}
+  /* push */
+  .g-grid .sm_push_col_1{right:8.333333333333334%;}
+  .g-grid .sm_push_col_2{right:16.666666666666668%;}
+  .g-grid .sm_push_col_3{right:25%;}
+  .g-grid .sm_push_col_4{right:33.333333333333336%;}
+  .g-grid .sm_push_col_5{right:41.666666666666664%;}
+  .g-grid .sm_push_col_6{right:50%;}
+  .g-grid .sm_push_col_7{right:58.333333333333336%;}
+  .g-grid .sm_push_col_8{right:66.666666666666670%;}
+  .g-grid .sm_push_col_9{right:75%;}
+  .g-grid .sm_push_col_10{right:83.333333333333330%;}
+  .g-grid .sm_push_col_11{right:91.666666666666670%;}
+  .g-grid .sm_push_col_12{right:100%;}
+}
+/* PC */
+@media screen and (min-width:960px){
+  .g-grid .clearfix_md{display:block;}
+  .g-grid .md_col_1{width:8.333333333333334%;}
+  .g-grid .md_col_2{width:16.666666666666668%;}
+  .g-grid .md_col_3{width:25%;}
+  .g-grid .md_col_4{width:33.333333333333336%;}
+  .g-grid .md_col_5{width:41.666666666666664%;}
+  .g-grid .md_col_6{width:50%;}
+  .g-grid .md_col_7{width:58.333333333333336%;}
+  .g-grid .md_col_8{width:66.666666666666670%;}
+  .g-grid .md_col_9{width:75%;}
+  .g-grid .md_col_10{width:83.333333333333330%;}
+  .g-grid .md_col_11{width:91.666666666666670%;}
+  .g-grid .md_col_12{width:100%;}
+  /* 偏移 */
+  .g-grid .md_offset_col_1{margin-left:8.333333333333334%;}
+  .g-grid .md_offset_col_2{margin-left:16.666666666666668%;}
+  .g-grid .md_offset_col_3{margin-left:25%;}
+  .g-grid .md_offset_col_4{margin-left:33.333333333333336%;}
+  .g-grid .md_offset_col_5{margin-left:41.666666666666664%;}
+  .g-grid .md_offset_col_6{margin-left:50%;}
+  .g-grid .md_offset_col_7{margin-left:58.333333333333336%;}
+  .g-grid .md_offset_col_8{margin-left:66.666666666666670%;}
+  .g-grid .md_offset_col_9{margin-left:75%;}
+  .g-grid .md_offset_col_10{margin-left:83.333333333333330%;}
+  .g-grid .md_offset_col_11{margin-left:91.666666666666670%;}
+  .g-grid .md_offset_col_12{margin-left:100%;}
+  /* pull */
+  .g-grid .md_pull_col_1{left:8.333333333333334%;}
+  .g-grid .md_pull_col_2{left:16.666666666666668%;}
+  .g-grid .md_pull_col_3{left:25%;}
+  .g-grid .md_pull_col_4{left:33.333333333333336%;}
+  .g-grid .md_pull_col_5{left:41.666666666666664%;}
+  .g-grid .md_pull_col_6{left:50%;}
+  .g-grid .md_pull_col_7{left:58.333333333333336%;}
+  .g-grid .md_pull_col_8{left:66.666666666666670%;}
+  .g-grid .md_pull_col_9{left:75%;}
+  .g-grid .md_pull_col_10{left:83.333333333333330%;}
+  .g-grid .md_pull_col_11{left:91.666666666666670%;}
+  .g-grid .md_pull_col_12{left:100%;}
+  /* push */
+  .g-grid .md_push_col_1{right:8.333333333333334%;}
+  .g-grid .md_push_col_2{right:16.666666666666668%;}
+  .g-grid .md_push_col_3{right:25%;}
+  .g-grid .md_push_col_4{right:33.333333333333336%;}
+  .g-grid .md_push_col_5{right:41.666666666666664%;}
+  .g-grid .md_push_col_6{right:50%;}
+  .g-grid .md_push_col_7{right:58.333333333333336%;}
+  .g-grid .md_push_col_8{right:66.666666666666670%;}
+  .g-grid .md_push_col_9{right:75%;}
+  .g-grid .md_push_col_10{right:83.333333333333330%;}
+  .g-grid .md_push_col_11{right:91.666666666666670%;}
+  .g-grid .md_push_col_12{right:100%;}
+}
+/* 大屏 */
+@media screen and (min-width:1024px){
+  /* 定制宽度 */
+  .g-grid-w2{width:960px;}
+  .g-grid .clearfix_lg{display:block;}
+  .g-grid .lg_col_1{width:8.333333333333334%;}
+  .g-grid .lg_col_2{width:16.666666666666668%;}
+  .g-grid .lg_col_3{width:25%;}
+  .g-grid .lg_col_4{width:33.333333333333336%;}
+  .g-grid .lg_col_5{width:41.666666666666664%;}
+  .g-grid .lg_col_6{width:50%;}
+  .g-grid .lg_col_7{width:58.333333333333336%;}
+  .g-grid .lg_col_8{width:66.666666666666670%;}
+  .g-grid .lg_col_9{width:75%;}
+  .g-grid .lg_col_10{width:83.333333333333330%;}
+  .g-grid .lg_col_11{width:91.666666666666670%;}
+  .g-grid .lg_col_12{width:100%;}
+  /* 偏移 */
+  .g-grid .lg_offset_col_1{margin-left:8.333333333333334%;}
+  .g-grid .lg_offset_col_2{margin-left:16.666666666666668%;}
+  .g-grid .lg_offset_col_3{margin-left:25%;}
+  .g-grid .lg_offset_col_4{margin-left:33.333333333333336%;}
+  .g-grid .lg_offset_col_5{margin-left:41.666666666666664%;}
+  .g-grid .lg_offset_col_6{margin-left:50%;}
+  .g-grid .lg_offset_col_7{margin-left:58.333333333333336%;}
+  .g-grid .lg_offset_col_8{margin-left:66.666666666666670%;}
+  .g-grid .lg_offset_col_9{margin-left:75%;}
+  .g-grid .lg_offset_col_10{margin-left:83.333333333333330%;}
+  .g-grid .lg_offset_col_11{margin-left:91.666666666666670%;}
+  .g-grid .lg_offset_col_12{margin-left:100%;}
+  /* pull */
+  .g-grid .lg_pull_col_1{left:8.333333333333334%;}
+  .g-grid .lg_pull_col_2{left:16.666666666666668%;}
+  .g-grid .lg_pull_col_3{left:25%;}
+  .g-grid .lg_pull_col_4{left:33.333333333333336%;}
+  .g-grid .lg_pull_col_5{left:41.666666666666664%;}
+  .g-grid .lg_pull_col_6{left:50%;}
+  .g-grid .lg_pull_col_7{left:58.333333333333336%;}
+  .g-grid .lg_pull_col_8{left:66.666666666666670%;}
+  .g-grid .lg_pull_col_9{left:75%;}
+  .g-grid .lg_pull_col_10{left:83.333333333333330%;}
+  .g-grid .lg_pull_col_11{left:91.666666666666670%;}
+  .g-grid .lg_pull_col_12{left:100%;}
+  /* push */
+  .g-grid .lg_push_col_1{right:8.333333333333334%;}
+  .g-grid .lg_push_col_2{right:16.666666666666668%;}
+  .g-grid .lg_push_col_3{right:25%;}
+  .g-grid .lg_push_col_4{right:33.333333333333336%;}
+  .g-grid .lg_push_col_5{right:41.666666666666664%;}
+  .g-grid .lg_push_col_6{right:50%;}
+  .g-grid .lg_push_col_7{right:58.333333333333336%;}
+  .g-grid .lg_push_col_8{right:66.666666666666670%;}
+  .g-grid .lg_push_col_9{right:75%;}
+  .g-grid .lg_push_col_10{right:83.333333333333330%;}
+  .g-grid .lg_push_col_11{right:91.666666666666670%;}
+  .g-grid .lg_push_col_12{right:100%;}
+}
+
+/* unit.css */
+.u-hr,.u-hr2{display:block;margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee;}
+.u-hr2{margin-top:40px;margin-bottom:40px;}
+/* 单行代码 */
+.u-code{display:block;padding:2px 4px;border-radius:4px;font-size:90%;color:#c7254e;background-color:#f9f2f4;white-space:normal;word-wrap:break-word;/* 长单词换行，防止溢出 */}
+/* 多行代码 参考zhangxinxu */
+.u-code2{position:relative;display:block;line-height:1.3;padding:0 15px 0 40px;margin:10px 0;box-sizing:border-box;background:#e4f0f5;white-space:pre-wrap;}
+.u-code2::before{position:absolute;top:0;bottom:0;/* 配合top:0定义了此元素的高度，hidden才能生效 */left:0;overflow:hidden;padding-right:5px;border-right:3px solid #3f87a6;background:#fff;content:'01.\A 02.\A 03.\A 04.\A 05.\A 06.\A 07.\A 08.\A 09.\A 10.\A 11.\A 12.\A 13.\A 14.\A 15.\A 16.\A 17.\A 18.\A 19.\A 20.\A 21.\A 22.\A 23.\A 24.\A 25.\A 26.\A 27.\A 28.\A 29.\A 30.\A 31.\A 32.\A 33.\A 34.\A 35.\A 36.\A 37.\A 38.\A 39.\A 40.\A 41.\A 42.\A 43.\A 44.\A 45.\A 46.\A 47.\A 48.\A 49.\A 50.\A 51.\A 52.\A 53.\A 54.\A 55.\A 56.\A 57.\A 58.\A 59.\A 60.\A 61.\A 62.\A 63.\A 64.\A 65.\A 66.\A 67.\A 68.\A 69.\A 70.\A 71.\A 72.\A 73.\A 74.\A 75.\A 76.\A 77.\A 78.\A 79.\A 80.\A 81.\A 82.\A 83.\A 84.\A 85.\A 86.\A 87.\A 88.\A 89.\A 90.\A 91.\A 92.\A 93.\A 94.\A 95.\A 96.\A 97.\A 98.\A 99';/* \A 控制字符的换行 */}
+/* 例子 */
+.u-example{position:relative;display:block;padding:45px 15px 15px 15px;border:1px solid #ddd;border-radius:4px 4px 0 0;background-color:#fff;}
+.u-example::before{position:absolute;top:15px;left:15px;font-weight:700;color:#959595;content:'实例:';text-transform:uppercase;letter-spacing:1px;}
+/* 元素标签 em -> <em> */
+.u-eLabel::before{content:'<';}
+.u-eLabel::after{content:'>';}
+/* 超链接 */
+.u-link{color:#337ab7;}
+.u-link:hover,.u-link:focus{color:#23527c;text-decoration:underline;}
+/* 按钮 */
+/* 默认蓝色 */
+.u-btn{display:inline-block;height:28px;line-height:28px;padding:0 12px;border:transparent;/* 针对<button>标签。chrome中border-width默认是3px */background-color:#0078e7;cursor:pointer;/* 手机端没有用 */color:#fff;vertical-align:middle;letter-spacing:1px;/* 文字间距，中英文间距相同 */text-align:center;font-size:1.2rem;white-space:nowrap;user-select:none;}
+
+/* 提高页面的访问性，通过键盘聚焦和鼠标悬浮时效果保持一致 */
+.u-btn:hover,.u-btn:focus{background-image:linear-gradient(transparent,rgba(0,0,0,.05) 40%,rgba(0,0,0,.1));/* color:#fff; 覆盖a:hover的颜色; */}
+/* 三角形 特殊用法 */
+.u-btn .btnSel{display:inline-block;border:4px solid transparent;border-top-color:#fff;border-bottom-width:0;vertical-align:middle;}
+/* 颜色 */
+.u-btn-c1{background-color:#e6e6e6;color:rgba(0,0,0,.8);/* 灰色 */}
+/* 尺寸 */
+.u-btn-lg{height:36px;line-height:36px;padding:0 15px;font-size:1.8rem;}
+/* 组合按钮，默认带边框，直角 */
+.u-btns{position:relative;/* 用于.u-menu */display:inline-block;/* 清除浮动 */}
+.u-btns .u-btn{float:left;margin-left:-1px;/* 防止边框重叠 */border:1px solid #1b6d85;background-color:#269abc;/* 边框和背景色需要设计提供 */}
+.u-btns .u-btn:first-child{margin-left:0;/* 去除边框重叠副作用 */}
+.u-btns-br .u-btn:first-child{border-radius:5px 0 0 5px;}
+.u-btns-br .u-btn:last-child{border-radius:0 5px 5px 0;}
+/* 交互式菜单 */
+.u-menu{display:none;position:absolute;top:100%;left:0;box-sizing:border-box;/* 防止宽度超出父容器，例如.u-menu-max就离不开 */border:1px solid #d0d0d0;margin: 1px 0 0 0;border-radius:5px;word-spacing:normal;letter-spacing:normal;/* 正常的单词间距和字母间距 */background:#fff;box-shadow:0 5px 15px rgba(0,0,0,0.05);}
+.u-menu.z-show{display:block;}
+.u-menu li a{display:block;padding:6px 12px;border-top:1px solid #e8e8e8;text-overflow:ellipsis;overflow:hidden;white-space:nowrap;color:#333;}
+.u-menu li:first-child a{border:0;border-radius:5px 5px 0 0;/* 不能省，否则在hover下menu的圆角会有缺陷*/}
+.u-menu li:last-child a{border-radius:0 0 5px 5px;/* 不能省 */}
+.u-menu li a:hover{background:#f7f7f7;}
+/* 右对齐 */
+.u-menu-rt{left:auto;/* 宽度自动 */right:0;}
+/* 至少撑满 */
+.u-menu-min{min-width:100%;}
+/* 至多撑满 */
+.u-menu-max{max-width:100%;}
+/* 分组 */
+.u-menu-gp li:empty{border-top:1px solid #ddd;margin:5px 0;}
+.u-menu-gp li a{border:0;}
+/* ##字体 */
+.u-font{font-family: 'microsoft yahei',sans-serif;font-size:1.6rem;}
+.u-font-xs{font-size:1.2rem;}
+.u-font-sm{font-size:1.4rem;}
+.u-font-lg{font-size:2rem;}
+.u-font-xlg{font-size:2.4rem;}
+/* 标注（参考bootstrapV3） */
+.u-callout{display:block;padding:20px;margin:20px 0;border:1px solid #eee;border-left-color:#1b809e;border-left-width:5px;border-radius:3px;}
+.u-callout .tt{margin-top:0;margin-bottom:5px;font-size:1.8rem;font-weight:500;color:#1b809e;}
+.u-callout p{margin-bottom:16px;}
+.u-callout p:last-child{margin-bottom:0;}
+/* 标注类别 */
+.u-callout-danger{border-left-color:#ce4844;}
+.u-callout-danger .tt{color:#ce4844;}
+.u-callout-warn{border-left-color:#aa6708;}
+.u-callout-warn .tt{color:#aa6708;}
+/**
+ * 标题（参考bootstrapV3）
+ * 这里u-tt1~6 其实是对应h1~h6，但取名为tt1而不是h1，是希望不要被h1元素限制使用
+ */
+.u-tt1{font-size:3.6rem;}
+.u-tt2{font-size:3.0rem;}
+.u-tt3{font-size:2.4rem;}
+.u-tt4{font-size:1.8rem;}
+.u-tt5{font-size:1.4rem;}
+.u-tt6{font-size:1.2rem;}
+.u-tt1,.u-tt2,.u-tt3{margin-top:20px;}
+.u-tt4,.u-tt5,.u-tt6{margin-top:10px;}
+.u-tt1,.u-tt2,.u-tt3,.u-tt4,.u-tt5,.u-tt6{display:block;margin-bottom:10px;font-weight:500;}
+.u-tt1 .sm,.u-tt2 .sm,.u-tt3 .sm{font-size:65%;}
+.u-tt4 .sm,.u-tt5 .sm,.u-tt6 .sm{font-size:75%;}
+.u-tt1 .sm,.u-tt2 .sm,.u-tt3 .sm,.u-tt4 .sm,.u-tt5 .sm,.u-tt6 .sm{font-weight:400;}
+/* header */
+.u-tt1-hd{padding-bottom:10px;margin:40px 0 20px 0;border-bottom:1px solid #eee;}
+/* 默认无边图片 110*110 */
+.u-img,.u-img2{position:relative;/* 可用于close按钮的定位 */display:inline-block;box-sizing:border-box;width:110px;height:110px;/* 场景：图片外总是有一个固定宽高的容器 */}
+.u-img img{display:block;/* 与下面紧邻元素没有间隙 */width:100%;height:100%}
+/* 有边图片 */
+.u-img-b1{padding:2px;border:1px solid #ddd;}
+/* 圆角 */
+.u-img-br,.u-img-br img{border-radius:5px;/* 不能省 */}
+/* 高度自适应 */
+.u-img-ha,.u-img-ha img{height:auto;}
+/* 自定义宽高 */
+.u-img-define,.u-img-define img{width:100%;height:100%}
+/* 自定义内容图片 */
+.u-img2{width:100%;height:auto;}
+/* 有边 */
+.u-img2-b1{border:1px solid #ddd;padding:4px;}
+/* 圆角 */
+.u-img2-br{border-radius:5px;}
+/* 图片高度自适应 */
+.u-img2 img{display:block;/* 与下面紧邻元素没有间隙 */width:100%;}
+
+/* module.css */
+/* 多行式面包屑导航（默认竖线分隔） */
+.m-crumb{display:block;overflow:hidden;/* 溢出隐藏、清除浮动 */}
+.m-crumb ul{margin-left:-20px;}
+.m-crumb li{float:left;}
+.m-crumb li::before{display:inline-block;width:20px;content:'|';text-align:center;}
+/* 箭头分隔 */
+.m-crumb-arr li::before{content:'>';}
+/* 空格分隔 */
+.m-crumb-blank li::before{content:'';}
+
+/* 水平文字链接列表 */
+.m-list1{display:block;}
+.m-list1 li{float:left;margin-right:20px;}
+.m-list1 li:last-child{margin-right:0;}
+.m-list1::after{display:block;height:0;visibility:hidden;content:'.';clear:both;}
+.m-list1 a,.m-list1 a:hover{display:inline-block;/* a和li一样高 */}
+.m-list1-c1 a,.m-list1-c1 a:hover{color:#3891eb;}
+/* 手机下一行一列 */
+@media screen and (max-width:667px){
+  .m-list1-xs li{box-sizing:border-box;width:100%;}
+}
+/* 一行一列带点列表 */
+.m-list2 li{padding-left:10px;}
+/* > 为了解决带点列表中内嵌不带点列表 */
+.m-list2 > li::before{display:inline-block;margin-left:-10px;margin-right:6px;border:2px solid;content:'';vertical-align:middle;margin-bottom:2px;/* 配合vertical-align让点居中 */}
+/* 圆点 */
+.m-list2-rds > li::before{border-radius:50%;}
+/* 简易数据表格，默认是格边框 */
+.m-table{width:100%;}
+.m-table caption{padding-top:8px;padding-bottom:8px;color:#777;text-align:left;}
+.m-table th{font-weight:bold;}
+.m-table td,.m-table th{padding:8px;border:1px solid #ddd;}
+/* 行边框 */
+.m-table-row th,.m-table-row td{border-width:0 0 1px 0;}
+/*
+ * 状态类
+ * .active 鼠标悬浮在行或单元格
+ * .success 标识成功或积极的动作
+ * .info 标识普通的提示信息或动作
+ * .warn 标识警告或需要用户注意
+ * .danger 标识危险或潜在带来负面影响
+ */
+.m-table .z-active{background:#f5f5f5;}
+.m-table .z-success{background:#dff0d8;}
+.m-table .z-info{background:#d9edf7;}
+.m-table .z-warn{background:#fcf8e3;}
+.m-table .z-danger{background:#f2dede;}
+/**
+ * 圆角
+ * 过程如下：
+ *  格边框
+ *  表格边框分开（好像collapse与border-radius冲突），并在表格元素的右侧、底部各画一条边
+ *  重置td、th边框，只画左边框、上边框
+ *  把剩余三个角画圆
+ */
+.m-table-rds{border-collapse:separate;border:1px solid #ddd;border-width:0 1px 1px 0;border-radius:5px;}
+.m-table-rds th,.m-table-rds td{border-width:1px 0 0 1px;}
+.m-table-rds > thead > :first-child > :first-child{border-top-left-radius:5px;}
+.m-table-rds > thead > :first-child > :last-child{border-top-right-radius:5px;}
+.m-table-rds > tbody > :last-child > :first-child{border-bottom-left-radius:5px;}
+
+/* skin.css */
+/* 情景文字颜色（参考bootstrapV3） */
+.s-textMuted{color:#777;/* 静音 */}
+.s-textSuccess{color:#3c763d;/* 成功 */}
+.s-textPrimary{color:#337ab7;/* 主要的 */}
+.s-textInfo{color:#31708f;/* 信息 */}
+.s-textWarn{color:#8a6d3b;/* 警告 */}
+.s-textDanger{color:#a94442;/* 危险 */}
+.s-tip{color:#ff9955;}
+/* 情景背景色 */
+.s-bgSuccess{background-color:#dff0d8;}
+.s-bgPrimary{background-color:#337ab7;color:#fff;}
+.s-bgInfo{background-color:#d9edf7;}
+.s-bgWarn{background-color:#fcf8e3;}
+.s-bgDanger{background-color:#f2dede;}
+
+/* function.css，权重相同，后者生效，所以放最后 */
+
+.f-fs12{font-size:1.2rem;}
+.f-fs14{font-size:1.4rem;}
+.f-fs16{font-size:1.6rem;}
+.f-fs18{font-size:1.8rem;}
+.f-fs20{font-size:2rem;}
+.f-fs22{font-size:2.2rem;}
+.f-fs24{font-size:2.4rem;}
+.f-fs30{font-size:3rem;}
+.f-fw100{font-weight:100;}
+.f-fw200{font-weight:200;}
+.f-fw300{font-weight:300;}
+.f-fw400{font-weight:400;}
+.f-fw600{font-weight:600;}
+.f-fw700{font-weight:700;}
+.f-fw800{font-weight:800;}
+.f-fw900{font-weight:900;}
+.f-fwb{font-weight:bold;}
+.f-fwn{font-weight:normal;}
+.f-ti2{text-indent:2em;/* 中文是两个，英文不是 */}
+.f-lhn{line-height:normal;}
+.f-lh150{line-height:150%;}
+.f-lh180{line-height:180%;}
+.f-lh200{line-height:200%;}
+/* 下划线 */
+.f-tdu,.f-tdu:hover{text-decoration:underline;/* 英文字母有的就没有下划线 */}
+/* 去除下划线 */
+.f-tdn,.f-tdn:hover{text-decoration:none;}
+.f-tdlt,.f-tdlt:hover{text-decoration:line-through;}
+/* 一行省略 */
+.f-toe{text-overflow:ellipsis;/* 必须配合white-space:nowrap;overflow:hidden; */overflow:hidden;white-space:nowrap;}
+/* 两行省略（暂放） */
+.f-toe2{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.f-oh{overflow:hidden;}
+/* 不换行 */
+.f-wsn{white-space:nowrap;}
+/* 转为pre */
+.f-pre{white-space:pre-wrap;/* 通常建议使用f-pre */}
+.f-pre2{white-space:pre;}
+/* 长单词换到下一行 */
+.f-wwbw{white-space:normal;word-wrap:break-word;}
+/* 任意位置换行 */
+.f-wbba{white-space:normal;/* 防止break-all与nowrap矛盾 */word-break:break-all;}
+
+/* 定位 */
+.f-tal{text-align:left;}
+.f-tac{text-align:center;}
+.f-tar{text-align:right;}
+.f-taj{text-align:justify;/* 两端对齐，不作用在最后一行 */}
+/* 块元素居中 */
+.f-bc{margin-left:auto;margin-right:auto;}
+.f-fl{float:left;}
+.f-fr{float:right;}
+/* 清除浮动 */
+.f-cb{clear:both;}
+.f-clearfix::after{display:block;height:0;visibility:hidden;/* 仍会占据该位置 */content:'.';clear:both;/* 来自《精通CSS：高级Web标准解决方案》 */}
+.f-vam,.f-vama *{vertical-align:middle;/* 该属性可以继承 */}
+.f-pr{position:relative;}
+.f-pa{position:absolute;}
+.f-vh{visibility:hidden;/* 元素不可见，位置占着 */}
+.f-dn{display:none;/* 元素不可见，位置腾出来 */}
+.f-di{display:inline;}
+.f-db{display:block;}
+.f-dib{display:inline-block;}
+/* 长度高度 */
+.f-w10{width:10px;}
+.f-w100{width:100px;}
+.f-w200{width:200px;}
+.f-w250{width:250px;}
+.f-w300{width:300px;}
+.f-w500{width:500px;}
+.f-w100p{width:100%;}
+.f-h10{height:10px;}
+.f-h50{height:50px;}
+.f-h60{height:60px;}
+.f-h80{height:80px;}
+.f-h100{height:100px;}
+.f-h200{height:200px;}
+.f-h100p{height:100%;}
+/* 最大最小宽度和高度 */
+.f-mw500{max-width:500px;}
+.f-mw600{max-width:600px;}
+.f-mh300{max-height:300px;}
+/* 边距 */
+.f-m0{margin:0;}
+.f-m10{margin:10px;}
+.f-m15{margin:15px;}
+.f-m30{margin:30px;}
+.f-mt5{margin-top:5px;}
+.f-mt10{margin-top:10px;}
+.f-mt15{margin-top:15px;}
+.f-mt20{margin-top:20px;}
+.f-mt25{margin-top:25px;}
+.f-mt30{margin-top:30px;}
+.f-mt40{margin-top:40px;}
+.f-mt50{margin-top:50px;}
+.f-mt100{margin-top:100px;}
+.f-mb10{margin-bottom:10px;}
+.f-mb20{margin-bottom:20px;}
+.f-mb25{margin-bottom:25px;}
+.f-mb30{margin-bottom:30px;}
+.f-mb40{margin-bottom:40px;}
+.f-mb50{margin-bottom:50px;}
+.f-mb60{margin-bottom:60px;}
+.f-mb100{margin-bottom:100px;}
+.f-mb150{margin-bottom:150px;}
+.f-ml5{margin-left:5px;}
+.f-ml10{margin-left:10px;}
+.f-ml15{margin-left:15px;}
+.f-ml20{margin-left:20px;}
+.f-ml30{margin-left:30px;}
+.f-ml50{margin-left:50px;}
+.f-ml100{margin-left:100px;}
+.f-mr5{margin-right:5px;}
+.f-mr10{margin-right:10px;}
+.f-mr15{margin-right:15px;}
+.f-mr20{margin-right:20px;}
+.f-mr30{margin-right:30px;}
+.f-mr50{margin-right:50px;}
+.f-mr60{margin-right:60px;}
+.f-mr100{margin-right:100px;}
+.f-p0{padding:0px;}
+.f-p10{padding:10px;}
+.f-p15{padding:15px;}
+.f-p20{padding:20px;}
+.f-p30{padding:30px;}
+.f-pt10{padding-top:10px;}
+.f-pt15{padding-top:15px;}
+.f-pt20{padding-top:20px;}
+.f-pt30{padding-top:30px;}
+.f-pt50{padding-top:50px;}
+.f-pt100{padding-top:100px;}
+.f-pb10{padding-bottom:10px;}
+.f-pb15{padding-bottom:15px;}
+.f-pb20{padding-bottom:20px;}
+.f-pb30{padding-bottom:30px;}
+.f-pb50{padding-bottom:50px;}
+.f-pb60{padding-bottom:60px;}
+.f-pb100{padding-bottom:100px;}
+.f-pl10{padding-left:10px;}
+.f-pl15{padding-left:15px;}
+.f-pl20{padding-left:20px;}
+.f-pl30{padding-left:30px;}
+.f-pl50{padding-left:50px;}
+.f-pl100{padding-left:100px;}
+.f-pr10{padding-right:10px;}
+.f-pr15{padding-right:15px;}
+.f-pr20{padding-right:20px;}
+.f-pr30{padding-right:30px;}
+.f-pr50{padding-right:50px;}
+.f-pr60{padding-right:60px;}
+.f-pr100{padding-right:100px;}
+/* 鼠标 */
+.f-csp{cursor:pointer;}
+.f-csh{cursor:help;}
+.f-csm{cursor:move;}
+.f-csd{cursor:default;}
+/* 禁止选择文本 ie10+ */
+.f-usn{-webkit-user-select:none;-moz-user-select:none;-ms-user-select:none;-o-user-select:none;user-select:none;}
+/* 斜体 */
+.f-italic{font-style:italic;}
+/* 修改盒子模型 */
+.f-bsbb{box-sizing:border-box;}

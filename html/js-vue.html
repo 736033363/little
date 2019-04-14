@@ -1,0 +1,138 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>vue 了解</title>
+</head>
+<body style="white-space:pre-wrap;">
+背景
+  同事去面试，10家只有一家问react，其他9家都问vue
+
+参考：<a href="https://vuejs.bootcss.com/v2/guide/" target="_blank">官网</a>
+
+用起来
+  安装
+    参考《深入浅出Webpack》，报错后在 <a href="https://blog.csdn.net/dreamfj/article/details/82256157" target="_blank">vue+webpack4简单搭建</a> 它这里找到答案
+
+教程
+
+  Vue实例
+    所有的vue组件都是vue实例
+    实例创建时data中存在的属性才是响应式
+    Vue实例暴露的属性和方法都有前缀 $
+    vue实例创建时会运行一些生命周期钩子函数，函数中的this是调用它的实例，不要使用箭头函数
+
+  模板语法
+    v-once
+    {{普通文本}}
+    v-html
+    v-bind（{{}}不能作用在html属性）
+    所有的数据绑定都有完全的js单个表达式支持
+    v-if（是否显示）
+    修饰符（如.prevent）
+    缩写（v-on、v-bind的缩写是@、:）
+
+  计算属性和监听器
+    计算属性（任何复杂逻辑都应使用）
+    方法也能实现计算属性，但计算属性有缓存（计算属性更新时刻是响应式依赖变的时候）
+    勿滥用监听属性（可能更适合计算属性）
+    计算属性的setter（默认只有get）
+    vm.$watch（？）
+
+  Class与Style的绑定
+    v-bind用于style和class时表达式还可以是数组、对象
+    v-bind:class可以与普通class属性共存
+    用在组件上（？）
+    v-bind:style会自动添加前缀
+
+  条件渲染
+    v-if（v-else-if、v-else）
+    用key管理可复用的元素（vue会复用已有的元素）
+    v-show（总会渲染，仅仅改变display，不支持template、v-else）
+
+  列表渲染
+    v-for（建议顺便提供key）
+    数组更新检测（用方法，如：vm.$set、vm.items.splice）
+    对象更改检测（用方法、vm.$set是Vm.set的别用、添加多个属性有疑问？）
+    不建议v-for与v-if同时使用，需要时也可以
+    一个组件的v-for（？）
+
+  事件处理
+    v-on（表达式、$event）
+    事件修饰符（stop、prevent、支持只有修饰符、顺序不同导致结果不同）
+    按键修饰符（如enter、page-down）
+    系统修饰符（如ctrl、left、.exact 修饰符）
+
+  表单输入绑定
+    v-model（在表单项创建双向绑定、忽略初始值如value、checked、再输入法组合文字时不会更新）
+    修饰符（lazy、number、trim）
+    在组件上使用v-model
+
+  组件基础
+    组件的复用（每个组件就是一个实例）
+    组件的data必须是一个函数
+    Vue.component是全局注册（我这里的单页面组件写法就是局部注册）
+    通过Prop向子组件传递数据（props接收数据，也可以接收一个对象）
+    每个组件必须只有一个根元素
+    向父组件发送消息用事件（$emit）
+    在组件上使用v-model（本质上没特别）
+    通过插槽分发内容（组件的html内容替换slot标签）
+    动态组件（即组件之间切换，特殊特征is）
+
+深入了解组件
+  组件注册
+    名字全小写，必须有个连字符
+    基础组件的自动化全局注册（失败？）
+
+  Prop
+    Prop 的大小写 camelCase vs kebab-case（字符串模板没这个限制）
+    Prop 类型（若传入类型不对会在控制台提示）
+    Prop能传静态的和动态的（通过v-bind）
+    父子组件默认是单向数据流，所以不建议在子组件中改变prop（若要改，建议在子组件中prop与data中不要使用相同名字）
+    Prop 验证（类型验证、自定义验证函数、默认值...开发环境会发出警告；验证在创建实例之前）
+    非Prop特性（组件可以接收任意的特性，特性会加到这个组件的根元素上）
+    替换/合并已有特性（若碰到这种情况，class和style会合并，其他会替换）
+    禁用特性继承（inheritAttrs，不作用在class和style上；$attrs？）
+
+  自定义事件
+    推荐始终
+    自定义组件使用v-model作用在复选框、单选框时可以使用model（只感觉包了一层，感觉很怪）
+    将原生事件绑定到组件（.native、$listeners）
+    prop双向绑定（.sync是缩写，子组件仍然是通过$emit来通知父组件修改）
+
+  插槽
+    插槽内容（已在前面部分学习）
+    具名插槽（通过slot属性）
+    插槽的默认内容（slot标签）
+    编译作用域（插槽和模板其他地方有相同的实例属性）
+    作用域插槽（关键是父组件可以接收子组件通过slot传来的参数；特殊属性slot-scope、scope）
+    解构 slot-scope（es6支持）
+
+  动态组件和异步组件
+    动态组件上使用keep-alive（否则创建一个新实例）
+    异步组件（组件异步加载，可提升可用性）
+      异步加载状态（异步就涉及请求中、请求出错，需要加载的组件是一个Promise的对象，不太会弄）
+
+  处理边界情况（初略）
+    例如循环引用、控制更新...
+
+过渡&动画（初略）
+  提供了内置组件transition，有较多的动画
+
+可复用性 & 组合（初略）
+  混入（extend，类似继承，并提供一些合并策略）
+  提供自定义指令（说：需要对普通dom元素进行底层操作，就会用到自定义指令）
+  渲染函数（通常应该使用template来创建html，某些场景需要使用js的编程能力，可以用render函数）
+  render函数（用于替代template，其中v-if等js可以用if替代，v-model需要自己编程...）
+  函数式组件（干啥用？）
+  其他（虚拟Dom、createElement参数、vue中使用jsx语法让我们回到更接近模板的写法、模板编译）
+  插件（官方推荐vue-router，可以自己开发，使用插件Vue.use）
+  可以自定义过滤器（用于常见文本格式化filters）
+
+工具（初略）
+  单文件组件、单元测试、生产环境部署
+
+规模化（初略）
+  路由
+</body>
+</html>

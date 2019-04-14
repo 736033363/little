@@ -1,0 +1,118 @@
+
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title>css练习</title>
+<meta name='keywords' content=''>
+<meta name='description' content='css常用技巧'>
+<meta name='viewport' content='width=device-width,initial-scale=1.0'>
+<link rel='stylesheet' href='../css/global.css'>
+<link rel='stylesheet' href='../css/css-practice.css'>
+<link rel='shortcut icon' href='../img/sun_48.ico'>
+<style>
+
+
+</style>
+</head>
+<body>
+<div class="g-grid g-grid-w2">
+  <h1 class="u-tt1">css练习</h1>
+  <hr class="u-hr">
+
+  <p id="negative-margin" class="u-tt4">负margin创建等高的列</p>
+  <div class="u-example">
+    <div class="m-boxDemo1">
+      <div class="mn s-bgInfo">
+        <p>关键是三点：</p>
+        <ul class="m-list2">
+          <li>父元素设置overflow</li>
+          <li>两个孩子设置padding-bottom和margin-bottom</li>
+        </ul>
+      </div>
+      <div class="sd s-bgSuccess">
+        <p>适用于</p>
+        <p>两列高度自适应</p>
+        <p>两列高度看起来一样</p>
+      </div>
+    </div>
+  </div>
+
+  <p id="link-visited" class="u-tt4">:link 和 :visited</p>
+  <div class="u-example">
+   <div class="m-boxDemo3">
+      <div class="row">
+       <div class="col_4 xs_col_12">
+         <p><code class="f-italic">a{}</code></p>
+         <div class="demo1">
+           <a href="#test1">有href的a，href="#test"</a><br>
+           <a name="test1">没有href的a</a>
+         </div>
+       </div>
+       <div class="col_4 xs_col_12">
+         <p><code class="f-italic">:link{}</code>，:link认识有href属性（好像必须要有值）的a元素</p>
+         <div class="demo2">
+           <a href="#test2">有href的a，href="#test"</a><br>
+           <a href="">有href的a，但href=""</a><br>
+           <a name="test2">没有href的a</a>
+         </div>
+       </div>
+       <div class="col_4 xs_col_12">
+         <p><code class="f-italic">:active{}</code>，:active认识有href属性（好像可以无需有值）a元素。（需要点击）</p>
+         <div class="demo3">
+           <a href="#test3">有href的a，href="#test"</a><br>
+           <a href="">有href的a，但href=""</a><br>
+           <a name="test3">没有href的a</a>
+         </div>
+       </div>
+     </div>
+   </div>
+  </div>
+
+  <p id="z-index" class="u-tt4">z-index</p>
+  <div class="u-example">
+    <div class="m-boxDemo6">
+      <div class="row">
+        <div class="col_6 xs_col_12">
+          <p>z-index。黄色：10->100；红色：100->10；</p>
+          <div class="box">
+            <div class="sbox1">10<div class="cnt">100</div></div>
+            <div class="sbox2">100<div class="cnt">10</div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <p id="position" class="u-tt4">position</p>
+  <div class="u-example">
+    <div class="m-boxDemo7">
+      <div class="row">
+        <div class="col_6 xs_col_12">
+          <p>最佳纵向拉伸法（无用。height:100%不就可以）</p>
+          <div class="box">
+            <div class="sbox1">只适合绝对定位</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <p id="transform" class="u-tt4">transform</p>
+  <div class="u-example">
+    <div class="m-boxDemo10">
+      <div class="row">
+        <div class="col_4 xs_col_12">
+          <p>3D翻转</p>
+          <div class="m-game">
+            <div class="ft">正</div>
+            <div class="bk">反</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- <script src='../js/.js'></script> -->
+<script></script>
+</body>
+</html>

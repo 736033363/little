@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title>css手册</title>
+<meta name='keywords' content=''>
+<meta name='description' content='css手册'>
+<meta name='viewport' content='width=device-width,initial-scale=1.0'>
+<link rel='shortcut icon' href='../img/sun_48.ico'>
+<style>
+.f-pre{white-space:pre-wrap;}
+</style>
+</head>
+<body>
+<aside>
+
+
+</aside>
+<article>
+  <header>
+    <h1>css手册</h1>
+    <p>
+      <i>尽量保持精简，太简单，不常用的都不会收录在此</i>。可参考：
+      <a href="http://www.w3school.com.cn/cssref/index.asp" target='_blank'>w3school api</a>、
+      <a href="http://www.runoob.com/cssref/css-reference.html" target='_blank'>菜鸟 api</a>、
+      <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/Reference" target='_blank'>mdn api</a>、
+      css-library.css
+    </p>
+  </header>
+  <h3>word-wrap</h3>
+  <p>允许长单词或url换行到下一行，请看<i>f-wwbw</i></p>
+  <h3>word-break</h3>
+  <p>可以实现浏览器任意位置换行，请看<i>f-wbba</i></p>
+  <h3>text-overflow</h3>
+  <p>文本溢出，超出省略号显示请看<i>f-toe</i></p>
+  <h3>white-space</h3>
+  <p>如何处理元素内的空白，请看<i>f-wsn</i>、<i>f-pre</i></p>
+  <h3>vertical-align</h3>
+  <ul>
+    <li>请看<i>f-vam</i></li>
+    <li>行内元素或表格单元格的垂直对齐方式，默认值是baseline，元素基线与父元素的基线对齐，等于0</li>
+    <li>textarea就没有说明基线，故浏览器表现可能有差异</li>
+    <li>不建议使用百分数，那是相对行高，结果会不确定</li>
+    <li>middle。元素的中心与父元素的基线加上小写x一半的高度值对齐</li>
+    <li>text-top元素顶端与父元素的顶端对齐，text-bottom反之</li>
+  </ul>
+  <h3>box-sizing</h3>
+  <p>修改元素盒子模型，请看<i>f-bsbb</i></p>
+  <h3>border-radius</h3>
+  <p>设置边框圆角，即使不设置边框可生效（需要设置背景才能看见），配合box-shadow更好，典型应用请看<i>.u-menu li:first-child a</i>或<i>.u-callout</i></p>
+  <h3>overflow</h3>
+  <p>超出边界的隐藏，典型应用请看<i>.u-code2::before</i>和<i>.m-crumb</i></p>
+  <h3>:link :visited</h3>
+  <ul>
+    <li>只能用于锚点</li>
+    <li>:hover、:focus、active理论上适合任何元素</li>
+    <li>记住这个顺序：:link、:visited、:hover、:focus、:active</li>
+  </ul>
+  <h3>letter-spacing</h3>
+  <p>增加或减小文字间距，初始是normal，等同于0，正负值都可以；典型应用请看<i>.u-btn</i></p>
+  <h3>word-spacing</h3>
+  <p>增加或减小单词（中英文都以空格分割）的间距</p>
+  <h3>border</h3>
+  <p>
+    可以画三角形，典型应用请看<i>.u-btn .btnSel</i>或<i>.u-btn</i><br>
+    border-width的典型应用请看<i>.m-table-row th</i>
+  </p>
+  <h3>user-select</h3>
+  <p>典型应用请看<i>.f-usn</i></p>
+  <h3>cursor</h3>
+  <p>典型应用请看<i>.f-csp</i></p>
+  <h3>键 linear-gradient</h3>
+  <p>创建多种颜色的线性渐变图片，默认是180度，0度是从上往下，顺时针</p>
+  <p>简单用法<i>linear-gradient(180deg, red 0%,blue 100%)</i>，典型应用请看<i>.u-btn:hover</i></p>
+  <figure>
+    <img src="../img/linear-gradient.png" alt="">
+    <p>渐变总长度是starting point开始，截止至ending point</p>
+    <p>-50%，从渐变总长度开始处往截止处逆方向50%（总长度的50%）开始</p>
+  </figure>
+  <h3>键 inline-block</h3>
+  <p><cite>《高级Web标准解决方案》</cite>中模糊的提到此属性可以清除浮动，我的应用请看<i>.u-btns</i></p>
+  <h3>:first-child</h3>
+  <p>伪类，选择兄弟元素中的第一个，典型应用请看<i>.u-btns .u-btn:first-child</i></p>
+  <h3>:last-child</h3>
+  <ul>
+    <li>:last-child 筛选出最后一个子元素。会忽略文本节点，但&lt;br&gt;有可能会选上</li>
+    <li>p:last-child 筛选出最后一个子元素，且是p</li>
+    <li><span>提示：</span>p:last-child 等同于 p:nth-last-child(1)</li>
+  </ul>
+  <h3>:nth-child</h3>
+  <ul>
+    <li>p:nth-child(1) 筛选出第一个子元素，且过滤非p。类似p:last-child，但后者选最后一个子元素</li>
+    <li>:nth-child(odd)，奇数，选择1、3、5...；等于:nth-child(2n+1)；even是偶数</li>
+    <li>:nth-last-child，与:nth-child唯一区别是前者从后往前计数</li>
+  </ul>
+  <h3>:nth-of-type</h3>
+  <ul>
+    <li>:nth-of-type(1)，父元素下不同类型的第1个子元素</li>
+    <li>ele.a.b.c:nth-of-type(n)，父元素下不同类型的第n个子元素，且筛选出是ele.a.b.c</li>
+    <li>:nth-last-of-type，与:nth-of-type的唯一区别是从后往前计数</li>
+  </ul>
+  <h3>:not</h3>
+  <ul>
+    <li>:not(p) 选择所有非p</li>
+    <li>这个元素只会应用在一个元素上，无法用它排除所有父元素。比如， body :not(table) a 将依旧会应用在table内部的 a 上</li>
+    <li>:not(div):not(span) 非div或非span ？</li>
+  </ul>
+  <h3>:target</h3>
+  <p>锚点内部调转，有时不容易看出跳到哪个元素。可实现弹框，请看<a href="https://mdn.mozillademos.org/files/4607/lightbox.html#">Pure CSS Lightbox</a></p>
+  <h3>margin</h3>
+  <p>
+    margin-left负值的应用请看<i>.u-btns .u-btn:first-child</i>（后者会覆盖前者）<br>
+    居右可以这样实现：<code>width:100px;margin-left:auto;</code>
+  </p>
+  <h3>box-shadow</h3>
+  <p>给边框添加阴影，默认颜色是元素字体颜色，典型应用请看<i>.u-menu</i></p>
+  <h3>:empty</h3>
+  <p>没有任何子元素，空格都不行，典型应用请看<i>.u-menu-gp li:empty</i></p>
+  <h3>text-transform</h3>
+  <p>控制文本的大小写，有全大写、全小写、首字母大写，典型应用请看<i>.u-example</i></p>
+  <h3>margin-bottom</h3>
+  <p>典型应用请看<i>.m-list2 > li::before</i></p>
+  <h3>border-collapse</h3>
+  <p>是否合并表格边框，其中collapse与border-radius冲突，经典应用请看表格圆角<i>.m-table-rds</i></p>
+  <h3>resize</h3>
+  <p>是否可由用户调整元素尺寸，若希望可以调整元素尺寸，需设置元素属性overflow，典型应用请看<i>textarea</i></p>
+  <h3>flex</h3>
+  <div class="f-pre">
+  flex是啥？
+    官方称为弹性盒布局，我认为张鑫旭的说法更好理解：房子分配
+
+  栗子1：
+    老爸开口：这个房子你们可以分配了（display:flex）
+    老大：我要100px
+    老三：我要200px
+    老二：剩余的我都要（flex:1）
+
+    补充：flex属性有两个快捷值：auto (1 1 auto) 和 none (0 0 auto)
+
+  栗子2：
+    背景：房子从左到右分别是老大、老二、老三的房间
+    老大说：我要把我的房子放在最右边（order:3）
+
+  栗子3：
+    老爸要换房间的顺序，默认是从左往右（flex-direction:row）
+    老爸说：房子改为从右往左（值row-reverse）
+    老爸说：房子改为从上往下（值column）
+    老爸说：房子改为从下往上（值column-reverse）
+
+    老爸有需求，默认房子在主轴上是从左往右挨着（justify-content:flex-start）
+    老爸说：让三间房子全居中（值center）
+
+    与justify-content有关的有辅轴上的对齐方式align-item，多根轴线的对齐方式align-content
+
+  栗子4：
+    ① flex-grow属性，多余部分的分法
+
+    问题：老爸房子600（宽度），三个孩子各要100，老大、老二、老三的flex-grow分别是1、3、0，那么老大、老二、老三到底分到了多大的房子？
+
+    答案：(600-100*3)/(1+3)=75，老大100+75，老二100+75*3、老三100
+
+    ② flex-basis属性，房间的初始大小，可以理解为width或height
+
+    ③ flex-shrink，与flex-grow对应，收缩比例
+
+    问题：老爸房子600（宽度），三个孩子各要300（可以用width或flex-basis设置），老大、老二、老三的flex-shirink分别是1、3、0，那么老大、老二、老三到底分到了多大的房子？
+
+    答案：(300*3-600)/(1+3)=75，老大300-75，老二300-75*3，老三300
+
+  参考：
+    <a href="https://www.zhangxinxu.com/wordpress/2010/12/css-box-flex%E5%B1%9E%E6%80%A7%EF%BC%8C%E7%84%B6%E5%90%8E%E5%BC%B9%E6%80%A7%E7%9B%92%E5%AD%90%E6%A8%A1%E5%9E%8B%E7%AE%80%E4%BB%8B/">张鑫旭 box-flex</a>、<a href="http://www.ruanyifeng.com/blog/2015/07/flex-grammar.html">阮一峰</a>
+  </div>
+  <h3>var</h3>
+  <p>
+    可以参考：<a href="https://www.jianshu.com/p/e13dd84bd078">CSS预编译语言——less初级入门</a>、<a href="https://segmentfault.com/a/1190000012360995">学习Less-看这篇就够了</a>。对应的练习在<span>little-phone/less</span>文件夹中
+  </p>
+  <h3>CSS3 变形处理</h3>
+  <ul>
+    <li>scale 缩放</li>
+    <li>translate 移动 - 像素或百分比，第一个值是水平移动，第二个是垂直移动，正值是往右或往下移动</li>
+    <li>rotate 旋转 - 如：transform: rotate(3600deg);</li>
+    <li>matrix - 它基本上能让你将若干变形效果（scale、rotate、skew等等）组合成单个声明，需要理解矩阵需要了解相关数学知识</li>
+    <li>transform-origin - 修改变形效果的起点，变形起点默认是中心点</li>
+    <li>未知：skew 沿x或y轴斜切 - 一个值则仅作用在x轴</li>
+    <li>参考：<a href="https://zhuanlan.zhihu.com/p/27089238">css3实现3D翻转功能（兼容ios）</a>、<a href="http://www.zhangxinxu.com/wordpress/2012/09/css3-3d-transform-perspective-animate-transition/">CSS3 3D transform变换</a></li>
+  </ul>
+  <h3>transition</h3>
+  <ul>
+    <li>过渡，必须放在开始元素上。是四个属性的简写，语法：<code>transition: property duration timing-function delay</code>。如transition:all 1s ease 0;</li>
+    <li>property，有三个值，none、all、property，多个属性用逗号分隔即可；all，理论上会应用到每个属性，但有的属性不支持过渡。</li>
+    <li>transition-timing-function，过渡效果的速度曲线，因为过渡通常1s内，所以各种效果都差不多。</li>
+    <li>transition-delay，延迟的时间，负数表示立刻开始。过渡包含多个属性，步调可以不一致，如：<code>transition-property:border,color,text-shadow;transition-duration: 1s,4s,2s;</code></li>
+  </ul>
+  <h3>浏览器私有前缀</h3>
+  <p>只需引入js即可，请看<a href="http://leaverou.github.io/prefixfree/">prefixfree</a></p>
+  <h3>local()</h3>
+  <ul>
+    <li>
+      $也是微软雅黑。@font-face{font-family:'$';src:local("Microsoft Yahei");}
+    </li>
+    <li>
+      微软雅黑变成宋体。@font-face {font-family: 'Microsoft Yahei'; src: local(SimSun); } </li>
+  </ul>
+  <h3>@font-face</h3>
+  <ul>
+    <li>嵌入网页字体</li>
+    <li>font-family，定义字体名；</li>
+    <li>src，调用字体文件，可以是本地，也可以是线上（跨域限制）。<code>src:local("aaa"),url("aaa.otf");</code> 没有安装aaa字体才去下载——测试失效，请看<a href="css-practice.html#font-face">栗子</a></li>
+    <li>font-style:italic/normal，斜体字体</li>
+    <li>font-weight:400/500/normal/bold，不同字重对应不同字体</li>
+    <li>unicode-range: U+201c, U+201d; 让特定字符或字符片段使用特定字体</li>
+    <li>ie只支持eot格式，只能从.ttf(TrueType)文件生成.eot文件，.otf(OpenType)等其他格式必须先转为.ttf，在转为.eot。</li>
+    <li>忧的是：在某一个通用字体一统天下前，我们需要提供多种格式来兼容不同浏览器。喜的是给每种浏览器设置对应字体很简单。</li>
+    <li>用了几个，就会引入几个文件</li>
+    <li>未知：<a href="http://font-spider.org/#about">字蛛</a>、<a href="https://www.jianshu.com/p/6cf02ae8e190">个性化html web中文字体的几个解决方案</a></li>
+  </ul>
+  <h3>text-shadow</h3>
+  <ul>
+    <li>为文字添加阴影</li>
+    <li><code>text-shadow:20px 2px 1px #dad7d7</code>右偏移20px，下偏移2px，模糊半径为1px（默认是0），最后一个是阴影颜色。阴影一般比较小，1像素或2像素最佳</li>
+    <li>左上方阴影。如：text-shadow:-20px -2px 1px #dad7d7</li>
+    <li>多重阴影，后面的在下面。这里是5个阴影，text-shadow: 5px 5px 1px blue,5px 25px 0px blue,5px 45px 0px blue,5px 65px 0px blue,5px 85px 0px blue;</li>
+    <li>浮雕文字诀窍，不要水平，不要模糊，垂直方向1或2像素的白影，<code>text-shadow: 0 1px 0 hsla(0, 0%, 100%, 0.75) </code></li>
+  </ul>
+  <h3>text-align</h3>
+  <ul>
+    <li>justify，两端对齐，不作用在最后一行</li>
+  </ul>
+  <h3>height</h3>
+  <ul>
+    <li>通常width:100%表示元素宽度是父元素的宽度，height:100%其实也类似，宽高都有超出父容器的局限性</li>
+  </ul>
+  <h3>border-image</h3>
+  <ul>
+    <li>在边框上绘制图形。这是一个简写属性</li>
+    <li>border-image-source，类似background-image</li>
+    <li>border-image-slice，裁剪位置
+        <ul>
+          <li>没有单位，专指像素。</li>
+          <li>支持百分值。假设边框图片400*300，那么20%表示裁剪图片的60px 80px 60px 80px的四边大小</li>
+        </ul>
+    </li>
+    <li>border-image-repeat，重复性。默认是strech(拉伸)、round(平铺)、repeat。
+      <ul>
+        <li>0个参数，border-image:url(border.png) 30% 40%; 等于 border-image:url(border.png) 30% 40% stretch stretch;</li>
+        <li>1个参数，表示水平和垂直方向均用此参数；2个参数，前者表示水平，后者表示垂直</li>
+        <li>border-top-image和border-bottom-image受水平方向效果影响；border-left-image和border-right-image受垂直方向效果影响；</li>
+        <li><img src="../img/border-image.png" alt=""></li>
+        <li>repeat直接从中间开始重复，所以边角会缺失；而round会调整图片使其正好在区域内显示，请看<a href="http://www.w3school.com.cn/cssref/pr_border-image.asp">w3school</a></li>
+      </ul>
+    </li>
+    <li>未知：border-image-outset:30 30;</li>
+  </ul>
+  <h3>float</h3>
+  <ul>
+    <li>float:left/right可以将任意元素转为浮动元素</li>
+    <li>浮动元素宽度自适应，也就是宽度由内容决定，接着就可以设置宽和高</li>
+    <li>浮动元素向左或向右浮动，直到碰到其他浮动元素或父元素的边界(边界是width，不是padding或border)才停止。</li>
+    <li>浮动元素可以配合margin使用，不会出现元素尺寸超出容器的情况（absolute会哦），也不会出现垂直外边距合并。</li>
+    <li>浮动元素还可以配合relative使用</li>
+    <li>清除浮动可以使用clear或overflow，而clear的本质是<code>margin:value</code></li>
+  </ul>
+  <h3>position</h3>
+  <ul>
+    <li><code>top:100%</code> 相对父元素还是最近祖先的height？</li>
+  </ul>
+  <h3>z-index</h3>
+  <ul>
+    <li>设置了absolute、relative和fixed的就是设定了位置的元素，而设定了位置的元素都是原子显示</li>
+    <li>设定位置元素中设置数值z-index，就会得到一个本地自包含的堆叠上下文，元素中的所有后代元素都在这个上下文中显示——包括静态定位、浮动定位和设定位置的元素。</li>
+    <li>如果设置为auto，或给非设定位置元素指定z-index，则不会创建堆叠上下文。使用以下值会创建堆叠上下文：z-index:0、z-index:-1和z-index:9999;</li>
+    <li>每一个堆叠上下文都是原子显示，不允许任何祖先或相邻兄弟放在其子元素之间</li>
+    <li>z-index不是全局，而是相对设置了数值z-index的最近定位祖先元素而定，请看<a href="css-practice.html#z-index">栗子</a></li>
+    <li>设置为负值的设定位置元素位于静态定位元素和非设定位置浮动元素之下</li>
+  </ul>
+  <h3>background</h3>
+  <ul>
+    <li>多个属性的简写</li>
+    <li>background-color在background-image下面</li>
+    <li>模式：<code>.background{background:#color url(demo.jpg) no-repeat center center;}</code>，这几个属性顺序任意</li>
+    <li>多张图片做背景，比如:hover是从A图切成B图，第一次会存在闪烁</li>
+  </ul>
+  <h3>background-repeat</h3>
+  <p>背景图像重复方式；常见值：repeat-x、repeat-y、no-repeat、repeat；space 和 round 当前没有被广泛支持的</p>
+  <h3>background-image</h3>
+  <ul>
+    <li>常见值：url(demo.jpg) 或 none</li>
+    <li>多张背景图其实是从上到下叠加，如果第一张图很大且不透明，就会将下面的小图覆盖</li>
+    <li>未知：background-image:url(1.jpg),url(2.jpg);</li>
+  </ul>
+  <h3>background-attachment</h3>
+  <p>背景图像是滚动还是固定，默认是scroll，fixed也好理解，local暂时不知</p>
+  <h3>background-clip</h3>
+  <ul>
+    <li>设置背景图片或背景色是否延伸到边框下面。默认是border-box，延伸到边框下面，例如边框半透明的时候就可以看见。</li>
+  </ul>
+  <h3>background-Origin</h3>
+  <p>指定background-position属性的相对位置。</p>
+  <h3>background-size</h3>
+  <ul>
+    <li>设置背景图片大小；两个值，第一个是宽度，第二个是高度。<code>auto 100px</code> 以高度为比例缩放</li>
+    <li><code>100% 50%</code> 是容器的100%，高度是容器的50%</li>
+    <li>只设置一个值，高度隐式为auto。<code>200px</code> 等同于 <code>200px auto</code></li>
+    <li>关键字 cover，把图片扩展到足够到，完全覆盖背景区，可能部分无法在背景区显示，某些情况等于<code>100% auto</code>，某些情况等于<code>auto 100%</code></li>
+    <li>关键字 contain，把图扩大至最大尺寸，宽高比例不变，且图片不会超出边界。等同于<code>100% auto</code>或<code>auto 100%</code></li>
+  </ul>
+  <h3>background-position</h3>
+  <div class='f-pre'>
+  单位有px或%，关键字有top、right、bottom、left、center，不建议混合使用单位和关键字，某些浏览器可能存在问题
+  <img src="../img/background-position.png" alt="">
+  像素定位非常清楚，不做解释。百分比定位从上图（图片的20% 20%与容器的20% 20%重叠）来看可能不太明了，但你想象<code>50% 50%</code>肯定是居中，翻译过来就是图片的中心点和容器的中心点重叠。
+  </div>
+  <h3>radial-gradient()</h3>
+  <div class='f-pre'>
+  ① 径向渐变，与线性渐变类似
+  ② <code>radial-gradient(red, green, blue)</code> 等价于 <code>radial-gradient(50% 50%,farthest-corner,red 0%, green 50%,blue 100%)</code>，默认从中心为起点，渐变到最远角落停止，均匀渐变
+  ③ 语法：background: radial-gradient(center, shape, size, start-color, ..., last-color)
+  ④ shape渐变形状，有两个值，椭圆ellipse（默认）和圆心circle，如果是正方形，这两个值效果相同
+  ⑤ size渐变大小，即渐变到哪里停止，有四个值，closest-side：最近边；farthest-side：最远边；closest-corner：最近角；farthest-corner：最远角
+  <img src="../img/radial-gradient.png" alt="">
+  </div>
+  <h3>repeat-linear-gradient() 和 repeat-radial-gradient()</h3>
+  <p>重复渐变。就是在加上前缀<code>repeat-</code>，后面语法与linear-gradient相同</p>
+  <h3>list-style</h3>
+  <p>三属性的简写属性，可以以任何顺序接受1、2或3个关键字</p>
+  <h3>list-style-image</h3>
+  <ul>
+    <li>把图片设置为列表中的项目标记</li>
+    <li>不能精确的控制图片位置；背景可以精确控制图片位置</li>
+    <li>未知：<a href="http://www.w3school.com.cn/cssref/pr_list-style-image.asp">w3school</a>；有句话：list-style-image不能与list-style-type共存，且前者优先级较后者高</li>
+  </ul>
+  <h3>list-style-type</h3>
+  <p>指定列表元素外观。disc(实心圆心)，默认；circle(空心圆点)；decimal(数字1、2...)；square(实心方块)；none(不显示)</p>
+  <h3>list-style-position</h3>
+  <ul>
+    <li>标记项的位置，初始值outside。</li>
+    <li>规范用40px来放符号，但有的浏览器采用padding-left，有的采用margin-left</li>
+    <li>控制list-style-image和list-style-type的位置</li>
+  </ul>
+  <h3>多栏布局</h3>
+  <p>column-width是列的宽度，但测试发现列宽不完全等于我设置的；column-count是列的个数；column-gap是列的间隙；column-rule是间隔样式</p>
+  <h3>counter-increment</h3>
+  <p>计数器值</p>
+</article>
+</body>
+</html>

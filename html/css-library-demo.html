@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title>css-library demo</title>
+<meta name='keywords' content=''>
+<meta name='description' content=''>
+<meta name='viewport' content='width=device-width,initial-scale=1.0'>
+<link rel='stylesheet' href='../css/css-library.css'>
+<link rel='shortcut icon' href='../img/sun_48.ico'>
+<style>
+
+/* 用于demo */
+.g-grid-s1 [class*="col_"]{background-color:rgba(86,61,124,.15);border:1px solid rgba(86,61,124,.2);}
+.f-w85p{width:85%;}
+.f-h250{height:250px;}
+</style>
+</head>
+<body>
+<div class="g-grid g-grid-w1 g-grid-s1">
+  <h2>网格</h2>
+  <div class="row">
+    <div class="col_4">col_4</div>
+    <div class="col_4">col_4</div>
+    <div class="col_4">col_4</div>
+  </div>
+  <div class="row">
+    <div class="col_12 sm_col_3">col_12 sm_col_3</div>
+    <div class="col_12 sm_col_6">col_12 sm_col_6</div>
+    <div class="col_12 sm_col_3">col_12 sm_col_3</div>
+  </div>
+  <div class="row">
+    <div class="col_12 lg_col_8">
+      col_12 lg_col_8
+      <div class="row">
+        <div class="col_12 md_col_6">col_12 md_col_6</div>
+        <div class="col_12 md_col_6">col_12 md_col_6</div>
+      </div>
+    </div>
+    <div class="col_12 lg_col_4">col_12 lg_col_4</div>
+  </div>
+
+  <div class="row">
+    <p class="f-tac"><i>Column clearing</i></p>
+    <div class="col_3 xs_col_6">
+      col_3 xs_col_6 <br><br><br>
+      小屏幕下看看
+    </div>
+    <div class="col_3 xs_col_6">col_3 xs_col_6</div>
+    <div class="clearfix_xs"></div>
+    <div class="col_3 xs_col_6">col_3 xs_col_6</div>
+    <div class="col_3 xs_col_6">col_3 xs_col_6</div>
+  </div>
+  <div class="row">
+    <p class="f-tac"><i>偏移2格</i></p>
+    <div class="col_5">col_5</div>
+    <div class="col_5 offset_col_2">col_5 offset_col_2</div>
+  </div>
+  <div class="row">
+    <p class="f-tac"><i>col_3和col_9调换</i></p>
+    <div class="col_3 md_pull_col_9">col_3 md_pull_col_9</div>
+    <div class="col_9 md_push_col_3">col_9 md_push_col_3</div>
+  </div>
+</div>
+<div class="g-grid g-grid-w1">
+  <h2>元件</h2>
+  <div class="col_6">
+    <p><i>.u-hr</i></p>
+    <span class="u-hr"></span>
+  </div>
+  <div class="col_6">
+    <p><i>.u-hr2</i>（上下间距更大）</p>
+    <span class="u-hr2"></span>
+  </div>
+
+  <div class="col_6">
+    <p><i>.u-code</i>（单行代码）</p>
+    <span class="u-code">
+    if(1){
+      xxx
+    }else{
+      长单词换行，不会溢出容器aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa
+    }
+    </span>
+  </div>
+  <div class="col_6">
+    <p><i>.u-code2</i>（多行代码）</p>
+    <div class="u-code2">
+if(){
+  xxx
+}else{
+  aaa
+}
+    </div>
+  </div>
+  <div class="col_12">
+    <span class="u-example">
+      .u-example
+    </span>
+  </div>
+  <div class="col_6">
+    <p><i>.u-eLabel</i>（em -> &lt;em&gt;）</p>
+    <span class="u-eLabel">em</span>
+  </div>
+  <div class="col_6">
+    <p><i>.u-link</i></p>
+    <a href="#" class="u-link">超链接</a>
+  </div>
+  <div class="col_4">
+    <a href="#" class="u-btn">按钮 a.u-btn</a>垂直居中
+  </div>
+  <div class="col_4">
+    <button class='u-btn'>按钮 button.u-btn</button>
+  </div>
+  <div class="col_4">
+    <span class="u-btn u-btn-c1">按钮 span.u-btn.u-btn-c1</span>
+  </div>
+  <div class="col_4">
+    <i class="u-btn"><i class="btnSel"></i></i>
+  </div>
+  <div class="col_4">
+    <span class="u-btn u-btn-lg">按钮 span.u-btn.u-btn-lg <i class="btnSel"></i></span>
+  </div>
+  <div class="col_4">
+    <span class="u-btns">
+      <span class="u-btn">按钮</span>
+      <span class="u-btn">按钮</span>
+      <span class="u-btn">按钮</span>
+    </span>
+    <p>inline-block清除浮动</p>
+  </div>
+  <div class="col_4">
+    <span class="u-btns u-btns-br">
+      <span class="u-btn">按钮</span>
+      <span class="u-btn">按钮</span>
+      <span class="u-btn">按钮</span>
+    </span>
+  </div>
+  <!-- <p class='f-cb'>交互式菜单</p> -->
+  <div class="col_4">
+    <span class="u-btns f-mb100">
+      <span class="u-btn">按钮组 .u-btns</span>
+      <span class="u-btn">按钮 .u-btn</span>
+      <span class="u-btn">按钮</span>
+      <menu class="u-menu z-show">
+        <li><a href="#">默认左对齐 .u-menu</a></li>
+        <li><a href="#">menu可以替换成ul</a></li>
+        <li><a href="#">只对a元素进行了处理</a></li>
+      </menu>
+    </span>
+  </div>
+  <div class="col_4">
+    <span class="u-btns f-mb100">
+      <span class="u-btn">按钮</span>
+      <span class="u-btn">按钮</span>
+      <span class="u-btn">按钮</span>
+      <menu class="u-menu z-show u-menu-rt">
+        <li><a href="#">右对齐</a></li>
+        <li><a href="#">.u-menu-rt</a></li>
+      </menu>
+    </span>
+  </div>
+  <div class="col_4">
+    <span class="u-btns f-mb100">
+      <span class="u-btn">按钮</span>
+      <span class="u-btn">按钮</span>
+      <span class="u-btn">按钮</span>
+      <menu class="u-menu z-show u-menu-min">
+        <li><a href="#">至少撑满</a></li>
+        <li><a href="#">至少撑满</a></li>
+      </menu>
+    </span>
+  </div>
+  <div class="col_4">
+    <span class="u-btns f-mb100">
+      <span class="u-btn">按钮</span>
+      <span class="u-btn">按钮</span>
+      <span class="u-btn">按钮</span>
+      <menu class="u-menu z-show u-menu-max">
+        <li><a href="#">最多撑满aaaaaaaaaaaaaaa</a></li>
+        <li><a href="#">最多撑满</a></li>
+      </menu>
+    </span>
+  </div>
+  <div class="col_4">
+    <span class="u-btns f-mb100">
+      <span class="u-btn">按钮</span>
+      <span class="u-btn">按钮</span>
+      <menu class="u-menu z-show u-menu-gp">
+        <li><a href="#">分组 .u-menu-gp</a></li>
+        <li><a href="#">分组</a></li>
+        <li></li>
+        <li><a href="#">分组</a></li>
+      </menu>
+    </span>
+  </div>
+
+  <div class="col_4">
+    <p class="u-font u-font-xs">.u-font.u-font-xs 12px</p>
+  </div>
+  <div class="col_4">
+    <p class="u-font u-font-sm">.u-font.u-font-sm 14px</p>
+  </div>
+  <div class="col_4">
+    <p class='u-font'>.u-font 16px</p>
+  </div>
+  <div class="col_4">
+    <p class="u-font u-font-lg">.u-font.u-font-lg 20px</p>
+  </div>
+  <div class="col_4">
+    <p class="u-font u-font-xlg">.u-font.u-font-xlg 24px</p>
+  </div>
+  <div class="col_4">
+    <span class="u-callout">
+      <span class="tt">标注标题 .tt</span>
+      <p>.u-callout</p>
+      <p>忽略.......................................................</p>
+    </span>
+  </div>
+  <div class="col_4">
+    <div class="u-callout u-callout-danger">
+      <h2 class="tt">标注标题 h2.tt</h2>
+      <p>.u-callout-danger</p>
+      <p>标题下只能是p</p>
+    </div>
+  </div>
+  <div class="col_4">
+    <div class="u-callout u-callout-warn">
+      <h2 class="tt">标注标题 h2.tt</h2>
+      <p>.u-callout-warn</p>
+    </div>
+  </div>
+  <i class="clearfix"></i>
+  <div class="col_6">
+    <span class="u-tt6">标题 .u-tt6 1.2rem  —— <span class="sm">小标题 .sm</span>（chrome限制，看不出来）</span>
+    <p>忽略.............</p>
+  </div>
+  <div class="col_6">
+    <span class="u-tt5">标题 .u-tt5 1.4rem  —— <span class="sm">小标题 .sm</span></span>
+    <p>忽略.............</p>
+  </div>
+  <div class="col_6">
+    <span class="u-tt4">标题 .u-tt4 1.8rem  —— <span class="sm">小标题 .sm</span></span>
+    <p>忽略.............</p>
+  </div>
+  <div class="col_6">
+    <span class="u-tt3">标题 .u-tt3 2.4rem  —— <span class="sm">小标题 .sm</span></span>
+    <p>忽略.............</p>
+  </div>
+  <div class="col_12">
+    <span class="u-tt2">标题 .u-tt2 3.0rem  —— <span class="sm">小标题 .sm</span></span>
+    <p>忽略.............</p>
+  </div>
+  <div class="col_12">
+    <span class="u-tt1">标题 .u-tt1 3.6rem  —— <span class="sm">小标题 .sm</span></span>
+    <p>忽略.............</p>
+  </div>
+  <div class="col_12">
+    <span class="u-tt1 u-tt1-hd">标题 .u-tt1.u-tt1-hd</span>
+    <p>忽略.............</p>
+  </div>
+  <div class="col_4">
+    <p>
+      默认：无边直角定宽定高110*110 <br>
+      .u-img
+    </p>
+    <span class="u-img">
+      <a href="#"><img src="../img/1.jpg" alt=""></a>
+    </span>
+  </div>
+  <div class="col_4">
+    <p>
+      有边图片<br>
+      .u-img.u-img-b1
+    </p>
+    <span class="u-img u-img-b1">
+      <a href="#"><img src="../img/1.jpg" alt=""></a>
+    </span>
+  </div>
+  <div class="col_4">
+    <p>
+      有边圆角图片<br>
+      .u-img.u-img-b1.u-img-br
+    </p>
+    <span class="u-img u-img-b1 u-img-br">
+      <a href="#"><img src="../img/1.jpg" alt=""></a>
+    </span>
+  </div>
+  <div class="col_4">
+    <p>
+      高度自适应<br>
+      .u-img.u-img-ha
+    </p>
+    <span class="u-img u-img-ha">
+      <a href="#"><img src="../img/1.jpg" alt=""></a>
+    </span>
+  </div>
+  <div class="col_4">
+    <p>
+      自定义（填充父容器大小）<br>
+      .u-img.u-img-define
+    </p>
+    <div class="f-w85p f-h250">
+      <span class="u-img u-img-define">
+        <a href="#"><img src="../img/1.jpg" alt=""></a>
+      </span>
+    </div>
+  </div>
+  <div class="col_4">
+    <p>
+      .u-img2.u-img2-b1.u-img2-br
+    </p>
+    <span class="u-img2 u-img2-b1 u-img2-br">
+      <a href="#"><img src="../img/1.jpg" alt=""></a>
+      <span class="u-tt2">标题</span>
+      <p>省略...........................</p>
+      <span class="u-btn">按钮</span>
+    </span>
+  </div>
+</div>
+<div class="g-grid g-grid-w1">
+  <h2>肤色</h2>
+  <div class="col_6">
+    <p class="s-textMuted">静音 .s-textMuted</p>
+    <p class="s-textSuccess">成功 .s-textSuccess</p>
+    <p class="s-textPrimary">主要 .s-textPrimary</p>
+    <p class="s-textInfo">信息 .s-textInfo</p>
+    <p class="s-textWarn">警告 .s-textWarn</p>
+    <p class="s-textDanger">危险 .s-textDanger</p>
+    <p class="s-tip">提示 .s-tip</p>
+  </div>
+  <div class="col_6">
+     <p class="s-bgSuccess f-p15">成功 .s-bgSuccess.f-p15</p>
+    <p class="s-bgPrimary f-p15">主要 .s-bgPrimary.f-p15</p>
+    <p class="s-bgInfo f-p15">信息 .s-bgInfo.f-p15</p>
+    <p class="s-bgWarn f-p15">警告 .s-bgWarn.f-p15</p>
+    <p class="s-bgDanger f-p15">危险 .s-bgDanger.f-p15</p>
+  </div>
+</div>
+<div class="g-grid g-grid-w1">
+  <h2>模块</h2>
+  <div class="col_6">
+    <p>多行式面包屑导航</p>
+    <span class="m-crumb">
+      <ul>
+        <li><a href="#" class='u-link'>默认是竖线分隔</a></li>
+        <li><a href="#" class='u-link'>默认是竖线分隔</a></li>
+        <li><a href="#" class="u-link">.m-crumb 内必须是ul，接着是li 换行换行换行换行换行换行换行换行换行换行换行换行换行换行换行换行换行换行</a><span class="s-tip">（一项太长有缺陷）</span></li>
+        <li><a href="#" class="u-link">默认是竖线分隔</a></li>
+        <li><a href="#" class="u-link">默认是竖线分隔</a></li>
+      </ul>
+    </span>
+    <span class="m-crumb m-crumb-arr">
+      <ul>
+        <li><a href="#" class='u-link'>箭头</a></li>
+        <li><a href="#" class='u-link'>箭头</a></li>
+        <li><a href="#" class='u-link'>.m-crumb-arr</a></li>
+      </ul>
+    </span>
+    <span class="m-crumb m-crumb-blank">
+      <ul>
+        <li><a href="#" class='u-link'>空格</a></li>
+        <li><a href="#" class='u-link'>空格</a></li>
+        <li><a href="#" class='u-link'>.m-crumb-blank</a></li>
+      </ul>
+    </span>
+  </div>
+  <div class="col_6">
+    <p>简易文字链接列表，无需任何类，即可实现</p>
+    <ul>
+      <li><a href="#" class='u-link'>列表项文字 </a></li>
+      <li><a href="#" class='u-link'>a.u-link</a></li>
+      <li><a href="#" class='u-link'>列表项文字</a></li>
+      <li><a href="#" class='u-link'>列表项文字</a></li>
+    </ul>
+  </div>
+  <div class="col_12 f-cb">
+    <p>水平文字链接列表</p>
+    <ul class="m-list1 f-mb20">
+      <li><a href="#" class='u-link'>列表文字</a></li>
+      <li><a href="#" class='u-link'>.m-list1 .u-link</a></li>
+      <li><a href="#" class='u-link'>列表文字</a></li>
+      <li><a href="#" class='u-link'>列表文字</a></li>
+    </ul>
+    <ul class="m-list1 m-list1-c1 f-mb20">
+      <li><a href="#">列表文字</a></li>
+      <li><a href="#">换一种颜色</a></li>
+      <li><a href="#">.m-list1-c1</a></li>
+      <li><a href="#">列表文字</a></li>
+    </ul>
+    <ul class="m-list1 m-list1-c1 m-list1-xs f-mb20">
+      <li><a href="#">列表文字</a></li>
+      <li><a href="#">手机下面（667px内）一行一列</a></li>
+      <li><a href="#">.m-list1.m-list1-c1.m-list1-xs</a></li>
+      <li><a href="#">文字大小继承ul</a></li>
+      <li><a href="#">列表文字</a></li>
+    </ul>
+  </div>
+  <div class="col_6">
+    <p>.m-list2</p>
+    <ul class="m-list2 f-mb20">
+      <li><a href="#">关注点即可</a></li>
+      <li><a href="#">关注点即可</a></li>
+      <li><a href="#">关注点即可</a></li>
+    </ul>
+  </div>
+  <div class="col_6">
+    <p>.m-list2.m-list2-rds</p>
+    <ul class="m-list2 m-list2-rds f-mb20">
+      <li><a href="#">关注点即可</a></li>
+      <li><a href="#">关注点即可</a></li>
+      <li><a href="#">关注点即可</a></li>
+    </ul>
+  </div>
+  <div class="col_12">
+    <table class="m-table">
+      <caption>格边框 .m-table</caption>
+      <thead>
+        <tr><th>格边框</th><th>表头</th><th>表头</th><th>表头</th><th >表头</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>内容</td><td>内容内容内容内容内容内容内容</td><td>内容内容</td><td>内容内容</td><td>内容内容内容</td></tr>
+        <tr><td>内容</td><td>内容内容内容内容内容内容内容</td><td>内容内容</td><td>内容内容</td><td>内容内容内容</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col_12">
+    <table class="m-table m-table-row">
+      <caption>行边框 .m-table.m-table-row</caption>
+      <thead>
+        <tr><th>格边框</th><th>表头</th><th>表头</th><th>表头</th><th >表头</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>内容</td><td>内容内容内容内容内容内容内容</td><td>内容内容</td><td>内容内容</td><td>内容内容内容</td></tr>
+        <tr><td>内容</td><td>内容内容内容内容内容内容内容</td><td>内容内容</td><td>内容内容</td><td>内容内容内容</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col_12">
+    <table class="m-table m-table-rds f-mt20">
+      <caption>圆角 .m-table.m-table-rds 必须有thead和tbody</caption>
+      <thead>
+          <tr><th>圆角</th><th>表头</th><th>表头</th><th>表头</th><th >表头</th></tr>
+      </thead>
+      <tbody>
+        <tr><td>内容</td><td>内容内容内容内容内容内容内容</td><td>内容内容</td><td>内容内容</td><td>内容内容内容</td></tr>
+        <tr><td>内容</td><td>内容内容内容内容内容内容内容</td><td>内容内容</td><td>内容内容</td><td>内容内容内容</td></tr>
+        <tr><td>内容</td><td>内容内容内容内容内容内容内容</td><td>内容内容</td><td>内容内容</td><td>内容内容内容</td></tr>
+      </tbody>
+    </table>
+  </div>
+  <div class="col_12">
+    <table class="m-table m-table-row f-mt20">
+      <caption>表格提供的状态类</caption>
+      <tbody>
+        <tr class='z-active'><td>.m-table .z-active</td><td>鼠标漂浮</td></tr>
+        <tr class='z-success'><td>.m-table .z-success</td><td>标识成功或积极的动作</td></tr>
+        <tr class='z-info'><td>.m-table .z-info</td><td>标识普通的提示或动作</td></tr>
+        <tr class='z-warn'><td>.m-table .z-warn</td><td>标识警告或用户注意</td></tr>
+        <tr class='z-danger'><td>.m-table .z-danger</td><td>表示危险或潜在带来的负面作用</td></tr>
+      </tbody>
+    </table>
+  </div>
+</div>
+</body>
+</html>
