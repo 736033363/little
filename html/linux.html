@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title>linux</title>
+<meta name='keywords' content=''>
+<meta name='description' content=''>
+<meta name='viewport' content='width=device-width,initial-scale=1.0'>
+<link rel='stylesheet' href='.css'>
+<link rel='shortcut icon' href='../img/sun_48.ico'>
+<style>
+
+</style>
+</head>
+<body style="white-space:pre-wrap;">
+su 切换用户root
+sudo 用户名 切换一次
+kill 进程号 例如杀死java进程
+ps -ef|grep java or tomcat
+中断 ctrl + c or z
+scp
+
+修改MC下所有文件权限
+  chown -R xxx:xxx xxx/src/xx/ √
+  chown -R xxx:xxx xxx/src/xx/*.* ×
+
+<p>
+<a href="https://blog.csdn.net/chuangjinweilai/article/details/52437660">临时修改分辨率</a>
+  xrandr
+
+  cvt 1920 1080
+
+  xrandr --newmode "1920x1080_60.00"  173.00  1920 2048 2248 2576  1080 1083 1088 1120 -hsync +vsync
+
+  xrandr --addmode DP-2 "1920x1080_60.00"
+
+  xrandr --output DP-2 --mode 1920x1080_60.00
+</p>
+</body>
+</html>
