@@ -1,6 +1,52 @@
-4-14
-  work 7h
+seajs添加版本号刷新本地缓存的方法 https://blog.csdn.net/u014181418/article/details/53321075
 
-4-21
-  work 6h
+// 参考ace-require.js
+require.config({
+    baseUrl: '.',
+    paths: {
+        jquery: '../components/jquery/dist/jquery',
+        bootstrap: '../components/bootstrap/dist/js/bootstrap',
+        ace: '../assets/js/ace',
+        aceElements: '../assets/js/ace-elements',
+    },
+    shim: {
+      'bootstrap':{
+        deps: ['jquery']
+      },
+      'ace': {
+        deps: ['jquery', 'bootstrap']
+      },
+      'aceElements': {
+        deps: ['ace']
+      }
+    }
+})
+require(['jquery','aceElements'], function($,aceElements) {
+  $('#p1').show();
+});
 
+【seajs】
+
+<script src="../components/seajs/2.1.0/sea.js"></script>
+
+jquery 不支持cmd，需要修改
+if ( typeof define === "function" && define.amd ) {
+if ( typeof define === "function" ) {
+
+var version='0.0.1';
+// seajs 的简单配置
+seajs.config({
+  map:[
+      ['.js','.js?v='+version]//映射规则
+  ],
+  base: "./../components/",
+  alias: {
+    "jquery": "jquery/dist/jquery.js"
+  }
+})
+// 加载入口模块
+seajs.use("../assets/js/ace-sea")
+
+jquery不是cmd https://github.com/seajs/seajs/issues/962
+Seajs的使用(粗看是好文章) https://www.jianshu.com/p/e780565d728b
+Seajs的使用(粗看是好文章) https://www.cnblogs.com/zqzjs/p/5299450.html
