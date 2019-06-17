@@ -13,6 +13,35 @@
 </style>
 </head>
 <body style="white-space:pre-wrap;">
+yum
+    概要：解决包依赖，安装包，删除包，更新
+    帮助
+        $yum --help
+    安装包
+        $yum install git
+    删除包
+        $yum remove git
+        $yum remove（知道remove是别名）
+    升级
+        检查可以升级的包
+        yum update和yum upgrade都是升级，唯一不同，yum upgrade会删除旧版本的package，而yum update则会保留
+    yum源
+        配置源  /etc/yum.repos.d/xxx.repo，配置后最好执行生成缓存的命令
+        有的源会根据你的系统架构过滤，比如你的系统是x86_64，但yum源是arm，你看到的源会少一些
+    yum默认从源来安装包，也可以指定根据本地包来安装
+
+rpm
+    概要：功能与yum类似
+    安装
+        $rpm -ivh xxx.rpm #安装包，并显示详细进度
+    移除
+        $rpm -e xxx.rpm
+    列出所有已安装的包
+        $rpm -qa
+    查找某个文件属于哪个rpm包
+============以下需要修改========
+
+
 su 切换用户root
 sudo 用户名 切换一次
 kill 进程号 例如杀死java进程
@@ -35,6 +64,30 @@ scp
   xrandr --addmode DP-2 "1920x1080_60.00"
 
   xrandr --output DP-2 --mode 1920x1080_60.00
+
+ps -ef |grep java
+kill xxx
+penggaoxian 推荐公众号 码农笔记
+
+uniagent's name:/etc/systemd/system/multi-user.target.wants
+
+/etc/uniagent/config
+
+reboot 重启
+
+free -h 查看存储
+
+yum 直接修改里面的baseurl即可
+
+彭高贤 鸟哥私房菜 https://blog.csdn.net/carver_x/article/details/53492994
+
+从当前服务器拷贝local_file到远程指定目录中
+
+scp local_file remote_username@remote_ip:remote_folder 
+
+scp icons.png root@192.168.1.1:/root/下载
+
+安装字体 sudo rpm -ivh adobe-source-han-sans-cn-fonts-1.000-2.ky3.noarch.rpm
 </p>
 </body>
 </html>
