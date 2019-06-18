@@ -301,8 +301,7 @@
     <li>设置背景图片大小；两个值，第一个是宽度，第二个是高度。<code>auto 100px</code> 以高度为比例缩放</li>
     <li><code>100% 50%</code> 是容器的100%，高度是容器的50%</li>
     <li>只设置一个值，高度隐式为auto。<code>200px</code> 等同于 <code>200px auto</code></li>
-    <li>关键字 cover，把图片扩展到足够到，完全覆盖背景区，可能部分无法在背景区显示，某些情况等于<code>100% auto</code>，某些情况等于<code>auto 100%</code></li>
-    <li>关键字 contain，把图扩大至最大尺寸，宽高比例不变，且图片不会超出边界。等同于<code>100% auto</code>或<code>auto 100%</code></li>
+    <li>cover和contain都是等比缩放，前者会完全覆盖容器，但有可能会截掉部分，后者只是填充到容器，可能有留白；refer：mdn cover；注意：考虑的仅仅no-repeat；</li>
   </ul>
   <h3>background-position</h3>
   <div class='f-pre'>
