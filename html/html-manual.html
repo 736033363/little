@@ -9,10 +9,10 @@
 <link rel='shortcut icon' href='../img/sun_48.ico'>
 </head>
 <body>
+<h1>html手册<sup><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element" target='_blank'>MDN api</a></sup></h1>
 <article>
   <header>
-    <h2>html手册</h2>
-    <p>可参考：<a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element" target='_blank'>MDN api</a></p>
+    <h2>html元素</h2>
   </header>
   <h3>header & footer</h3>
   <ul>
@@ -156,6 +156,7 @@
   </ul>
   <h3>form</h3>
   <ul>
+    <li>input回车表单提交<sup>经典问题</sup>。只有一个input（都是指type='text'）时，回车提交；多个时，type='submit'提交，type='button'不提交；没有按钮，只有一个input时，回车提交；radio，checkbox，textare，type='file'都不算。解决方法: form.on('submit', ()=>false)</li>
     <li>所有属性都是可选，建议添加action和method属性</li>
     <li>严禁表单嵌套，浏览器行为不可预知</li>
     <li>缺省action则提交到当前网址</li>
@@ -286,6 +287,14 @@
     <li>acronym 取首字母缩写词 ；big 变大 ；center 居中 ；font 字体</li>
   </ul>
 </article>
+<section>
+  <h2>html属性</h2>
+  <h3>autocomplete</h3>
+  <ul>
+    <li>用于预测，与name有关；firefox 67+中，off对type='password'生效；jquery的插件也是一个办法来禁止自动填充；</li>
+    <li>ck：mdn form，mdn autocomplete</li>
+  </ul>
+</section>
 </body>
 </html>
 <!--
