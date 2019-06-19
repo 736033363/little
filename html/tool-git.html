@@ -1,33 +1,125 @@
 <!DOCTYPE html>
-<html lang="en">
+<html>
 <head>
-  <meta charset="UTF-8">
-  <title>tool-git</title>
+<meta charset='utf-8'>
+<title>too-git</title>
+<meta name='keywords' content=''>
+<meta name='description' content=''>
+<meta name='viewport' content='width=device-width,initial-scale=1.0'>
+<link rel="stylesheet" href="../css/css-library.css">
+<link rel='shortcut icon' href='../img/sun_48.ico'>
+<style>
+h2,h3,.m-list1,hr{margin-bottom:10px;}
+</style>
 </head>
-<body style="white-space:pre-wrap;">
-<a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank">廖雪峰 git 教程</a>
+<body class='f-p30'>
+<h2><a href="https://www.liaoxuefeng.com/wiki/0013739516305929606dd18361248578c67b8067c8c017b000" target="_blank">廖雪峰git教程</a>摘要目录</h2>
+<div class="f-pre f-mb10">Git教程
+  安装git
+  创建版本库
+  时光穿梭机
+    <a href="#版本回退">版本回退</a>
+    工作区和暂存区
+    <a href="#撤销修改">撤销修改</a>
+  <a href="#远程仓库">远程仓库</a>
+  分支管理
+    <a href="#创建与合并分支">创建与合并分支</a>
+    <a href="#分支管理策略">分支管理策略</a>
+    <a href="#Bug分支">Bug分支</a>
+    <a href="#Feature分支">Feature分支</a>
+    <a href="#多人协作">多人协作</a>
+    rebase
+  <a href="#标签管理">标签管理</a>
+    创建标签
+    操作标签
+  使用github
+  使用码云
+  <a href="#自定义Git">自定义Git</a>
+    <a href="#忽略特殊文件">忽略特殊文件</a>
+    <a href="#配置别名">配置别名</a>
+    服务器搭建
 
+</div>
+<h3 id='版本回退'>版本回退</h3>
+<div class="f-pre f-mb10">  git reset --hard commit_id
+  git relog
+  git log --pretty=oneline --after="2019-05-13 00:00:00" | grep aaron
+  git log --pretty=oneline --since="21 days ago" | grep aaron
+  <a href="https://blog.csdn.net/cankingapp/article/details/53080223" target='_blank'>git log命令展示过滤技巧</a>
+</div>
+
+<h3 id='撤销修改'>撤销修改</h3>
+<div class="f-pre f-mb10">  场景1 直接丢弃工作区 git checkout --file
+  丢弃暂存区 git reset HEAD file 接着 场景1
+</div>
+
+<h3 id='远程仓库'>远程仓库</h3>
+<div class="f-pre f-mb10">  本地和远程传输通过SSH加密，所以需要创建SSH Key
+  判断是否已创建，$cd ~/.ssh/ -> $ls -> 是否存在 id_rsa id_rsa.pub
+  公钥可以放心的告诉别人
+</div>
+
+
+<h3 id='创建与合并分支'>创建与合并分支</h3>
+<div class="f-pre f-mb10">  git 鼓励你创建分支，完成任务后在删除分支
+  本章有创建、合并、删除分支的命令
+</div>
+
+<h3 id='分支管理策略'>分支管理策略</h3>
+<div class="f-pre f-mb10">  $ git merge --no-ff -m "禁止快速合并" dev
+</div>
+
+<h3 id='Bug分支'>Bug分支</h3>
+<div class="f-pre f-mb10">  $ git stash
+  $ git stash pop
+</div>
+
+<h3 id='Feature分支'>Feature分支</h3>
+<div class="f-pre f-mb10">  $ git branch -D 分支名
+</div>
+
+<h3 id='多人协作'>多人协作</h3>
+<div class="f-pre f-mb10">  查看远程库更详细信息 $ git remote -v
+  创建远程仓库origin的dev分支到本地 $ git checkout -b dev origin/dev
+  ps:本章内容多且杂
+</div>
+
+<h3 id='标签管理'>标签管理</h3>
+<div class="f-pre f-mb10">  标签与分支很像，但不能移动
+</div>
+
+<h3 id='自定义Git'>自定义Git</h3>
+<div class="f-pre f-mb10">  让Git显示颜色，会让命令输出看起来更醒目 $ git config --global color.ui true
+</div>
+
+<h3 id='忽略特殊文件'>忽略特殊文件</h3>
+<div class="f-pre f-mb10">  现存项目忽略web.xml文件提交</i> <a href="https://stackoverflow.com/questions/3833561/why-doesnt-git-ignore-my-specified-file" target="_blank">87楼</a> $ git update-index --assume-unchanged web.xml
+</div>
+
+<h3 id='配置别名'>配置别名</h3>
+<div class="f-pre f-mb10">  $ git config --global alias.st status
+  $ git config --global alias.ci 'commit'
+  $ cat ~/.gitconfig git用户配置文件
+  $ cat .git/config git仓库配置文件
+</div>
+<hr>
+<h2>其他</h2>
+<ul class="m-list1 f-mb10">
+  <li>
+    <a href="https://www.jianshu.com/p/098d85a58bf1" target="_blank">修改最后一次注释</a>
+  </li>
+  <li class="f-pre">
 Git提交记住用户名和密码（需验证）
   执行push前执行 git config --global credential.helper store（省略--global则只在该项目内生效），下次就不会要求输入用户名和密码。可参考：https://blog.csdn.net/youanyyou/article/details/78992990。如果每个项目的用户名密码不同，可能需要多试几次，执行该命令记录即可。
+  </li>
+</ul>
 
-<i>忽略某文件提交</i>
-  <a href="https://stackoverflow.com/questions/3833561/why-doesnt-git-ignore-my-specified-file" target="_blank">87楼</a>  例如：不在跟踪web.xml git update-index --assume-unchanged web.xml
-
+<!--
 <a href="https://www.cnblogs.com/patchouli/p/6511251.html" target="_blank">github 中fork的使用</a>
 
 <a href="https://www.jianshu.com/p/f8a55b972972" target="_blank">git submodule 使用小结</a>
 
-====以下draf====
-修改最后一次注释 https://www.jianshu.com/p/098d85a58bf1
-
-git log --pretty=oneline --after="2019-05-13 00:00:00" |grep aaron
-
-git log  --pretty=oneline --since="21 days ago" |grep aaron
-
-git log命令展示过滤技巧 https://blog.csdn.net/cankingapp/article/details/53080223
-
-廖雪峰git的笔记 https://github.com/yanqiangsjz/git-study/blob/master/git.md
-
-
+<a href="https://github.com/yanqiangsjz/git-study/blob/master/git.md" target="_blank">廖雪峰git笔记（他人）</a>
+ -->
 </body>
 </html>
