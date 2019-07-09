@@ -6,17 +6,19 @@
 <meta name='keywords' content=''>
 <meta name='description' content=''>
 <meta name='viewport' content='width=device-width,initial-scale=1.0'>
-<link rel='stylesheet' href='.css'>
+<link rel="stylesheet" href="../css/css-library.css">
 <link rel='shortcut icon' href='../img/sun_48.ico'>
 <style>
-
+h2,.m-list1,hr{margin-bottom:10px;}
 </style>
 </head>
-<body style="white-space:pre-wrap;">
+<body class='f-p30'>
+
 refer:
   <a href="http://linux.51yip.com/" target="_blank">linux 命令手册</a>
   <a href="https://www.runoob.com/linux/linux-command-manual.html" target='_blank'>Linux 命令大全</a>
 
+<div class="f-pre">
 yum
     概要：解决包依赖，安装包，删除包，更新
     帮助
@@ -55,6 +57,12 @@ df
 mount
   概要：加载指定的文件系统
   疑问：干啥用？
+
+rm
+  rm -rfv ./test     #强制删除当前的test目录，并显示删除的详细过程
+
+rmdir
+  删除空目录？
 ============以下需要修改========
 
 
@@ -69,7 +77,6 @@ scp
   chown -R xxx:xxx xxx/src/xx/ √
   chown -R xxx:xxx xxx/src/xx/*.* ×
 
-<p>
 <a href="https://blog.csdn.net/chuangjinweilai/article/details/52437660">临时修改分辨率</a>
   xrandr
 
@@ -104,6 +111,36 @@ scp local_file remote_username@remote_ip:remote_folder 
 scp icons.png root@192.168.1.1:/root/下载
 
 安装字体 sudo rpm -ivh adobe-source-han-sans-cn-fonts-1.000-2.ky3.noarch.rpm
-</p>
+</div>
+linux系统目录结构
+  /bin 最常用的命令，例如安装了git就有git命令
+  /dev linux的外部设备
+  /etc 系统管理所需的配置文件和子目录，这里找到了yum配置源的文件
+  /home 用户的主目录，每个用户都有一个自己的用户，通常目录名是以用户的账号命名。~指用户目录
+  /lib 几乎所有的应用程序都需要用到这些共享库
+  /media linux会自动识别一些设备，如U盘、光驱，识别后，就会把设备挂在到此目录下
+  /mnt 用用户临时挂在文件系统的，可以将光驱挂在上面，然后进入该目录就可以查看光驱里内容
+  /opt 给主机额外安装软件，比如安装oracal就可以放在这里
+  /proc 虚拟目录，是在内存中，可以访问它获取系统信息
+  /root 超级管理员的用户主目录
+  /sbin 超级管理员使用的系统管理程序
+  /srv 服务启动之后需要提取的数据
+  /tmp 存放临时文件
+  /usr 非常重要的目录，用户很多应用程序和文件都放在这个目录下（？/bin /usr/bin有什么区别）
+  /usr/bin
+  /usr/sbin
+  /usr/src
+  /var 存放不断扩充的东西，习惯将常修改的目录放在此处，例如日志
+  /run 临时文件系统，系统启动以来的信息。系统重启时，应该清除，如果有/var/run目录，应该指向run
+
+  ssh
+  exit
+
+  find 在朱建上找目录uniqb失败
+
+  ls -l
+    - 文件
+    d 目录
+    rwxrwxrwx
 </body>
 </html>

@@ -473,7 +473,7 @@ p{margin-bottom:10px;}
 .m-list1 li:last-child{margin-right:0;}
 .m-list1::after{display:block;height:0;visibility:hidden;content:'.';clear:both;}
 .m-list1 a,.m-list1 a:hover{display:inline-block;/* a和li一样高 */}
-.m-list1-c1 a,.m-list1-c1 a:hover{color:#3891eb;}
+.m-list1-c1 a,.m-list1-c1 a:hover,.m-list2-c1 a,.m-list2-c1 a:hover{color:#3891eb;}
 /* 手机下一行一列 */
 @media screen and (max-width:667px){
   .m-list1-xs li{box-sizing:border-box;width:100%;}
@@ -535,7 +535,6 @@ p{margin-bottom:10px;}
 .s-bgDanger{background-color:#f2dede;}
 
 /* function.css，权重相同，后者生效，所以放最后 */
-
 .f-fs12{font-size:1.2rem;}
 .f-fs14{font-size:1.4rem;}
 .f-fs16{font-size:1.6rem;}
@@ -698,3 +697,20 @@ p{margin-bottom:10px;}
 .f-italic{font-style:italic;}
 /* 修改盒子模型 */
 .f-bsbb{box-sizing:border-box;}
+/* #skin.css */
+/* ##情景文字颜色 */
+/* 颜色参考bootstrapV3 辅助类 */
+.s-textMuted{color:#777;/* 静音 */}
+.s-textSuccess{color:#3c763d;/* 成功 */}
+.s-textPrimary{color:#337ab7;/* 主要的 */}
+.s-textInfo{color:#31708f;/* 信息 */}
+.s-textWarn{color:#8a6d3b;/* 警告 */}
+.s-textDanger{color:#a94442;/* 危险 */}
+/* ##情景背景色 */
+.s-bgSuccess{background-color:#dff0d8;}
+.s-bgPrimary{background-color:#337ab7;color:#fff;}
+.s-bgInfo{background-color:#d9edf7;}
+.s-bgWarn{background-color:#fcf8e3;}
+.s-bgDanger{background-color:#f2dede;}
+
+.s-tip{color:#ff9955;}

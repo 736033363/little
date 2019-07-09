@@ -56,6 +56,7 @@ h2,h3,.m-list1,hr{margin-bottom:10px;}
 <h3 id='远程仓库'>远程仓库</h3>
 <div class="f-pre f-mb10">  本地和远程传输通过SSH加密，所以需要创建SSH Key
   判断是否已创建，$cd ~/.ssh/ -> $ls -> 是否存在 id_rsa id_rsa.pub
+  创建密钥： ssh-keygen -t rsa -C 邮箱地址
   公钥可以放心的告诉别人
 </div>
 
@@ -71,6 +72,7 @@ h2,h3,.m-list1,hr{margin-bottom:10px;}
 
 <h3 id='Bug分支'>Bug分支</h3>
 <div class="f-pre f-mb10">  $ git stash
+  $ git stash save '注释'
   $ git stash pop
 </div>
 
@@ -113,7 +115,39 @@ Git提交记住用户名和密码（需验证）
   执行push前执行 git config --global credential.helper store（省略--global则只在该项目内生效），下次就不会要求输入用户名和密码。可参考：https://blog.csdn.net/youanyyou/article/details/78992990。如果每个项目的用户名密码不同，可能需要多试几次，执行该命令记录即可。
   </li>
 </ul>
+<hr>
+<h2>使用感受</h2>
+<ul class=" f-mb10">
+  <li class='f-pre'>
+场景：开始某项任务XXXX，具体点就是对10个弹框进行逐个优化，我希望每完成一个弹框优化就提交一次，下一个弹框若改的不对，又可以回滚，可以重头再来，还不会影响到之前完成了的弹框，哪怕这次要回退的弹框与已完成的弹框有相同的文件；另外，不希望commit 10次，否则通过git log查看我本年度的任务太多了
 
+  解决办法：
+    git add . （完成一个功能则执行一次）
+    git checkout -- . （例如第二个弹框做了一半，希望重头再来，又不影响已完成的功能）
+    git diff （第二个弹框准备提交，想看看第二个弹框修改了哪些内容）
+  </li>
+  <li class="f-pre">
+场景：查看某次提交commit_id具体改了什么内容
+
+  解决办法：
+    git show commit_id
+    git show commit_id file_name
+  </li>
+  <li class='f-pre'>
+场景：重装系统，xx项目有些修改，需要提交到github
+  
+  解决办法：
+    生成密钥，将公钥放到github中，推送成功
+
+  ？自报家门随便设置了用户名和密码，但推送的Author却是生成密钥的邮箱前缀，也不知自报家门有用没
+  </li>
+  <li class="f-pre">
+场景：本地有项目xx，需要同步到github
+
+  解决办法：在github新建一个仓库，新建完会告诉你怎么连接本地仓库到远程仓库，代码附上：
+  git remote add origin git@github.com:githubName/projectName.git    
+  </li>
+</ul>
 <!--
 <a href="https://www.cnblogs.com/patchouli/p/6511251.html" target="_blank">github 中fork的使用</a>
 
