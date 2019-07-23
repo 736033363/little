@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset='utf-8'>
+<title>前端框架 - ace admin - jquery validate</title>
+<meta name='keywords' content=''>
+<meta name='description' content=''>
+<meta name='viewport' content='width=device-width,initial-scale=1.0'>
+<link rel="stylesheet" href="../css/css-library.css">
+<link rel='shortcut icon' href='../img/sun_48.ico'>
+<style>
+h2,.m-list1,hr{margin-bottom:10px;}
+</style>
+</head>
+<body class='f-p30'>
+<h2>h5自带验证方式可否用在我们项目</h2>
+<div class="f-pre">
+    不可以。h5验证看了几本书，感觉这部分东西很简单，估计不能应付灵活多变的验证场景；触发方式是表单提交，但我们常用ajax提交，这个也可以绕过去；样式好像同浏览器有关，没有找到灵活更改样式的方法；表单验证不是那么精准；总之没有找到一个非常成熟的引入方案。
+
+    // $.get('demo-form.php',{name:'aaron'}); // 失败
+    
+    /* if ($('form')[0].checkValidity()){ // 失效
+        console.log('yes');
+    } else {
+        console.log('no');
+    }*/
+
+    // $('form').submit(); // 失败
+    
+    // $('form').on('submit', function  (e) {
+    //     console.log('yes2')
+    //     e.preventDefault();
+    // }) 
+</div>
+<p><a href="https://www.w3cschool.cn/regexp/m2ez1pqk.html" target="_blank"常用正则表达式大全——w3cschool></a></p>
+</body>
+</html>

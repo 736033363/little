@@ -203,8 +203,9 @@
   <section>
     <h2 id='reg'>正则</h2>
 <div class="f-pre">
-  <i>构造函数</i>都是字符串，例如new RegExp('a', 'g')
+  <a href="https://www.cnblogs.com/rubylouvre/archive/2009/11/02/1594731.html" target="_blank">司徒_正则学习笔记1~6</a>
 
+  <a href="https://www.w3cschool.cn/regexp/m2ez1pqk.html" target="_blank">常用正则表达式大全</a>
   字面量中<i>m需要配合g</i>
     ("<\n>\n<\n>").match(/^<|^>/m) => ["<"]
     ("<\n>\n<\n>").match(/^<|^>/mg) => ["<", ">", "<", ">"]
@@ -212,8 +213,6 @@
   元字符有<code>( [ { \ ^ $ | ) ? * + . ] }</code>，这些都是正则语法的一部分，如果需要匹配这些元字符，就得用反斜杠去除特殊性；如果是构造函数，<i>一个反斜杠就得改为两个反斜杠</i>
     (/\[bc\]at/).test('[bc]at') => true
     (new RegExp("\\[bc\\]at")).test('[bc]at') => true
-
-  [\u4e00-\u9fa5] 单个汉字
 
   反向引用
     ("apple, orange, cherry, peach").match(/apple(,)\sorange\1/g) => ["apple, orange,"]
@@ -224,20 +223,7 @@
     /[^12]/ 不是1或2的一个字符
     /[a-c1-3]/ 匹配一个字符（a或b或c或1或2或3）
 
-  快捷键
-    \r 回车
-    \n 换行
-    . 匹配任何字符除了换行和回车（等于 [^\r\n]）
-    \d 数字（等于[0-9]）；\D 非数字
-    \w 单词（等于[A-z0-9_]）；\W 非单词
-    \s 空白（[ \r\n\x0B\f\t]）；\S 非空白
-
   量词
-    ? 匹配0或1次
-    * 匹配0或多次
-    + 匹配1或多次
-    {n} 匹配n次
-    {n, m} [n, m]
     {n,}  >=n
 
   贪婪量词就是全部吃进去，匹配失败再吐出，例如"baddad".match(/([bd]ad?)*/) => ["baddad", "dad"]。还有对应的惰性量词（一口一口的吃）

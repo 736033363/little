@@ -147,6 +147,16 @@ Git提交记住用户名和密码（需验证）
   解决办法：在github新建一个仓库，新建完会告诉你怎么连接本地仓库到远程仓库，代码附上：
   git remote add origin git@github.com:githubName/projectName.git    
   </li>
+
+  <li class="f-pre">
+场景：使用gitlab时，git pull git@xx.xx.xx.xx:username/projectName.git version 与平时用的 git pull 为什么不一样？
+  解决办法：
+    git pull origin remote_branch：local_branch
+    git pull origin remote_branch
+    git pull 最简单，最常用
+
+    查看关联分支 git branch -vv
+  </li>
 </ul>
 <!--
 <a href="https://www.cnblogs.com/patchouli/p/6511251.html" target="_blank">github 中fork的使用</a>
