@@ -5,19 +5,112 @@
   <title>require && sea</title>
 </head>
 <body>
+<h2>使用记录</h2>
+
 <pre>
-下一个版本，是否继续用require？
+背景 - 一个用ace-admin框架的后端系统，使用的是类似jsp开发方式，css,js重复引用，后端也会负责他们的前端，于是决定引入模块化开发提高我的开发速度
 
-require是一个模块化开发的工具，真阿当说require是jQuery之后前端发生的最好的一个东西，js通过它能很好地进行模块化开发
+最初使用require，几天后发现某页面的一个控件报错，以为是requirejs不兼容（其实是该页面没有引入该控件），于是改为seajs（很好改），于是系统就有两套了
 
-就是一个工具，es6也有模块化的新语法，但目前还需要通过webpack这类工具来配合。
+ace-admin有requirejs的例子，而若用seajs就需要更改库，例如jQuery不支持seajs的cmd规范
 
-如何正确使用require？
+系统代码不可能重新写，所以用起来不纯粹，通常是没问题的
 
+尝试过修改某功能，希望改动量少些，然后写成“一个页面有2个require的入口文件”，”一个页面使用了seajs和requirejs“，都报错了
 
-现在是2019年，
-<i>经典问题</i> -- TypeError: option minDateTime is not recognized!
-  在ace中引入require，发现时间控件报错，后改为seajs解决（用的是zhangxinxu博客的那个seajs），在过了一段时间，做某功能时又遇到时间控件问题：先打开有时间控件的页面，在打开我的就没问题，否则报传参错误。原来是没有引入对应的js，解决办法：引入相应的js
+require给我感觉，像一个房子，不会影响外边，外边也影响不到里边；用的不好就发脾气，也不知道什么原因；
+
+seajs使用的是zhangxinxu博客中的seajs，比较低，而非使用seajs官网最新版本（当时好像最新版本搞过来有问题）
 </pre>
+
+<h2>sea用法</h2>
+<pre>
+{script src="../project/lib/sea.js" async data-main="/project/xx/client/entry"}{/script}
+
+seajs.config({ // 禁用缓存
+    map:[
+        [".js",".js?v=" + (new Date())]//映射规则
+    ]
+});
+
+define(function(require,exports,module) {
+    var CList = require('./client-list/entry');
+    CList.init();
+})
+
+
+define(function(require,exports,module) {
+    var CGroup = require('./change-group');
+  
+    function init(){
+        CGroup.init();
+          ...
+    }
+    module.exports = {init: init};
+})
+</pre>
+
+<h2>require用法</h2>
+
+<pre>
+
+{script async data-main="/project/xx/xx/entry-require" src="/xx/xx/lib/require.js"}{/script}
+
+window.FE.requireConfig(); // require 配置
+require(['mc/system-manager/client-manager-set/entry-require'], function(CManagerSetRequire, hRequire) {
+    CManagerSetRequire.init();
+});
+
+var requireConfig = function () {
+        // 参考ace-require.js
+        require.config({
+            //加上时间戳
+            urlArgs: "r=" + (new Date()).getTime(),
+            baseUrl: '/mc/',
+            paths: {
+                jquery: 'js/ace/jquery-2.1.4.min', // baseUrl + path
+                bootstrap: 'js/ace/bootstrap.min',
+                ace: 'js/ace/ace.min',
+                aceElements: 'js/ace/ace-elements.min',
+                bootbox: 'js/ace/bootbox',gsp中 required=required √，required X
+                jqGrid: 'js/ace/jquery.jqGrid.min',
+                jqGridCn: 'js/ace/grid.locale-cn',
+                jqGridEn: 'js/ace/grid.locale-en',
+            },
+            shim: {
+                'bootstrap':{
+                    deps: ['jquery']
+                },
+                'ace': {
+                    deps: ['jquery']
+                },
+                'aceElements': {
+                    deps: ['jquery']
+                },
+                'jqGrid': {
+                    deps: FE.translate.language === 'chinese' ? ['jquery', 'jqGridCn'] : ['jquery', 'jqGridEn']
+                },
+                'bootbox': { // ? bootbox命名有define，但神奇的起作用了
+                    deps: ['bootstrap']
+                },
+            }
+        });
+    };
+
+使用的路径都是相对路径，项目目录有web-app/mc/common/util-require
+define(['jquery', 'mc/common/util-require', 'mc/common/jqgridv1-require'], function ($, utils, jqgrid) {
+
+});
+
+define(['jquery', 'bootbox', 'mc/common/template-require'], function($, bootbox, tpl) {
+
+});
+
+</pre>
+
 </body>
 </html>
+
+
+
+
