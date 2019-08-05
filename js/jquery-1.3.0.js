@@ -842,6 +842,7 @@ jQuery.extend({
                 ret = "1";
 
         } else if ( elem.currentStyle ) {
+            // 把连字符转为驼峰
             var camelCase = name.replace(/\-(\w)/g, function(all, letter){
                 return letter.toUpperCase();
             });
@@ -853,6 +854,7 @@ jQuery.extend({
 
             // If we're not dealing with a regular pixel number
             // but a number that has a weird ending, we need to convert it to pixels
+            //  将不是以px为单位的计算值全转为px，
             if ( !/^\d+(px)?$/i.test( ret ) && /^\d/.test( ret ) ) {
                 // Remember the original values
                 var left = style.left, rsLeft = elem.runtimeStyle.left;
@@ -898,6 +900,7 @@ jQuery.extend({
             // Convert html string into DOM nodes
             if ( typeof elem === "string" ) {
                 // Fix "XHTML"-style tags in all browsers
+                // <tag /> 转为 <tag></tag>
                 elem = elem.replace(/(<(\w+)[^>]*?)\/>/g, function(all, front, tag){
                     return tag.match(/^(abbr|br|col|img|input|link|meta|param|hr|area|embed)$/i) ?
                         all :
@@ -905,6 +908,7 @@ jQuery.extend({
                 });
 
                 // Trim whitespace, otherwise indexOf won't work as expected
+                // 去掉两头空白
                 var tags = jQuery.trim( elem ).toLowerCase();
 
                 var wrap =
@@ -993,14 +997,29 @@ jQuery.extend({
 
     attr: function( elem, name, value ) {
         // don't set attributes on text and comment nodes
+        // 文本节点，注释节点不处理
         if (!elem || elem.nodeType == 3 || elem.nodeType == 8)
             return undefined;
 
         var notxml = !jQuery.isXMLDoc( elem ),
             // Whether we are setting (or getting)
+            //  读还是写
             set = value !== undefined;
 
         // Try to normalize/fix the name
+        // 兼容处理
+        // jQuery.props = {
+        //     "for": "htmlFor",
+        //     "class": "className",
+        //     "float": styleFloat,
+        //     cssFloat: styleFloat,
+        //     styleFloat: styleFloat,
+        //     readonly: "readOnly",
+        //     maxlength: "maxLength",
+        //     cellspacing: "cellSpacing",
+        //     rowspan: "rowSpan",
+        //     tabindex: "tabIndex"
+        // };
         name = notxml && jQuery.props[ name ] || name;
 
         // Only do all the following if this is a node (faster for style)
@@ -1012,6 +1031,7 @@ jQuery.extend({
 
             // Safari mis-reports the default selected property of a hidden option
             // Accessing the parent's selectedIndex property fixes it
+            // 修正无法取得selected正确值的bug
             if ( name == "selected" && elem.parentNode )
                 elem.parentNode.selectedIndex;
 
@@ -1019,6 +1039,7 @@ jQuery.extend({
             if ( name in elem && notxml && !special ) {
                 if ( set ){
                     // We can't allow the type property to be changed (since it causes problems in IE)
+                    //  不允许改变type的值（会导致在ie中出现问题）
                     if ( name == "type" && jQuery.nodeName( elem, "input" ) && elem.parentNode )
                         throw "type property can't be changed";
 
@@ -1026,10 +1047,13 @@ jQuery.extend({
                 }
 
                 // browsers index elements by id/name on forms, give priority to attributes.
+                // jquery bug提到 https://bugs.jquery.com/ticket/8628
+                // getAttribute 通常用于替换getAttributeNode方法，来获得元素的属性值。性能也更快.  性能对比是 element.id 大于 element.getAttribute('id') 大于 element.getAttributeNode('id').nodeValue.
                 if( jQuery.nodeName( elem, "form" ) && elem.getAttributeNode(name) )
                     return elem.getAttributeNode( name ).nodeValue;
 
                 // elem.tabIndex doesn't always return the correct value when it hasn't been explicitly set
+                // 没有显示设置时，不总是返回正确的值
                 // http://fluidproject.org/blog/2008/01/09/getting-setting-and-removing-tabindex-values-with-javascript/
                 if ( name == "tabIndex" ) {
                     var attributeNode = elem.getAttributeNode( "tabIndex" );
@@ -1042,12 +1066,13 @@ jQuery.extend({
 
                 return elem[ name ];
             }
-
+            // ie下sytle用cssText替代
             if ( !jQuery.support.style && notxml &&  name == "style" )
                 return jQuery.attr( elem.style, "cssText", value );
 
             if ( set )
                 // convert the value to a string (all browsers do this but IE) see #1070
+                // 
                 elem.setAttribute( name, "" + value );
 
             var attr = !jQuery.support.hrefNormalized && notxml && special
