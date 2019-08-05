@@ -882,6 +882,9 @@ jQuery.extend({
 
         // If a single string is passed in and it's a single tag
         // just do a createElement and skip the rest
+        // 如果传入的是单个字符串，并且是单个标记
+        // 只需执行createElement并跳过其余部分
+        // 如<tagName />或<tagName>，直接使用createElement(tagName)
         if ( !fragment && elems.length === 1 && typeof elems[0] === "string" ) {
             var match = /^<(\w+)\s*\/?>$/.exec(elems[0]);
             if ( match )
@@ -913,22 +916,24 @@ jQuery.extend({
 
                 var wrap =
                     // option or optgroup
+                    // option和optgroup的直接父元素一定是select
                     !tags.indexOf("<opt") &&
                     [ 1, "<select multiple='multiple'>", "</select>" ] ||
-
+                    // <legend>的父元素一定是<fieldset>
                     !tags.indexOf("<leg") &&
                     [ 1, "<fieldset>", "</fieldset>" ] ||
-
+                    // thead,tbody,tfoot,colgroup,caption父元素一定是table
                     tags.match(/^<(thead|tbody|tfoot|colg|cap)/) &&
                     [ 1, "<table>", "</table>" ] ||
-
+                    // tr的父元素一定是tbody
                     !tags.indexOf("<tr") &&
                     [ 2, "<table><tbody>", "</tbody></table>" ] ||
 
                     // <thead> matched above
+                    // td与th的父元素一定是tr
                     (!tags.indexOf("<td") || !tags.indexOf("<th")) &&
                     [ 3, "<table><tbody><tr>", "</tr></tbody></table>" ] ||
-
+                    // col的父元素一定是colgroup
                     !tags.indexOf("<col") &&
                     [ 2, "<table><tbody></tbody><colgroup>", "</colgroup></table>" ] ||
 
@@ -943,10 +948,12 @@ jQuery.extend({
                 div.innerHTML = wrap[1] + elem + wrap[2];
 
                 // Move to the right depth
+                // 移动到正确的深度
                 while ( wrap[0]-- )
                     div = div.lastChild;
 
                 // Remove IE's autoinserted <tbody> from table fragments
+                // ie会自动插入tbody，要特殊处理
                 if ( !jQuery.support.tbody ) {
 
                     // String was a <table>, *may* have spurious <tbody>
@@ -965,6 +972,7 @@ jQuery.extend({
                     }
 
                 // IE completely kills leading whitespace when innerHTML is used
+                // ie在使用innerhtml时完全消除前导空格
                 if ( !jQuery.support.leadingWhitespace && /^\s/.test( elem ) )
                     div.insertBefore( context.createTextNode( elem.match(/^\s*/)[0] ), div.firstChild );
                 
@@ -3066,11 +3074,12 @@ jQuery( window ).bind( 'unload', function(){
 
     jQuery.support = {
         // IE strips leading whitespace when .innerHTML is used
+        // 当使用.innerhtml时，IE会去掉前导空格
         leadingWhitespace: div.firstChild.nodeType == 3,
         
         // Make sure that tbody elements aren't automatically inserted
         // IE will insert them into empty tables
-        tbody: !div.getElementsByTagName("tbody").length,
+        tbody: !div.getElementsByTagName("tbody").length, // chrome 没有插入
         
         // Make sure that you can get all elements in an <object> element
         // IE 7 always returns no results
