@@ -11,9 +11,12 @@
   </style>
 
 </head>
-<body class='aa bb cc'>
-<div style="display:none;width:101px;"></div>
-<table></table>
+<body>
+<label for="label-for">
+  <input type="text" />
+</label>
+<div style="height:70px;background:blue;"></div>
+<div style='position:absolute;top:70px;bottom:0;left:0;right:0;background:pink;'></div>
 <script>
 // var $ = 'hello'
 
@@ -21,10 +24,10 @@
   <script src='../js/jquery-1.3.0.js'></script>
   <!-- <script src='../js/jqueryv172.js'></script> -->
   <script>
-  debugger
-var el = $('<tr><td>td</td></tr>')
+var el = $('body')
 
-
+debugger
+el.find('div')
   </script>
 </body>
 </html>

@@ -694,6 +694,7 @@ jQuery.extend({
     },
 
     // args is for internal usage only
+    // 遍历对象或数组
     each: function( object, callback, args ) {
         var name, i = 0, length = object.length;
         // 内部使用
@@ -1120,12 +1121,12 @@ jQuery.extend({
 
         return elem[ name ];
     },
-
+    // 去除两头的空格
     trim: function( text ) {
         return (text || "").replace( /^\s+|\s+$/g, "" );
     },
 
-    // 返回一个数组
+    // 转化成数组，很大众的方法
     makeArray: function( array ) {
         var ret = [];
 
@@ -1141,7 +1142,7 @@ jQuery.extend({
 
         return ret;
     },
-
+    // 判断是否在数组中，类似indexOf
     inArray: function( elem, array ) {
         for ( var i = 0, length = array.length; i < length; i++ )
         // Use === because on IE, window == document
@@ -1150,7 +1151,8 @@ jQuery.extend({
 
         return -1;
     },
-
+    // 把第二个数组加入到第一个数组中
+    // 类似concat
     merge: function( first, second ) {
         // We have to loop this way because IE & Opera overwrite the length
         // expando of getElementsByTagName
@@ -1168,13 +1170,14 @@ jQuery.extend({
 
         return first;
     },
-
+    // 过滤重复元素
     unique: function( array ) {
         var ret = [], done = {};
 
         try {
 
             for ( var i = 0, length = array.length; i < length; i++ ) {
+                // 取得ID，一个内部的唯一标记
                 var id = jQuery.data( array[ i ] );
 
                 if ( !done[ id ] ) {
@@ -1182,14 +1185,16 @@ jQuery.extend({
                     ret.push( array[ i ] );
                 }
             }
-
+                                           
         } catch( e ) {
             ret = array;
         }
 
         return ret;
     },
-
+    // 类似filter的方法，这个方法起得真不好，通常与正则相关
+    // callback前的!是防止函数没有返回值
+    // !inv也是因为可能没传
     grep: function( elems, callback, inv ) {
         var ret = [];
 
@@ -1201,7 +1206,7 @@ jQuery.extend({
 
         return ret;
     },
-
+    // 类似数组的map，但有点点不同
     map: function( elems, callback ) {
         var ret = [];
 
@@ -1213,7 +1218,7 @@ jQuery.extend({
             if ( value != null )
                 ret[ ret.length ] = value;
         }
-
+        // 更扁平 $.map([1,2,[3,4]], (v)=>v)
         return ret.concat.apply( [], ret );
     }
 });
@@ -1221,7 +1226,7 @@ jQuery.extend({
 // Use of jQuery.browser is deprecated.
 // It's included for backwards compatibility and plugins,
 // although they should work to migrate away.
-
+// jQuery.browser废弃了，为了兼容以前版本和插件
 var userAgent = navigator.userAgent.toLowerCase();
 
 // Figure out what browser is being used
@@ -1233,6 +1238,7 @@ jQuery.browser = {
     mozilla: /mozilla/.test( userAgent ) && !/(compatible|webkit)/.test( userAgent )
 };
 
+// 将parent,parents...等方法加入到原型对象上，都是一些查找方法
 jQuery.each({
     parent: function(elem){return elem.parentNode;},
     parents: function(elem){return jQuery.dir(elem,"parentNode");},
@@ -1254,6 +1260,8 @@ jQuery.each({
     };
 });
 
+// 把appendTo,prependTo等方法加入到原型对象上
+// 利用现存的方法append,prepend
 jQuery.each({
     appendTo: "append",
     prependTo: "prepend",
@@ -1271,6 +1279,7 @@ jQuery.each({
     };
 });
 
+// 一些常用的静态方法
 jQuery.each({
     removeAttr: function( name ) {
         jQuery.attr( this, name, "" );
@@ -1322,12 +1331,15 @@ jQuery.each({
 function num(elem, prop) {
     return elem[0] && parseInt( jQuery.curCSS(elem[0], prop, true), 10 ) || 0;
 }
+
+// jQuery的缓存机制，听说jQuery的性能很大部分依赖它
 var expando = "jQuery" + now(), uuid = 0, windowData = {};
 
 jQuery.extend({
     cache: {},
 
     data: function( elem, name, data ) {
+        // 坚决不指染window
         elem = elem == window ?
             windowData :
             elem;
@@ -1336,18 +1348,22 @@ jQuery.extend({
 
         // Compute a unique ID for the element
         if ( !id )
+            // 同为id、elem[expando]赋值，值为数字
             id = elem[ expando ] = ++uuid;
 
         // Only generate the data cache if we're
         // trying to access or manipulate it
         if ( name && !jQuery.cache[ id ] )
+            // 在jQuery.cache上开辟存储空间，存放与特定元素的信息
             jQuery.cache[ id ] = {};
 
         // Prevent overriding the named cache with undefined values
         if ( data !== undefined )
+            // data必须有值
             jQuery.cache[ id ][ name ] = data;
 
         // Return the named cache data, or the ID for the element
+        // 根据第二个参数返回缓存还是特定id
         return name ?
             jQuery.cache[ id ][ name ] :
             id;
@@ -1367,6 +1383,7 @@ jQuery.extend({
                 delete jQuery.cache[ id ][ name ];
 
                 // If we've removed all the data, remove the element's cache
+                // 元素相关的缓存没有属性，则全部删除
                 name = "";
 
                 for ( name in jQuery.cache[ id ] )
@@ -1380,6 +1397,7 @@ jQuery.extend({
         } else {
             // Clean up the element expando
             try {
+                // ie不能用delete删除，得用removeAttribute
                 delete elem[ expando ];
             } catch(e){
                 // IE has trouble directly removing the expando
@@ -1389,9 +1407,13 @@ jQuery.extend({
             }
 
             // Completely remove the data cache
+            // 缓存体把索引也删除
             delete jQuery.cache[ id ];
         }
     },
+    // 缓存元素的类数组属性
+    // 可读可写
+    // jQuery.data若给同名属性设置，后者会覆盖前者
     queue: function( elem, type, data ) {
         if ( elem ){
     
@@ -1400,14 +1422,16 @@ jQuery.extend({
             var q = jQuery.data( elem, type );
     
             if ( !q || jQuery.isArray(data) )
+                // q是数组
                 q = jQuery.data( elem, type, jQuery.makeArray(data) );
             else if( data )
                 q.push( data );
-    
+
         }
         return q;
     },
 
+    // 对元素的类数组缓存进行dequeue，也就是shift()
     dequeue: function( elem, type ){
         var queue = jQuery.queue( elem, type ),
             fn = queue.shift();
@@ -1420,6 +1444,8 @@ jQuery.extend({
     }
 });
 
+// 让jQuery对象也具有缓存的能力
+// 都是调用上面的静态方法，最终的缓存体还是jQuery.cache
 jQuery.fn.extend({
     data: function( key, value ){
         var parts = key.split(".");
@@ -1466,11 +1492,13 @@ jQuery.fn.extend({
             jQuery.dequeue( this, type );
         });
     }
-});/*!
+});
+/*!
  * Sizzle CSS Selector Engine - v0.9.1
  *  Copyright 2009, The Dojo Foundation
  *  Released under the MIT, BSD, and GPL Licenses.
  *  More information: http://sizzlejs.com/
+ *  也就1k行
  */
 (function(){
 
@@ -1733,7 +1761,7 @@ var Expr = Sizzle.selectors = {
         POS: /:(nth|eq|gt|lt|first|last|even|odd)(?:\((\d*)\))?(?=[^-]|$)/,
         PSEUDO: /:((?:[\w\u00c0-\uFFFF_-]|\\.)+)(?:\((['"]*)((?:\([^\)]+\)|[^\2\(\)]*)+)\2\))?/
     },
-    attrMap: {
+    attrMap: { // 一些属性不能直接取html的名字，需要用其在js中的属性
         "class": "className",
         "for": "htmlFor"
     },
@@ -1743,6 +1771,7 @@ var Expr = Sizzle.selectors = {
         }
     },
     relative: {
+        // 相邻选择器
         "+": function(checkSet, part){
             for ( var i = 0, l = checkSet.length; i < l; i++ ) {
                 var elem = checkSet[i];
@@ -1761,6 +1790,7 @@ var Expr = Sizzle.selectors = {
                 Sizzle.filter( part, checkSet, true );
             }
         },
+        // 亲自选择器
         ">": function(checkSet, part, isXML){
             if ( typeof part === "string" && !/\W/.test(part) ) {
                 part = isXML ? part : part.toUpperCase();
@@ -1787,6 +1817,7 @@ var Expr = Sizzle.selectors = {
                 }
             }
         },
+        // 后代选择器
         "": function(checkSet, part, isXML){
             var doneName = "done" + (done++), checkFn = dirCheck;
 
@@ -1797,6 +1828,7 @@ var Expr = Sizzle.selectors = {
 
             checkFn("parentNode", part, doneName, checkSet, nodeCheck, isXML);
         },
+        // 兄长选择器
         "~": function(checkSet, part, isXML){
             var doneName = "done" + (done++), checkFn = dirCheck;
 
@@ -1812,7 +1844,7 @@ var Expr = Sizzle.selectors = {
         ID: function(match, context){
             if ( context.getElementById ) {
                 var m = context.getElementById(match[1]);
-                return m ? [m] : [];
+                return m ? [m] : []; // 只有一个也放入数组
             }
         },
         NAME: function(match, context){
@@ -1897,8 +1929,9 @@ var Expr = Sizzle.selectors = {
             return match;
         }
     },
-    filters: {
+    filters: { // 都返回布尔值
         enabled: function(elem){
+            // 不能为隐藏域
             return elem.disabled === false && elem.type !== "hidden";
         },
         disabled: function(elem){
@@ -1922,10 +1955,12 @@ var Expr = Sizzle.selectors = {
         has: function(elem, i, match){
             return !!Sizzle( match[3], elem ).length;
         },
+        // 是否是h1,h2...h6
         header: function(elem){
             return /h\d/i.test( elem.nodeName );
         },
         text: function(elem){
+            // 下面几个类似，归属于属性选择器
             return "text" === elem.type;
         },
         radio: function(elem){
@@ -1956,7 +1991,7 @@ var Expr = Sizzle.selectors = {
             return /input|select|textarea|button/i.test(elem.nodeName);
         }
     },
-    setFilters: {
+    setFilters: { // 子元素过滤器
         first: function(elem, i){
             return i === 0;
         },
