@@ -223,7 +223,19 @@ jQuery.fn = jQuery.prototype = {
             jQuery( this ).wrapAll( html );
         });
     },
-     // 接下来是append，prepend，before
+     // 接下来是append，prepend，before，after
+     // append 向匹配的每个元素内部添加内容
+     // 相当于
+     // insertAdjacentHTML('beforeend', htmlstr)
+     // insertAdjacenElement('beforeend', elem)
+     // 具有处理复数个dom对象的能力，内部用each
+     // 剩余3个都类似
+     // 
+     // prepend 向匹配的每个元素内部前置内容
+     // before 向匹配的每个元素之前添加内容
+     // after 向匹配的每个元素之后添加内容
+     // 
+     // 内部都是调用domManip()，它的价值就是兼容火狐，火狐不兼容ie的insertAdjacentXXX系列
     append: function() {
         return this.domManip(arguments, true, function(elem){
             if (this.nodeType == 1)
@@ -250,6 +262,7 @@ jQuery.fn = jQuery.prototype = {
         });
     },
 
+    // 返回上次的查询的dom
     end: function() {
         return this.prevObject || jQuery( [] );
     },
@@ -258,11 +271,13 @@ jQuery.fn = jQuery.prototype = {
     // Behaves like an Array's .push method, not like a jQuery method.
     push: [].push,
 
+    // jQuery强大的css选择器
+    // 真正起作用是jQuery.find()
     find: function( selector ) {
         if ( this.length === 1 && !/,/.test(selector) ) {
-            // 返回新形成的元素集
             var ret = this.pushStack( [], "find", selector );
             ret.length = 0;
+            // 分别为表达式，上下文，新元素集
             jQuery.find( selector, this[0], ret );
             return ret;
         } else {
@@ -275,10 +290,8 @@ jQuery.fn = jQuery.prototype = {
                 elems, "find", selector );
         }
     },
-
+    // 先复制dom在复制事件
     clone: function( events ) {
-        // Do the clone
-        // 复制节点
         var ret = this.map(function(){
             if ( !jQuery.support.noCloneEvent && !jQuery.isXMLDoc(this) ) {
                 // IE copies events bound via attachEvent when
@@ -292,9 +305,10 @@ jQuery.fn = jQuery.prototype = {
                 var clone = this.cloneNode(true),
                     container = document.createElement("div");
                 container.appendChild(clone);
+
+                // 将字符串转为jQuery对象
                 return jQuery.clean([container.innerHTML])[0];
             } else
-                // 调用node的cloneNode，深度复制
                 return this.cloneNode(true);
         });
 
@@ -306,7 +320,7 @@ jQuery.fn = jQuery.prototype = {
                 this[ expando ] = null;
         });
 
-        // Copy the events from the original to the clone
+        // 许多是后面的方法，到时再说
         if ( events === true )
             this.find("*").andSelf().each(function(i){
                 if (this.nodeType == 3)
@@ -333,10 +347,11 @@ jQuery.fn = jQuery.prototype = {
                 return elem.nodeType === 1;
             }) ), "filter", selector );
     },
-
+    // 筛选最近的元素
     closest: function( selector ) {
+        // 判断是否用于方位的
         var pos = jQuery.expr.match.POS.test( selector ) ? jQuery(selector) : null;
-
+        // 进一步筛选
         return this.map(function(){
             var cur = this;
             while ( cur && cur.ownerDocument ) {
@@ -478,7 +493,7 @@ jQuery.fn = jQuery.prototype = {
         return this.pushStack( Array.prototype.slice.apply( this, arguments ),
             "slice", Array.prototype.slice.call(arguments).join(",") );
     },
-    // 与上面类似
+    // 与上面类似，相较原生的map，这里会过滤undefined
     map: function( callback ) {
         return this.pushStack( jQuery.map(this, function(elem, i){
             return callback.call( elem, i, elem );
@@ -1176,7 +1191,7 @@ jQuery.extend({
         for ( var i = 0, length = elems.length; i < length; i++ ) {
             var value = callback( elems[ i ], i );
 
-            if ( value != null )
+            if ( value != null ) // 不会出现[1,undefined,3]
                 ret[ ret.length ] = value;
         }
         // 更扁平 $.map([1,2,[3,4]], (v)=>v)
@@ -1719,6 +1734,7 @@ var Expr = Sizzle.selectors = {
         ATTR: /\[\s*((?:[\w\u00c0-\uFFFF_-]|\\.)+)\s*(?:(\S?=)\s*(['"]*)(.*?)\3|)\s*\]/,
         TAG: /^((?:[\w\u00c0-\uFFFF\*_-]|\\.)+)/,
         CHILD: /:(only|nth|last|first)-child(?:\((even|odd|[\dn+-]*)\))?/,
+        // 位置，例如:eq :gt :first :even
         POS: /:(nth|eq|gt|lt|first|last|even|odd)(?:\((\d*)\))?(?=[^-]|$)/,
         PSEUDO: /:((?:[\w\u00c0-\uFFFF_-]|\\.)+)(?:\((['"]*)((?:\([^\)]+\)|[^\2\(\)]*)+)\2\))?/
     },
