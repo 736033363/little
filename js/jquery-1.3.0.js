@@ -187,19 +187,17 @@ jQuery.fn = jQuery.prototype = {
 
         return ret;
     },
+    // 把匹配的元素组为一个整体用html包裹起来
     // $('p').wrapAll('<div></div>') => <div><p>a</p><p>b</p><p>c</p></div>
+    // wrapOutter更合适
     wrapAll: function( html ) {
         if ( this[0] ) {
-            // The elements to wrap the target around
-            // 包围目标的元素
             var wrap = jQuery( html, this[0].ownerDocument ).clone();
-            // 将wrap插入到第一个目标元素前面
             if ( this[0].parentNode )
                 wrap.insertBefore( this[0] );
 
             wrap.map(function(){
                 var elem = this;
-                // 查找wrap的一个孩子->第一个孩子...->第一个孩子
                 while ( elem.firstChild )
                     elem = elem.firstChild;
 
@@ -209,21 +207,23 @@ jQuery.fn = jQuery.prototype = {
 
         return this;
     },
+
+    // 相当于把匹配的元素取得innerHtml，然后用wrapAll包裹起来
     // $('p').wrapInner('<i></i>') =><p><i>a</i></p><p><i>b</i></p><p><i>c</i></p>
-    // 相当于把匹配的元素去的innerHtml，然后用wrapAll包裹起来
     wrapInner: function( html ) {
         return this.each(function(){
             jQuery( this ).contents().wrapAll( html );
         });
     },
 
+    // 与上面相反，每个匹配的元素都用html包裹
     //$("p").wrap('<div></div>') =>  <div><p>******</p></div><div><p>******</p></div><div><p>******</p></div>
     wrap: function( html ) {
         return this.each(function(){
             jQuery( this ).wrapAll( html );
         });
     },
-
+     // 接下来是append，prepend，before
     append: function() {
         return this.domManip(arguments, true, function(elem){
             if (this.nodeType == 1)
