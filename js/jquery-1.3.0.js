@@ -2,32 +2,32 @@
 (function(){
 
 var 
+    // 将window、undefined放入闭包的同名变量中，让内围访问时，作用域不要跑那么远
     window = this,
     undefined,
+    // 接下来要用到jQuery、$变量名，先将这两个变量的值存起来，
+    // 后面可以通过方法在将这两个变量还给window
     _jQuery = window.jQuery,
     _$ = window.$,
 
     jQuery = window.jQuery = window.$ = function( selector, context ) {
+        // 返回一个jQuery对象
         return new jQuery.fn.init( selector, context );
     },
 
     // 判定是否是html字符串与id
     quickExpr = /^[^<]*(<(.|\s)+>)[^>]*$|^#([\w-]+)$/,
-    // 后面不能跟伪类选择器，ID选择器，属性选择器，类选择器，并联选择器
-    // .red .blue 不符合
-    // div p 符合
+    // 是否是简单选择器
     isSimple = /^.[^:#\[\.,]*$/;
 
 jQuery.fn = jQuery.prototype = {
+    // 非常复杂的方法，什么都可以传进来
     init: function( selector, context ) {
         // 如果为空就把document塞进jQuery里
         selector = selector || document;
-
-        // 如果第一个是dom，那么肯定有nodeType
-        // 然后创建索引，创建类数组对象
-        // 除了有[0]，[1]，还有"css","attr"等字符串，他们的值对应着方法
-        // length给Array.prototype.slice与map,filter等方法准备
-        // context ？
+        // 是dom节点，创建索引，创建类对象
+        // 还有css、attr等方法
+        // length是给Array.prototype.slice, map, filter等方法准备
         if ( selector.nodeType ) {
             this[0] = selector;
             this.length = 1;
@@ -35,34 +35,27 @@ jQuery.fn = jQuery.prototype = {
             return this;
         }
         // 如果传入的是string
+        // 一种是html字符串或id
+        // 一种是剩余字符串的处理
         if ( typeof selector === "string" ) {
-            // 处理的是html字符串还是id?
             var match = quickExpr.exec( selector );
 
-            // Verify a match, and that no context was specified for #id
-            // 验证匹配。是html字符串或者没有context的id
+            // 是html字符串或id
             if ( match && (match[1] || !context) ) {
 
-                // HANDLE: $(html) -> $(array)
-                // 
                 if ( match[1] )
                     // 用字符串创建DOM元素
                     selector = jQuery.clean( [ match[1] ], context );
 
-                // HANDLE: $("#id")
                 else {
-                    // 如果符合quickExpr第二种情况
                     var elem = document.getElementById( match[3] );
 
-                    // Make sure an element was located
                     if ( elem ){
                         // Handle the case where IE and Opera return items
                         // by name instead of ID
-                        // ie和opera中，id返回不一定是elem，这时用name查找
                         if ( elem.id != match[3] )
                             return jQuery().find( selector );
 
-                        // 否则，直接将elem注入jQuery对象
                         var ret = jQuery( elem );
                         ret.context = document;
                         ret.selector = selector;
@@ -70,16 +63,10 @@ jQuery.fn = jQuery.prototype = {
                     }
                     selector = [];
                 }
-
-            // HANDLE: $(expr, [context])
-            // (which is just equivalent to: $(content).find(expr)
-            // 字符串，不匹配上面的情况会来这里，例如$('p')
             } else
                 return jQuery( context ).find( selector );
 
-        // HANDLE: $(function)
-        // Shortcut for document ready
-        // 文档就绪快捷方式
+        // 著名的domReady
         } else if ( jQuery.isFunction( selector ) )
             return jQuery( document ).ready( selector );
 
@@ -88,17 +75,14 @@ jQuery.fn = jQuery.prototype = {
             this.selector = selector.selector;
             this.context = selector.context;
         }
-
+        // 确保以jQuery的类数组返回
         return this.setArray(jQuery.makeArray(selector));
     },
 
-    // Start with an empty selector
     selector: "",
 
-    // The current version of jQuery being used
     jquery: "1.3",
 
-    // The number of elements contained in the matched element set
     size: function() {
         return this.length;
     },
@@ -106,46 +90,30 @@ jQuery.fn = jQuery.prototype = {
     // 返回一个纯数组 or 返回一个纯净的dom对象（根据索引）
     get: function( num ) {
         return num === undefined ?
-
-            // Return a 'clean' array
             jQuery.makeArray( this ) :
-
-            // Return just the object
             this[ num ];
     },
 
-    // Take an array of elements and push it onto the stack
-    // (returning the new matched element set)
+   
+    // find(),slice(),map(),eq()等常用方法都调用了这个入栈方法
     // end()方法利用了pushStack中的prevObject
-    // slice(),map(),eq()等常用方法都调用了这个入栈方法
-    // 参考：https://blog.csdn.net/qiqingjin/article/details/50756763
     pushStack: function( elems, name, selector ) {
-        // Build a new jQuery matched element set
         // 构建一个新的jQuery匹配元素集
         var ret = jQuery( elems );
-
-        // Add the old object onto the stack (as a reference)
-        // 将旧对象添加到堆栈中（作为引用）
+        // 将旧对象添加到堆栈中
         ret.prevObject = this;
 
         ret.context = this.context;
-        //把selector标记为一个特殊的字符串，以后再解析为jQuery对象
         if ( name === "find" )
             ret.selector = this.selector + (this.selector ? " " : "") + selector;
         else if ( name )
-            // 例如ul.children(li)
             ret.selector = this.selector + "." + name + "(" + selector + ")";
 
-        // Return the newly-formed element set
         return ret;
     },
 
-    // Force the current matched set of elements to become
-    // the specified array of elements (destroying the stack in the process)
-    // You should use pushStack() in order to do this, but maintain the stack
+    // 把许多元素一起放到jQuery对象中，由于用Array.prototype.push，不用自己维护长度
     setArray: function( elems ) {
-        // Resetting the length to 0, then using the native Array push
-        // is a super-fast way to populate an object with array-like properties
         this.length = 0;
         Array.prototype.push.apply( this, elems );
 
@@ -153,43 +121,36 @@ jQuery.fn = jQuery.prototype = {
     },
 
     // 类似es中的forEach
-    // 这里在原型方法调用静态方法
+    // 用原型方法调用静态方法
     each: function( callback, args ) {
         return jQuery.each( this, callback, args );
     },
 
-    // Determine the position of an element within
-    // the matched set of elements
     // 类似数组的indexOf
     index: function( elem ) {
-        // Locate the position of the desired element
         return jQuery.inArray(
-            // If it receives a jQuery object, the first element is used
             elem && elem.jquery ? elem[0] : elem
         , this );
     },
 
+    // 非常复杂的方法
+    // 通过参数类型判定是读方法，还是写方法
     attr: function( name, value, type ) {
         var options = name;
-
-        // Look for the case where we're accessing a style value
-        
         if ( typeof name === "string" )
-            // 读方法 .attr('title')
             if ( value === undefined )
+                // 读方法，获取相应的属性
                 return this[0] && jQuery[ type || "attr" ]( this[0], name );
 
-            else { // .attr('title', value/fn) ①
+            else {
+                // 写方法，设置相应属性
+                // 一个代理对象
                 options = {};
                 options[ name ] = value;
             }
 
-        // Check to see if we're setting style values
-        // .attr({key1:value1, key2:value2...}) ②
         // 真正工作的是静态方法
         return this.each(function(i){
-            // Set all the styles
-            // 将①与②相同处理
             for ( name in options )
                 jQuery.attr(
                     type ?
@@ -202,12 +163,12 @@ jQuery.fn = jQuery.prototype = {
 
     css: function( key, value ) {
         // ignore negative width and height values
-        // 忽略负的宽度和高度
         if ( (key == 'width' || key == 'height') && parseFloat(value) < 0 )
             value = undefined;
         return this.attr( key, value, "curCSS" );
     },
 
+    // 与attr类似，可读可写
     text: function( text ) {
         if ( typeof text !== "object" && text != null )
             return this.empty().append( (this[0] && this[0].ownerDocument || document).createTextNode( text ) );
