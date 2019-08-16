@@ -611,13 +611,17 @@ jQuery.extend = jQuery.fn.extend = function() {
     return target;
 };
 
+/* 定义一些位于闭包顶层的变量，准备新一轮功能的扩展 */
+
 // exclude the following css properties to add px
+// 这些css属性不添加px
 var exclude = /z-?index|font-?weight|opacity|zoom|line-?height/i,
     // cache defaultView
     // 存储defaultView，
     defaultView = document.defaultView || {},
     toString = Object.prototype.toString;
 
+// 添加一些列静态方法
 jQuery.extend({
     noConflict: function( deep ) {
         window.$ = _$;
@@ -656,6 +660,7 @@ jQuery.extend({
             var head = document.getElementsByTagName("head")[0] || document.documentElement,
                 script = document.createElement("script");
 
+            // 自行创建一个script元素，如果不支持标准方法，就用text添加
             script.type = "text/javascript";
             if ( jQuery.support.scriptEval )
                 script.appendChild( document.createTextNode( data ) );
@@ -705,12 +710,14 @@ jQuery.extend({
         return object;
     },
 
+    // 修复css属性值（数字）的单位px
     prop: function( elem, value, type, i, name ) {
         // Handle executable functions
         if ( jQuery.isFunction( value ) )
             value = value.call( elem, i );
 
         // Handle passing in a number to a CSS property
+        // 不是z-index、line-height这些属性，值得加上px单位
         return typeof value === "number" && type == "curCSS" && !exclude.test( name ) ?
             value + "px" :
             value;
