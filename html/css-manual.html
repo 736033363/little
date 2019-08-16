@@ -50,12 +50,7 @@
   <p>设置边框圆角，即使不设置边框可生效（需要设置背景才能看见），配合box-shadow更好，典型应用请看<i>.u-menu li:first-child a</i>或<i>.u-callout</i></p>
   <h3>overflow</h3>
   <p>超出边界的隐藏，典型应用请看<i>.u-code2::before</i>和<i>.m-crumb</i></p>
-  <h3>:link :visited</h3>
-  <ul>
-    <li>只能用于锚点</li>
-    <li>:hover、:focus、active理论上适合任何元素</li>
-    <li>记住这个顺序：:link、:visited、:hover、:focus、:active</li>
-  </ul>
+  
   <h3>letter-spacing</h3>
   <p>增加或减小文字间距，初始是normal，等同于0，正负值都可以；典型应用请看<i>.u-btn</i></p>
   <h3>word-spacing</h3>
@@ -79,34 +74,6 @@
   </figure>
   <h3>键 inline-block</h3>
   <p><cite>《高级Web标准解决方案》</cite>中模糊的提到此属性可以清除浮动，我的应用请看<i>.u-btns</i></p>
-  <h3>:first-child</h3>
-  <p>伪类，选择兄弟元素中的第一个，典型应用请看<i>.u-btns .u-btn:first-child</i></p>
-  <h3>:last-child</h3>
-  <ul>
-    <li>:last-child 筛选出最后一个子元素。会忽略文本节点，但&lt;br&gt;有可能会选上</li>
-    <li>p:last-child 筛选出最后一个子元素，且是p</li>
-    <li><span>提示：</span>p:last-child 等同于 p:nth-last-child(1)</li>
-  </ul>
-  <h3>:nth-child</h3>
-  <ul>
-    <li>p:nth-child(1) 筛选出第一个子元素，且过滤非p。类似p:last-child，但后者选最后一个子元素</li>
-    <li>:nth-child(odd)，奇数，选择1、3、5...；等于:nth-child(2n+1)；even是偶数</li>
-    <li>:nth-last-child，与:nth-child唯一区别是前者从后往前计数</li>
-  </ul>
-  <h3>:nth-of-type</h3>
-  <ul>
-    <li>:nth-of-type(1)，父元素下不同类型的第1个子元素</li>
-    <li>ele.a.b.c:nth-of-type(n)，父元素下不同类型的第n个子元素，且筛选出是ele.a.b.c</li>
-    <li>:nth-last-of-type，与:nth-of-type的唯一区别是从后往前计数</li>
-  </ul>
-  <h3>:not</h3>
-  <ul>
-    <li>:not(p) 选择所有非p</li>
-    <li>这个元素只会应用在一个元素上，无法用它排除所有父元素。比如， body :not(table) a 将依旧会应用在table内部的 a 上</li>
-    <li>:not(div):not(span) 非div或非span ？</li>
-  </ul>
-  <h3>:target</h3>
-  <p>锚点内部调转，有时不容易看出跳到哪个元素。可实现弹框，请看<a href="https://mdn.mozillademos.org/files/4607/lightbox.html#">Pure CSS Lightbox</a></p>
   <h3>margin</h3>
   <p>
     margin-left负值的应用请看<i>.u-btns .u-btn:first-child</i>（后者会覆盖前者）<br>

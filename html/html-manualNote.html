@@ -2,162 +2,24 @@
 <html>
 <head>
 <meta charset='utf-8'>
-<title>html手册</title>
+<title>html手册笔记</title>
 <meta name='keywords' content=''>
-<meta name='description' content='html手册'>
+<meta name='description' content='html手册笔记'>
 <meta name='viewport' content='width=device-width,initial-scale=1.0'>
 <link rel='shortcut icon' href='../img/sun_48.ico'>
 </head>
 <body>
-<h1>html手册<sup><a href="https://developer.mozilla.org/zh-CN/docs/Web/HTML/Element" target='_blank'>MDN api</a></sup></h1>
+<h1>html手册笔记</h1>
 <article>
   <header>
     <h2>html元素</h2>
   </header>
-  <h3>header & footer</h3>
-  <ul>
-    <li>header-一组引导性的帮助</li>
-    <li>footer-所在区域辅助信息</li>
-    <li>都不计入大纲</li>
-  </ul>
+ 
   <h3>script</h3>
   <ul>
    <li>async，异步加载，肯定在load前，可能在DOMContentLoaded前后，多个文件异步没有先后顺序</li>
   </ul>
-  <h3>main</h3>
-  <ul>
-   <li>文档或应用的主体部分。这部分内容是独一无二的，不包含在一系列文档中出现的重复内容。</li>
-  </ul>
-  <h3>article</h3>
-  <ul>
-    <li>文章。<em>独立性</em>，可发表</li>
-    <li>内层文章需要与外层文章内容直接相关</li>
-    <li>可用于博客、帖子、用户评论、交互式组件或者其他独立项目</li>
-  </ul>
-  <h3>section</h3>
-  <ul>
-    <li>用于分段。与article的区别是，article可以单独出去作为一篇文章发表</li>
-    <li>仅为样式，建议使用div代替</li>
-  </ul>
-  <h3>nav</h3>
-  <ul>
-    <li>主导航</li>
-  </ul>
-  <h3>aside</h3>
-  <ul>
-    <li>在...旁</li>
-    <li>独立出来不影响主体内容</li>
-    <li>常用作侧边栏、广告、友情链接</li>
-  </ul>
-  <h3>div & span</h3>
-  <ul>
-   <li>div-分隔</li>
-   <li>span-范围</li>
-  </ul>
-  <h3>ol & ul & li & dl & dt & dd</h3>
-  <ul>
-   <li>ol-排序；ul-非排序；dl-定义列表；dt-定义术语；dd-定义描述</li>
-  </ul>
-  <h3>menu</h3>
-  <ul>
-    <li>交互式菜单，谨慎使用，实验性的功能</li>
-  </ul>
-  <h3>h1~h6</h3>
-  <ul>
-    <li>标题1~标题6</li>
-  </ul>
-  <h3>hgroup</h3>
-  <ul>
-    <li>标题组。用于添加副标题而不影响大纲，大纲只会出现级别最高的标题，而不管顺序</li>
-  </ul>
-  <h3>p</h3>
-  <ul>
-    <li>不能嵌套段落</li>
-    <li>语义不明显，即可用 p 也可用 div，尽量用 p，因为 p 默认样式有上下间距</li>
-  </ul>
-  <h3>hr</h3>
-  <ul>
-    <li>水平尺</li>
-    <li>表示段落级元素之间主题转变</li>
-  </ul>
-  <h3>a</h3>
-  <ul>
-    <li>语义：锚。a 不能嵌套 a 或 表单。没有disabled属性。</li>
-    <li>邮件链接：<span>&lt;a href="mailto:736033363@qq.com"&gt;send email to aaronpeng&lt;/a&gt;</span>
-    </li>
-    <li>下载： <span>&lt;a href="" download="firefox-39.0.exe"&gt;下载firefox-39.0.exe&lt;/a&gt;</span>
-    </li>
-    <li>可嵌套多个元素，例如a元素中放p、div、span等元素</li>
-  </ul>
-  <h3>em & strong</h3>
-  <ul>
-    <li>都是强调。em，默认样式斜体</li>
-    <li>除非非常想强调内容中的重点，否则建议使用b或i</li>
-  </ul>
-  <h3>sup & sub</h3>
-  <ul>
-    <li>sup-上标</li>
-    <li>sub-下标</li>
-  </ul>
-  <h3>br & wbr</h3>
-  <ul>
-    <li>br，换行</li>
-    <li>wbr，软换行。当宽度不够才换，对中文用处不大。</li>
-  </ul>
-  <h3>abbr</h3>
-  <ul>
-    <li>语义，我是缩写词</li>
-  </ul>
-  <h3>address</h3>
-  <ul>
-    <li>联系信息，例如作者的姓名、地址、电话，不能包含联系信息以外的信息</li>
-  </ul>
-  <h3>fieldset & legend</h3>
-  <ul>
-    <li>fieldset是域集，用于表单相关的部件分组</li>
-    <li>legend是域集名，最好作为fieldset第一个孩子</li>
-  </ul>
-  <h3>table</h3>
-  <ul>
-    <li>不建议表格嵌套，除非必要，例如来自第三方，放在td中即可</li>
-    <li>表格宽度由内容决定</li>
-    <li>属性summary，表格的描述</li>
-  </ul>
-  <h3>caption</h3>
-  <ul>
-    <li>表格标题</li>
-    <li>常作为表格第一个元素，默认样式居中</li>
-  </ul>
-  <h3>thead & tfoot</h3>
-  <ul>
-    <li>一个表格通常只有一个表格表尾、表头</li>
-    <li>即使tfoot放在tbody上面，浏览器也会将其放最后</li>
-    <li>如果使用tfoot或thead，必须至少使用一个tbody</li>
-  </ul>
-  <h3>tbody</h3>
-  <ul>
-    <li>表格主体</li>
-    <li>若缺省，浏览器也会加上tbody</li>
-    <li>一个表格可以有多个主体</li>
-  </ul>
-  <p>td & th</p>
-  <ul>
-    <li>td，一般表格单元，如果既是标题又是数据，建议用td</li>
-    <li>th，表头单元格，默认样式加粗居中，工作方式与th相同，不过表示标题</li>
-    <li>属性colspan跨多列，属性rowspan跨多行，添加在td或th上即可</li>
-    <li>scope属性用于屏幕阅读器</li>
-  </ul>
-
-  <h3>colgroup & col（暂时不懂）</h3>
-  <ul>
-    <li>给列提供统一样式，与tbody同级</li>
-  </ul>
-  <h3>figure & figcaption</h3>
-  <ul>
-    <li>表示一段独立内容，转移后不会影响主体。</li>
-    <li>可用作：插图、表格、代码片段。常配合figcaption使用，figcaption表示标题，例子请看<a href="http://www.w3school.com.cn/tags/tag_figure.asp">w3school</a></li>
-    <li>figcaption是figure的标题</li>
-  </ul>
+  
   <h3>form</h3>
   <ul>
     <li>input回车表单提交<sup>经典问题</sup>。只有一个input（都是指type='text'）时，回车提交；多个时，type='submit'提交，type='button'不提交；没有按钮，只有一个input时，回车提交；radio，checkbox，textare，type='file'都不算。解决方法: form.on('submit', ()=>false)</li>

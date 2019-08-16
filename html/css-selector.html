@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <title>css选择器</title>
+    </head>
+    <body>
+<h1>css选择器</h1>
+
+<div style='white-space:pre-wrap;'>
+做静态页面，有时为了样式写很多class有写不爽，既然有那么多种类的选择器，不用起来实在浪费，于是复习下 《精通css：高级web标准解决方案》、《响应式web设计：html5与css3实战》、《html5与css3权威指南》、<a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/Reference" target="_blank">mdn's css参考</a>
+
+其实主要看<b>mdn's css参考</b>，不过还有一些需要做下笔记：
+
+:nth-child 筛选子元素。如 p:nth-child(1) 筛选出第一个子元素，且过滤非p；而:nth-last-child仅仅是从后往前计数
+
+:nth-of-type 筛选子元素，但会分组。如 :nth-of-type(1)，父元素下不同类型的第1个子元素；ele.a.b.c:nth-of-type(n)，父元素下不同类型的第n个子元素，且筛选出是ele.a.b.c；而:nth-last-of-type仅仅从后往前计数
+
+<hr />
+下面需要整理...
+
+古老的有id选择器（#）、类选择器（.）、后代选择器（空格），组选择器（逗号）
+
+伪类选择器 :link :visited :hover :active
+
+通用选择器 *
+
+子选择器 >
+相邻同胞 +
+兄弟选择符 ~
+属性选择器
+
+:last-child
+:first-child
+:nth-child
+:not
+::first-line
+
+:root
+:empty
+:target
+
+:only-child
+
+:read-only 
+:read-write
+
+:default
+:indeterminate
+:default
+
+::selection
+
+:required 
+:optional
+:in-range
+:out-of-range
+
+::before 插入图像，将alt属性的值作为图片的标题
+::after
+
+counter()
+counter-increment 计数器值
+</div>
+
+    </body>
+</html>

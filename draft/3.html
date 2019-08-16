@@ -15,6 +15,12 @@
 
 <div>div<div class='a'>div1 <div>div2</div></div></div>
 
+<select name="" id="">
+  <option value="aaa">111</option>
+  <option value="">222</option>
+  <option >333</option>
+  <option ></option>
+</select>
 <script>
 // var $ = 'hello'
 
@@ -23,9 +29,14 @@
   <!-- <script src='../js/jqueryv172.js'></script> -->
   <script>
 var el = $('body'),
-    el2 = $('div')
-  debugger
-el2.closest('.a')
+    el2 = $('option');
+
+    el[0].addEventListener('click', function(evt){
+      var t = evt.target;
+      debugger
+      t.classList.toggle('aaa'); 
+
+    })
   </script>
 </body>
 </html>
