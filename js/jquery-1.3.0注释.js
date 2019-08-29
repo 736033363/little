@@ -284,7 +284,7 @@ jQuery.fn = jQuery.prototype = {
             var elems = jQuery.map(this, function(elem){
                 return jQuery.find( selector, elem );
             });
-
+            // 去除重复元素
             return this.pushStack( /[^+>] [^+>]/.test( selector ) ?
                 jQuery.unique( elems ) :
                 elems, "find", selector );
@@ -723,6 +723,7 @@ jQuery.extend({
             value;
     },
 
+// 接下来是样式的处理
     className: {
         // internal only, use addClass("class")
         add: function( elem, classNames ) {
@@ -733,6 +734,7 @@ jQuery.extend({
         },
 
         // internal only, use removeClass("class")
+        // 什么都用自定义方法，效率有点低
         // 用grep()方法返回过滤的数组
         remove: function( elem, classNames ) {
             if (elem.nodeType == 1)
@@ -750,6 +752,7 @@ jQuery.extend({
     },
 
     // A method for quickly swapping in/out CSS properties to get correct calculations
+    // 获取不可见元素的宽、高，而进行交换css属性
     swap: function( elem, options, callback ) {
         var old = {};
         // Remember the old values, and insert the new ones
@@ -765,11 +768,15 @@ jQuery.extend({
             elem.style[ name ] = old[ name ];
     },
 
+    // 原型css->原型attr->静态attr
+    // 读方法，取得元素的css样式值，真正起作用是curCSS方法
     css: function( elem, name, force ) {
-        debugger
+        
         if ( name == "width" || name == "height" ) {
+            // props用于swap，值得学习
             var val, props = { position: "absolute", visibility: "hidden", display:"block" }, which = name == "width" ? [ "Left", "Right" ] : [ "Top", "Bottom" ];
-            // offsetWidth标准模式包括width、padding、border
+            // offsetWidth标准模式包括width、padding、border（不是很准确）
+            // width = offsetWidth - padding - border
             function getWH() {
                 val = name == "width" ? elem.offsetWidth : elem.offsetHeight;
                 var padding = 0, border = 0;
@@ -783,6 +790,8 @@ jQuery.extend({
             if ( jQuery(elem).is(":visible") )
                 getWH();
             else
+                // 获取隐藏了的元素的宽、高
+                // 如果display:none就求不出offsetWidht与offsetHeight，swap一下在getWH
                 jQuery.swap( elem, props, getWH );
 
             return Math.max(0, val);
@@ -791,10 +800,12 @@ jQuery.extend({
         return jQuery.curCSS( elem, name, force );
     },
 
+    // 只读方法，获取样式
     curCSS: function( elem, name, force ) {
         var ret, style = elem.style;
 
         // We need to handle opacity special in IE
+        // ie中透明度需要特殊处理
         if ( name == "opacity" && !jQuery.support.opacity ) {
             ret = jQuery.attr( style, "opacity" );
 
@@ -804,9 +815,11 @@ jQuery.extend({
         }
 
         // Make sure we're using the right name for getting the float value
+        // IE uses styleFloat instead of cssFloat
         if ( name.match( /float/i ) )
             name = styleFloat;
 
+        // 样式直接设置在style中，快速返回
         if ( !force && style && style[ name ] )
             ret = style[ name ];
 
@@ -815,7 +828,7 @@ jQuery.extend({
 
             // Only "float" is needed here
             if ( name.match( /float/i ) )
-                name = "float"; //把cssFloat转换为float
+                name = "float"; //把cssFloat转换为float，在computedStyle支持float，而不是cssFloat
 
             // 把驼峰转为连字符风格
             name = name.replace( /([A-Z])/g, "-$1" ).toLowerCase();
@@ -842,7 +855,7 @@ jQuery.extend({
 
             // If we're not dealing with a regular pixel number
             // but a number that has a weird ending, we need to convert it to pixels
-            //  将不是以px为单位的计算值全转为px，
+            // 将不是以px为单位的计算值全转为px，例如10rem，用到 Dean Edwards（Base2类库的作者）的hack
             if ( !/^\d+(px)?$/i.test( ret ) && /^\d/.test( ret ) ) {
                 // Remember the original values
                 var left = style.left, rsLeft = elem.runtimeStyle.left;
@@ -860,7 +873,8 @@ jQuery.extend({
 
         return ret;
     },
-
+    // 将字符串转为dom元素的纯数组
+    // elems是字符串数组
     clean: function( elems, context, fragment ) {
         context = context || document;
 
@@ -881,6 +895,7 @@ jQuery.extend({
 
         var ret = [], scripts = [], div = context.createElement("div");
 
+        // 遍历元素，利用innerHTML转为dom数组
         jQuery.each(elems, function(i, elem){
             if ( typeof elem === "number" )
                 elem += '';
@@ -891,7 +906,7 @@ jQuery.extend({
             // Convert html string into DOM nodes
             if ( typeof elem === "string" ) {
                 // Fix "XHTML"-style tags in all browsers
-                // <tag /> 转为 <tag></tag>
+                // 修正下，例如将<tag /> 转为 <tag></tag>
                 elem = elem.replace(/(<(\w+)[^>]*?)\/>/g, function(all, front, tag){
                     return tag.match(/^(abbr|br|col|img|input|link|meta|param|hr|area|embed)$/i) ?
                         all :
@@ -899,9 +914,10 @@ jQuery.extend({
                 });
 
                 // Trim whitespace, otherwise indexOf won't work as expected
-                // 去掉两头空白
+                // 去掉两头空白，用于下面的indexOf
                 var tags = jQuery.trim( elem ).toLowerCase();
 
+                // 修复下，例如<option>必须用<select>包裹下
                 var wrap =
                     // option or optgroup
                     // option和optgroup的直接父元素一定是select
@@ -936,7 +952,7 @@ jQuery.extend({
                 div.innerHTML = wrap[1] + elem + wrap[2];
 
                 // Move to the right depth
-                // 移动到正确的深度
+                // 移动到正确的深度，例如传入的是<tr>..</tr>，div最后指向<tbody>
                 while ( wrap[0]-- )
                     div = div.lastChild;
 
@@ -960,7 +976,7 @@ jQuery.extend({
                     }
 
                 // IE completely kills leading whitespace when innerHTML is used
-                // ie在使用innerhtml时完全消除前导空格
+                // ie在使用innerhtml时完全消除前导空格，重新将空格作为节点插入
                 if ( !jQuery.support.leadingWhitespace && /^\s/.test( elem ) )
                     div.insertBefore( context.createTextNode( elem.match(/^\s*/)[0] ), div.firstChild );
                 
@@ -970,10 +986,13 @@ jQuery.extend({
             if ( elem.nodeType )
                 ret.push( elem );
             else
+                // elem是数组
                 ret = jQuery.merge( ret, elem );
 
         });
-
+        
+        // 只在原型方法domManip中使用了fragment
+        // 如果有script元素则放入scripts，否则放入fragment中
         if ( fragment ) {
             for ( var i = 0; ret[i]; i++ ) {
                 if ( jQuery.nodeName( ret[i], "script" ) && (!ret[i].type || ret[i].type.toLowerCase() === "text/javascript") ) {
@@ -991,6 +1010,8 @@ jQuery.extend({
         return ret;
     },
 
+    // 可读可写方法
+    // 针对元素的attr属性（id,class,data-自定义...）、样式style属性（background-color、color）
     attr: function( elem, name, value ) {
         // don't set attributes on text and comment nodes
         // 文本节点，注释节点不处理
@@ -1027,11 +1048,12 @@ jQuery.extend({
 
             // Safari mis-reports the default selected property of a hidden option
             // Accessing the parent's selectedIndex property fixes it
-            // 修正无法取得selected正确值的bug
+            // 修正safari下无法取得selected正确值的bug
             if ( name == "selected" && elem.parentNode )
                 elem.parentNode.selectedIndex;
 
             // If applicable, access the attribute via the DOM 0 way
+            // elem中有属性name，不是xml，也不是特殊的属性
             if ( name in elem && notxml && !special ) {
                 if ( set ){
                     // We can't allow the type property to be changed (since it causes problems in IE)
@@ -1045,6 +1067,7 @@ jQuery.extend({
                 // browsers index elements by id/name on forms, give priority to attributes.
                 // jquery bug提到 https://bugs.jquery.com/ticket/8628
                 // getAttribute 通常用于替换getAttributeNode方法，来获得元素的属性值。性能也更快.  性能对比是 element.id 大于 element.getAttribute('id') 大于 element.getAttributeNode('id').nodeValue.
+                // ？
                 if( jQuery.nodeName( elem, "form" ) && elem.getAttributeNode(name) )
                     return elem.getAttributeNode( name ).nodeValue;
 
@@ -1068,11 +1091,11 @@ jQuery.extend({
 
             if ( set )
                 // convert the value to a string (all browsers do this but IE) see #1070
-                // 
                 elem.setAttribute( name, "" + value );
 
             var attr = !jQuery.support.hrefNormalized && notxml && special
                     // Some attributes require a special call on IE
+                    // IE 默认取得href的绝对路径，加参数2得到我们所需要的相对路径
                     ? elem.getAttribute( name, 2 )
                     : elem.getAttribute( name );
 
@@ -1098,7 +1121,7 @@ jQuery.extend({
                 (parseFloat( elem.filter.match(/opacity=([^)]*)/)[1] ) / 100) + '':
                 "";
         }
-
+        // 转为驼峰，例如elem.style.backgroundColor
         name = name.replace(/-([a-z])/ig, function(all, letter){
             return letter.toUpperCase();
         });
@@ -1108,6 +1131,7 @@ jQuery.extend({
 
         return elem[ name ];
     },
+    // 进入jQuery核心功能选择器之前，还有一些方法，大多与数组有关
     // 去除两头的空格
     trim: function( text ) {
         return (text || "").replace( /^\s+|\s+$/g, "" );
@@ -1159,6 +1183,7 @@ jQuery.extend({
     },
     // 过滤重复元素
     unique: function( array ) {
+        // 用普通对象done做过滤器
         var ret = [], done = {};
 
         try {
@@ -1179,7 +1204,7 @@ jQuery.extend({
 
         return ret;
     },
-    // 类似filter的方法，这个方法起得真不好，通常与正则相关
+    // 类似filter的方法，这个方法起得真不好，grep通常与正则相关
     // callback前的!是防止函数没有返回值
     // !inv也是因为可能没传
     grep: function( elems, callback, inv ) {
@@ -1225,7 +1250,7 @@ jQuery.browser = {
     mozilla: /mozilla/.test( userAgent ) && !/(compatible|webkit)/.test( userAgent )
 };
 
-// 将parent,parents...等方法加入到原型对象上，都是一些查找方法
+// 通过属性包给jQuery原型添加方法，都是一些查找方法
 jQuery.each({
     parent: function(elem){return elem.parentNode;},
     parents: function(elem){return jQuery.dir(elem,"parentNode");},
@@ -1238,8 +1263,9 @@ jQuery.each({
     contents: function(elem){return jQuery.nodeName(elem,"iframe")?elem.contentDocument||elem.contentWindow.document:jQuery.makeArray(elem.childNodes);}
 }, function(name, fn){
     jQuery.fn[ name ] = function( selector ) {
-        var ret = jQuery.map( this, fn ); // 查找处元素数组，例如children调用的是nextSibling
-
+        // 返回查找的结果
+        var ret = jQuery.map( this, fn );
+        // 过滤一下
         if ( selector && typeof selector == "string" )
             ret = jQuery.multiFilter( selector, ret );
 
@@ -1247,8 +1273,8 @@ jQuery.each({
     };
 });
 
-// 把appendTo,prependTo等方法加入到原型对象上
-// 利用现存的方法append,prepend
+// 把appendTo,prependTo...等方法加入到原型对象上
+// 利用现存的方法append,prepend...
 jQuery.each({
     appendTo: "append",
     prependTo: "prepend",
@@ -1266,7 +1292,7 @@ jQuery.each({
     };
 });
 
-// 一些常用的静态方法
+// 再次添加一些原型方法：删除属性、增删类、删除节点、清空节点
 jQuery.each({
     removeAttr: function( name ) {
         jQuery.attr( this, name, "" );
@@ -1315,6 +1341,7 @@ jQuery.each({
 });
 
 // Helper function used by the dimensions and offset modules
+// 将css中带单位的数值去掉单位
 function num(elem, prop) {
     return elem[0] && parseInt( jQuery.curCSS(elem[0], prop, true), 10 ) || 0;
 }
@@ -1325,6 +1352,7 @@ var expando = "jQuery" + now(), uuid = 0, windowData = {};
 jQuery.extend({
     cache: {},
 
+    // 给元素缓存，能读能写
     data: function( elem, name, data ) {
         // 坚决不指染window
         elem = elem == window ?
@@ -1335,7 +1363,7 @@ jQuery.extend({
 
         // Compute a unique ID for the element
         if ( !id )
-            // 同为id、elem[expando]赋值，值为数字
+            // 同时为id、elem[expando]赋值，值为数字
             id = elem[ expando ] = ++uuid;
 
         // Only generate the data cache if we're
@@ -1356,6 +1384,7 @@ jQuery.extend({
             id;
     },
 
+    // 删除元素缓存，不指定name则删除所有缓存
     removeData: function( elem, name ) {
         elem = elem == window ?
             windowData :
@@ -1370,7 +1399,7 @@ jQuery.extend({
                 delete jQuery.cache[ id ][ name ];
 
                 // If we've removed all the data, remove the element's cache
-                // 元素相关的缓存没有属性，则全部删除
+                // 元素的缓存若为{}，则全部删除
                 name = "";
 
                 for ( name in jQuery.cache[ id ] )
@@ -1398,18 +1427,17 @@ jQuery.extend({
             delete jQuery.cache[ id ];
         }
     },
-    // 缓存元素的类数组属性
+    // 缓存元素的数组属性，直接在缓存对象上加工
     // 可读可写
     // jQuery.data若给同名属性设置，后者会覆盖前者
     queue: function( elem, type, data ) {
         if ( elem ){
     
             type = (type || "fx") + "queue";
-    
+            // q是缓存对象
             var q = jQuery.data( elem, type );
-    
+            // 第一次会将data转为数组
             if ( !q || jQuery.isArray(data) )
-                // q是数组
                 q = jQuery.data( elem, type, jQuery.makeArray(data) );
             else if( data )
                 q.push( data );
@@ -1421,8 +1449,9 @@ jQuery.extend({
     // 对元素的类数组缓存进行dequeue，也就是shift()
     dequeue: function( elem, type ){
         var queue = jQuery.queue( elem, type ),
+            // 队列，先进先出
             fn = queue.shift();
-        
+        // 此方法给内部用的，下面的逻辑应该有什么作用
         if( !type || type === "fx" )
             fn = queue[0];
             
@@ -1431,14 +1460,16 @@ jQuery.extend({
     }
 });
 
-// 让jQuery对象也具有缓存的能力
+// 给jQuery对象赋予缓存的能力
 // 都是调用上面的静态方法，最终的缓存体还是jQuery.cache
 jQuery.fn.extend({
+    // 看完事件再回来看
     data: function( key, value ){
+        // el.data('a.b.c', value)
         var parts = key.split(".");
         parts[1] = parts[1] ? "." + parts[1] : "";
 
-        if ( value === undefined ) {
+        if ( value === undefined ) { // 读
             var data = this.triggerHandler("getData" + parts[1] + "!", [parts[0]]);
 
             if ( data === undefined && this.length )
@@ -1488,38 +1519,44 @@ jQuery.fn.extend({
  *  也就1k行
  */
 (function(){
-
+// 用于分解我们传入的字符串，一个chunker就是一个基本单元，例如"article section,p"这里是两个基本单元
+// (\s*,\s*)是逗号
 var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^[\]]*\]|[^[\]]+)+\]|\\.|[^ >+~,(\[]+)+|[>+~])(\s*,\s*)?/g,
     done = 0,
     toString = Object.prototype.toString;
 
+// 主程序
 var Sizzle = function(selector, context, results, seed) {
-    results = results || [];
+    results = results || []; // 上次递归的结果集
     context = context || document;
 
     if ( context.nodeType !== 1 && context.nodeType !== 9 )
-        return [];
+        return []; // context必须为dom元素或document，否则返回[]
     
     if ( !selector || typeof selector !== "string" ) {
-        return results;
+        return results; // selector必须为字符串
     }
 
     var parts = [], m, set, checkSet, check, mode, extra, prune = true;
     
     // Reset the position of the chunker regexp (start from head)
+    // 重置lastIndex，从头开始匹配
     chunker.lastIndex = 0;
     
     while ( (m = chunker.exec(selector)) !== null ) {
-        parts.push( m[1] );
+        parts.push( m[1] ); // 匹配一个最基本单元
         
-        if ( m[2] ) {
-            extra = RegExp.rightContext;
-            break;
+        if ( m[2] ) { // m[2]是(\s*,\s*)，例如 " , "
+            extra = RegExp.rightContext; // 匹配内容的右边归入extra
+            break; // 找到正则的一个基本单元就退出
         }
     }
 
+    // POS /:(nth|eq|gt|lt|first|last|even|odd)(?:\((\d*)\))?(?=[^-]|$)/
+    // $(article >siction,section) 选择器组，这里有两组，每组就是一个最基本单元，这里第一组parts长度为3
     if ( parts.length > 1 && Expr.match.POS.exec( selector ) ) {
         if ( parts.length === 2 && Expr.relative[ parts[0] ] ) {
+            // parts[0]不可能等于""
             var later = "", match;
 
             // Position selectors must be done after the filter
@@ -1549,9 +1586,11 @@ var Sizzle = function(selector, context, results, seed) {
             }
         }
     } else {
+        // parts.pop()，让选择器从右边开始查找，如 $('article section')，先找section
         var ret = seed ?
             { expr: parts.pop(), set: makeArray(seed) } :
             Sizzle.find( parts.pop(), parts.length === 1 && context.parentNode ? context.parentNode : context );
+        // 对结果进一步进行过滤
         set = Sizzle.filter( ret.expr, ret.set );
 
         if ( parts.length > 0 ) {
@@ -1564,7 +1603,7 @@ var Sizzle = function(selector, context, results, seed) {
             var cur = parts.pop(), pop = cur;
 
             if ( !Expr.relative[ cur ] ) {
-                cur = "";
+                cur = "";// 肯定属于组合选择器中的一种，这里是后代选择器
             } else {
                 pop = parts.pop();
             }
@@ -1572,7 +1611,12 @@ var Sizzle = function(selector, context, results, seed) {
             if ( pop == null ) {
                 pop = context;
             }
-
+            // relative的键值对
+            // "+": function(checkSet, part)
+            // ">": function(checkSet, part, isXML)
+            // "": function(checkSet, part, isXML)
+            // "~": function(checkSet, part, isXML)
+            // checkSet里面的元素，以">"为例，会变成元素的parentNode
             Expr.relative[ cur ]( checkSet, pop, isXML(context) );
         }
     }
@@ -1584,7 +1628,7 @@ var Sizzle = function(selector, context, results, seed) {
     if ( !checkSet ) {
         throw "Syntax error, unrecognized expression: " + (cur || selector);
     }
-
+    // 将NodeList数组华，并放入结果集中
     if ( toString.call(checkSet) === "[object Array]" ) {
         if ( !prune ) {
             results.push.apply( results, checkSet );
@@ -1596,7 +1640,7 @@ var Sizzle = function(selector, context, results, seed) {
             }
         } else {
             for ( var i = 0; checkSet[i] != null; i++ ) {
-                if ( checkSet[i] && checkSet[i].nodeType === 1 ) {
+                if ( checkSet[i] && checkSet[i].nodeType === 1 ) { // 确保是元素
                     results.push( set[i] );
                 }
             }
@@ -1604,7 +1648,7 @@ var Sizzle = function(selector, context, results, seed) {
     } else {
         makeArray( checkSet, results );
     }
-
+    // 递归调用Sizzle
     if ( extra ) {
         Sizzle( extra, context, results, seed );
     }
@@ -1619,28 +1663,37 @@ Sizzle.matches = function(expr, set){
 Sizzle.find = function(expr, context){
     var set, match;
 
-    if ( !expr ) {
+    if ( !expr ) { // 空字符串，返回空数组
         return [];
     }
 
     for ( var i = 0, l = Expr.order.length; i < l; i++ ) {
-        var type = Expr.order[i], match;
-        
+        var type = Expr.order[i], match; // 按照"ID", "NAME", "TAG"顺序执行
+        // 可以想象
+        // id的正则是 /#((?:[\w\u00c0-\uFFFF_-]|\\.)+)/，匹配上，exec返回数组，否则返回null
         if ( (match = Expr.match[ type ].exec( expr )) ) {
+            // 不是一步到位
+            // 非标准
+            // var re = /world/g;
+            // re.test('hello world!');
+            // RegExp.leftContext; // "hello " 含有最新匹配的左侧字符串
             var left = RegExp.leftContext;
-
+            // str.substr(start[, length])
+            // 排除" \\#id"或"\\#id"
             if ( left.substr( left.length - 1 ) !== "\\" ) {
+                // 把\去掉，"\id" 转为 id
                 match[1] = (match[1] || "").replace(/\\/g, "");
                 set = Expr.find[ type ]( match, context );
                 if ( set != null ) {
+                    // 将匹配上的那部分选择器去掉
                     expr = expr.replace( Expr.match[ type ], "" );
                     break;
                 }
             }
         }
     }
-
     if ( !set ) {
+        // 返回所有后代
         set = context.getElementsByTagName("*");
     }
 
@@ -1652,19 +1705,37 @@ Sizzle.filter = function(expr, set, inplace, not){
 
     while ( expr && set.length ) {
         for ( var type in Expr.filter ) {
-            if ( (match = Expr.match[ type ].exec( expr )) != null ) {
+        // Expr.filter的键值对
+        // CHILD: function(elem, match)
+        // POSUDO: function(elem, match)
+        // ID: function(elem, match)
+        // TAG: function(elem, match)
+        // CLASS: function(elem, match)
+        // ATTR: function(elem, match)
+        // POS: function(elem, match, i, array)
+            // 为何少NAME
+            if ( (match = Expr.match[ type ].exec( expr )) != null ) { // natch为数组
                 var filter = Expr.filter[ type ], goodArray = null, goodPos = 0, found, item;
                 anyFound = false;
 
-                if ( curLoop == result ) {
+                if ( curLoop == result ) { // [] != [] 是bug?
                     result = [];
                 }
-
+                // 修复一下选择器
                 if ( Expr.preFilter[ type ] ) {
+                // preFilter的键值对
+                // CLASS: function(match, curLoop, inplace, result, not)
+                // ID: function(match)
+                // TAG: function(match, curLoop)
+                // CHILD: function(match)
+                // ATTR: function(match)
+                // PSEUDO: function(match, curLoop, inplace, result, not)
+                // POS: function(match)
+                    
                     match = Expr.preFilter[ type ]( match, curLoop, inplace, result, not );
 
-                    if ( !match ) {
-                        anyFound = found = true;
+                    if ( !match ) { // 如果返回false
+                        anyFound = found = true; // 将anyFound、found置位true
                     } else if ( match === true ) {
                         continue;
                     } else if ( match[0] === true ) {
@@ -1680,12 +1751,13 @@ Sizzle.filter = function(expr, set, inplace, not){
                 }
 
                 if ( match ) {
+                    // curLoop是要过滤的元素集合
                     for ( var i = 0; (item = curLoop[i]) !== undefined; i++ ) {
                         if ( item ) {
                             if ( goodArray && item != goodArray[goodPos] ) {
                                 goodPos++;
                             }
-    
+                            // 检测元素是否符合要求
                             found = filter( item, match, goodPos, goodArray );
                             var pass = not ^ !!found;
 
@@ -1696,7 +1768,7 @@ Sizzle.filter = function(expr, set, inplace, not){
                                     curLoop[i] = false;
                                 }
                             } else if ( pass ) {
-                                result.push( item );
+                                result.push( item ); // 符合就放入结果数组中
                                 anyFound = true;
                             }
                         }
@@ -1705,9 +1777,10 @@ Sizzle.filter = function(expr, set, inplace, not){
 
                 if ( found !== undefined ) {
                     if ( !inplace ) {
+                        // 将过滤完的集合重新赋给curLoop
                         curLoop = result;
                     }
-
+                    // 移除用户输入字符串匹配的那一部分
                     expr = expr.replace( Expr.match[ type ], "" );
 
                     if ( !anyFound ) {
@@ -1722,6 +1795,7 @@ Sizzle.filter = function(expr, set, inplace, not){
         expr = expr.replace(/\s*,\s*/, "");
 
         // Improper expression
+        // 不恰当表达式
         if ( expr == old ) {
             if ( anyFound == null ) {
                 throw "Syntax error, unrecognized expression: " + expr;
@@ -1736,8 +1810,11 @@ Sizzle.filter = function(expr, set, inplace, not){
     return curLoop;
 };
 
+// 用于加工、过滤、筛选和简单查找
+// 先用ID,NAME,TAG查找，没找到就找上下文所有的元素，然后在过滤，所以过滤函数特别多
 var Expr = Sizzle.selectors = {
     order: [ "ID", "NAME", "TAG" ],
+    // 与下面的filter对应，匹配上了，则用filter对应的函数去过滤
     match: {
         ID: /#((?:[\w\u00c0-\uFFFF_-]|\\.)+)/,
         CLASS: /\.((?:[\w\u00c0-\uFFFF_-]|\\.)+)/,
@@ -1749,15 +1826,18 @@ var Expr = Sizzle.selectors = {
         POS: /:(nth|eq|gt|lt|first|last|even|odd)(?:\((\d*)\))?(?=[^-]|$)/,
         PSEUDO: /:((?:[\w\u00c0-\uFFFF_-]|\\.)+)(?:\((['"]*)((?:\([^\)]+\)|[^\2\(\)]*)+)\2\))?/
     },
-    attrMap: { // 一些属性不能直接取html的名字，需要用其在js中的属性
+    attrMap: { // 一些属性不能直接取html的名字，需要用其在js中的属性（因为Sizzle是独立的，所以这里又定义了一遍）
         "class": "className",
         "for": "htmlFor"
     },
     attrHandle: {
+        // 下面还会重写
         href: function(elem){
             return elem.getAttribute("href");
         }
     },
+    // + ~ "" > 
+    // 组合选择器就这四种
     relative: {
         // 相邻选择器
         "+": function(checkSet, part){
@@ -1778,7 +1858,7 @@ var Expr = Sizzle.selectors = {
                 Sizzle.filter( part, checkSet, true );
             }
         },
-        // 亲自选择器
+        // 亲子选择器
         ">": function(checkSet, part, isXML){
             if ( typeof part === "string" && !/\W/.test(part) ) {
                 part = isXML ? part : part.toUpperCase();
@@ -1813,10 +1893,10 @@ var Expr = Sizzle.selectors = {
                 var nodeCheck = part = isXML ? part : part.toUpperCase();
                 checkFn = dirNodeCheck;
             }
-
+            // nodeCheck在checkFn中没用到
             checkFn("parentNode", part, doneName, checkSet, nodeCheck, isXML);
         },
-        // 兄长选择器
+        // 通用兄弟选择器
         "~": function(checkSet, part, isXML){
             var doneName = "done" + (done++), checkFn = dirCheck;
 
@@ -1828,11 +1908,13 @@ var Expr = Sizzle.selectors = {
             checkFn("previousSibling", part, doneName, checkSet, nodeCheck, isXML);
         }
     },
+    // 简单的查找
+    // 只有这三个能用，后面若浏览器支持getElementsByClassName，则在ID后面加上CLASS
     find: {
         ID: function(match, context){
             if ( context.getElementById ) {
                 var m = context.getElementById(match[1]);
-                return m ? [m] : []; // 只有一个也放入数组
+                return m ? [m] : []; // 只有一个也放入数组，与下面的NAME、TAG保持一致
             }
         },
         NAME: function(match, context){
@@ -1842,11 +1924,14 @@ var Expr = Sizzle.selectors = {
             return context.getElementsByTagName(match[1]);
         }
     },
+    // 对字符串进行调整，好让选择器能找到元素
+    // 几乎都返回字符串
     preFilter: {
         CLASS: function(match, curLoop, inplace, result, not){
             match = " " + match[1].replace(/\\/g, "") + " ";
 
             for ( var i = 0; curLoop[i]; i++ ) {
+                // 相当于hasClass
                 if ( not ^ (" " + curLoop[i].className + " ").indexOf(match) >= 0 ) {
                     if ( !inplace )
                         result.push( curLoop[i] );
@@ -1857,7 +1942,9 @@ var Expr = Sizzle.selectors = {
 
             return false;
         },
+
         ID: function(match){
+            // 处理\ 如 #dd\\aa -> ddaa
             return match[1].replace(/\\/g, "");
         },
         TAG: function(match, curLoop){
@@ -1867,6 +1954,7 @@ var Expr = Sizzle.selectors = {
         CHILD: function(match){
             if ( match[1] == "nth" ) {
                 // parse equations like 'even', 'odd', '5', '2n', '3n+2', '4n-1', '-n+6'
+                // 解析“偶数”、“奇数”、“5”、“2n”、“3n+2”、“4n-1”、“-n+6”等公式
                 var test = /(-?)(\d*)n((?:\+|-)?\d*)/.exec(
                     match[2] == "even" && "2n" || match[2] == "odd" && "2n+1" ||
                     !/\D/.test( match[2] ) && "0n+" + match[2] || match[2]);
@@ -1883,11 +1971,11 @@ var Expr = Sizzle.selectors = {
         },
         ATTR: function(match){
             var name = match[1];
-            
+            // 重置属性名，例如将class改为className
             if ( Expr.attrMap[name] ) {
                 match[1] = Expr.attrMap[name];
             }
-
+            // [attr~=value] 空格为分隔，至少匹配一个
             if ( match[2] === "~=" ) {
                 match[4] = " " + match[4] + " ";
             }
@@ -1917,7 +2005,7 @@ var Expr = Sizzle.selectors = {
             return match;
         }
     },
-    filters: { // 都返回布尔值
+    filters: { // 都返回布尔值，猜测是过滤函数
         enabled: function(elem){
             // 不能为隐藏域
             return elem.disabled === false && elem.type !== "hidden";
@@ -1935,6 +2023,7 @@ var Expr = Sizzle.selectors = {
             return elem.selected === true;
         },
         parent: function(elem){
+            // 父节点肯定有孩子
             return !!elem.firstChild;
         },
         empty: function(elem){
@@ -2005,6 +2094,7 @@ var Expr = Sizzle.selectors = {
             return match[3] - 0 == i;
         }
     },
+    // 对查找到的元素集合进行筛选
     filter: {
         CHILD: function(elem, match){
             var type = match[1], parent = elem.parentNode;
@@ -2106,11 +2196,13 @@ var Expr = Sizzle.selectors = {
         }
     }
 };
-
+// 重写Expr.match正则，让其更严谨
+// ID为例 Expr.match.ID.exec('#aabb]')不行, 但#aa[bb]可以
 for ( var type in Expr.match ) {
     Expr.match[ type ] = RegExp( Expr.match[ type ].source + /(?![^\[]*\])(?![^\(]*\))/.source );
 }
 
+// 将array转为数组，并放入结果集
 var makeArray = function(array, results) {
     array = Array.prototype.slice.call( array );
 
@@ -2121,7 +2213,7 @@ var makeArray = function(array, results) {
     
     return array;
 };
-
+// 若不能通过slice将NodeList转为数组，重写makeArray
 // Perform a simple check to determine if the browser is capable of
 // converting a NodeList to an array using builtin methods.
 try {
@@ -2129,6 +2221,7 @@ try {
 
 // Provide a fallback method if it does not work
 } catch(e){
+    // 将array中元素一个一个搬入一个数组中
     makeArray = function(array, results) {
         var ret = results || [];
 
@@ -2150,21 +2243,28 @@ try {
     };
 }
 
+// 接下来对getElementById、getElementsByTagName、querySelectorAll 、getElementsByClassName进行调整
+
 // Check to see if the browser returns elements by name when
 // querying by getElementById (and provide a workaround)
+// ie中getElementById(xxx)有个bug，他会找到第一个name或id等于xxx的元素
+// 尤其在form中，通常都有name
 (function(){
     // We're going to inject a fake input element with a specified name
+    
     var form = document.createElement("form"),
         id = "script" + (new Date).getTime();
     form.innerHTML = "<input name='" + id + "'/>";
 
     // Inject it into the root element, check its status, and remove it quickly
+    // 注入根元素，检查其状态，并快速移除
     var root = document.documentElement;
     root.insertBefore( form, root.firstChild );
 
     // The workaround has to do additional checks after a getElementById
     // Which slows things down for other browsers (hence the branching)
     if ( !!document.getElementById( id ) ) {
+        // 找的不对，怎么补救，没看懂
         Expr.find.ID = function(match, context){
             if ( context.getElementById ) {
                 var m = context.getElementById(match[1]);
@@ -2191,15 +2291,17 @@ try {
 
     // Make sure no comments are found
     if ( div.getElementsByTagName("*").length > 0 ) {
+        // 重写Expr.find.TAG
         Expr.find.TAG = function(match, context){
             var results = context.getElementsByTagName(match[1]);
 
             // Filter out possible comments
+            // 过滤非元素节点
             if ( match[1] === "*" ) {
                 var tmp = [];
 
                 for ( var i = 0; results[i]; i++ ) {
-                    if ( results[i].nodeType === 1 ) {
+                    if ( results[i].nodeType === 1 ) { // 过滤元素节点
                         tmp.push( results[i] );
                     }
                 }
@@ -2212,14 +2314,16 @@ try {
     }
 
     // Check to see if an attribute returns normalized href attributes
+    // ie会返回绝对路径
     div.innerHTML = "<a href='#'></a>";
     if ( div.firstChild.getAttribute("href") !== "#" ) {
+        // 重写Expr.attrHandle.href
         Expr.attrHandle.href = function(elem){
             return elem.getAttribute("href", 2);
         };
     }
 })();
-
+// 如果支持querySelectorAll，重载Sizzle引擎，效率最高
 if ( document.querySelectorAll ) (function(){
     var oldSizzle = Sizzle;
     
@@ -2240,7 +2344,7 @@ if ( document.querySelectorAll ) (function(){
     Sizzle.selectors = oldSizzle.selectors;
     Sizzle.matches = oldSizzle.matches;
 })();
-
+// 如果支持getElementsByClassName，利用起来，加入Expr.find
 if ( document.documentElement.getElementsByClassName ) {
     Expr.order.splice(1, 0, "CLASS");
     Expr.find.CLASS = function(match, context) {
@@ -2248,6 +2352,8 @@ if ( document.documentElement.getElementsByClassName ) {
     };
 }
 
+// 这东西用于后代选择器和通用兄弟选择器，即找到符合的祖先或兄长元素
+// checkSet是元素集合，doneName是数字
 function dirNodeCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
     for ( var i = 0, l = checkSet.length; i < l; i++ ) {
         var elem = checkSet[i];
@@ -2278,6 +2384,7 @@ function dirNodeCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
     }
 }
 
+// 与上面方法类似
 function dirCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
     for ( var i = 0, l = checkSet.length; i < l; i++ ) {
         var elem = checkSet[i];
@@ -2315,12 +2422,13 @@ function dirCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
     }
 }
 
+// a包含b
 var contains = document.compareDocumentPosition ?  function(a, b){
     return a.compareDocumentPosition(b) & 16;
 } : function(a, b){
     return a !== b && (a.contains ? a.contains(b) : true);
 };
-
+// check if an element is in a (or is an) XML document
 var isXML = function(elem){
     return elem.documentElement && !elem.body ||
         elem.tagName && elem.ownerDocument && !elem.ownerDocument.body;
@@ -2328,10 +2436,14 @@ var isXML = function(elem){
 
 // EXPOSE
 jQuery.find = Sizzle;
+
 jQuery.filter = Sizzle.filter;
+// Sizzle.selectors中的属性：order、match、attrMap、attrHandle、relative、find、preFilter、filters、setFilters、filter
 jQuery.expr = Sizzle.selectors;
+// 重命名，以:开头伪类，许多都是自定义的
 jQuery.expr[":"] = jQuery.expr.filters;
 
+// 增加两个伪类:hidden和:visible
 Sizzle.selectors.filters.hidden = function(elem){
     return "hidden" === elem.type ||
         jQuery.css(elem, "display") === "none" ||
@@ -2343,7 +2455,7 @@ Sizzle.selectors.filters.visible = function(elem){
         jQuery.css(elem, "display") !== "none" &&
         jQuery.css(elem, "visibility") !== "hidden";
 };
-
+// :animated 运动中
 Sizzle.selectors.filters.animated = function(elem){
     return jQuery.grep(jQuery.timers, function(fn){
         return elem === fn.elem;
@@ -2357,7 +2469,7 @@ jQuery.multiFilter = function( expr, elems, not ) {
 
     return Sizzle.matches(expr, elems);
 };
-
+// 把路径上的元素放到结果中，dir为parentNode,previousSibling,nextSibling
 jQuery.dir = function( elem, dir ){
     var matched = [], cur = elem[dir];
     while ( cur && cur != document ) {
@@ -2367,7 +2479,8 @@ jQuery.dir = function( elem, dir ){
     }
     return matched;
 };
-
+// 内部调用result都为2，dir为nextSibling或previousSibling
+// 用于子元素过滤
 jQuery.nth = function(cur, result, dir, elem){
     result = result || 1;
     var num = 0;
@@ -2379,6 +2492,7 @@ jQuery.nth = function(cur, result, dir, elem){
     return cur;
 };
 
+// 查找不等于elem的兄弟元素节点
 jQuery.sibling = function(n, elem){
     var r = [];
 

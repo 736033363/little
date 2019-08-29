@@ -13,10 +13,20 @@
 </head>
 <body>
 
-<div>div<div class='a'>div1 <div>div2</div></div></div>
+<article>
+  <section><p>1</p></section>
+  <section><p>2</p></section>
+</article>
+<div class='f-fl' style='opacity:.6;background-color:red;'>div<div class='a'>div1 <div>div2</div></div></div>
 
-<select name="" id="">
+<select name="" id="a">
   <option value="aaa">111</option>
+  <option value="">222</option>
+  <option >333</option>
+  <option ></option>
+</select>
+<select name="" id="ddaa">
+  <option value="aaa">444</option>
   <option value="">222</option>
   <option >333</option>
   <option ></option>
@@ -28,15 +38,19 @@
   <script src='../js/jquery-1.3.0.js'></script>
   <!-- <script src='../js/jqueryv172.js'></script> -->
   <script>
-var el = $('body'),
-    el2 = $('option');
+var el = $('body');
 
-    el[0].addEventListener('click', function(evt){
-      var t = evt.target;
-      debugger
-      t.classList.toggle('aaa'); 
+debugger
+// el.find('section:first > p');
 
-    })
+// el.find(`#div , h1#id\\
+// dd.class > span[dd='22222 > 3233'] ul+ li, .class:contain(\\"你的+ 999\\"),strong span `);
+
+// el.find('#dd\\aa');
+// var els = el.find('article section,section')
+var els = el.find('select > [value=aaa]')
+// alert(els.size())
+// $('article.a section,section')
   </script>
 </body>
 </html>

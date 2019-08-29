@@ -1409,6 +1409,7 @@ var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^[\]]*\]|[^[\]]+)+\]|\\.|[
 	toString = Object.prototype.toString;
 
 var Sizzle = function(selector, context, results, seed) {
+	
 	results = results || [];
 	context = context || document;
 
@@ -1432,7 +1433,7 @@ var Sizzle = function(selector, context, results, seed) {
 			break;
 		}
 	}
-
+debugger
 	if ( parts.length > 1 && Expr.match.POS.exec( selector ) ) {
 		if ( parts.length === 2 && Expr.relative[ parts[0] ] ) {
 			var later = "", match;
@@ -1597,6 +1598,7 @@ Sizzle.filter = function(expr, set, inplace, not){
 				if ( match ) {
 					for ( var i = 0; (item = curLoop[i]) !== undefined; i++ ) {
 						if ( item ) {
+
 							if ( goodArray && item != goodArray[goodPos] ) {
 								goodPos++;
 							}
@@ -1653,6 +1655,7 @@ Sizzle.filter = function(expr, set, inplace, not){
 
 var Expr = Sizzle.selectors = {
 	order: [ "ID", "NAME", "TAG" ],
+	
 	match: {
 		ID: /#((?:[\w\u00c0-\uFFFF_-]|\\.)+)/,
 		CLASS: /\.((?:[\w\u00c0-\uFFFF_-]|\\.)+)/,
@@ -1668,10 +1671,12 @@ var Expr = Sizzle.selectors = {
 		"for": "htmlFor"
 	},
 	attrHandle: {
+
 		href: function(elem){
 			return elem.getAttribute("href");
 		}
 	},
+	// 组合选择器就这四种
 	relative: {
 		"+": function(checkSet, part){
 			for ( var i = 0, l = checkSet.length; i < l; i++ ) {
@@ -1752,6 +1757,8 @@ var Expr = Sizzle.selectors = {
 			return context.getElementsByTagName(match[1]);
 		}
 	},
+	
+
 	preFilter: {
 		CLASS: function(match, curLoop, inplace, result, not){
 			match = " " + match[1].replace(/\\/g, "") + " ";
@@ -1768,6 +1775,7 @@ var Expr = Sizzle.selectors = {
 			return false;
 		},
 		ID: function(match){
+
 			return match[1].replace(/\\/g, "");
 		},
 		TAG: function(match, curLoop){
@@ -2131,6 +2139,7 @@ if ( document.querySelectorAll ) (function(){
 	var oldSizzle = Sizzle;
 	
 	Sizzle = function(query, context, extra, seed){
+		
 		context = context || document;
 
 		if ( !seed && context.nodeType === 9 ) {

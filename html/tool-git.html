@@ -78,6 +78,7 @@ h2,h3,.m-list1,hr{margin-bottom:10px;}
 
 <h3 id='Feature分支'>Feature分支</h3>
 <div class="f-pre f-mb10">  $ git branch -D 分支名
+  $ git branch -r 查看远程分支
 </div>
 
 <h3 id='多人协作'>多人协作</h3>
@@ -157,6 +158,39 @@ Git提交记住用户名和密码（需验证）
 
     查看关联分支 git branch -vv
   </li>
+
+  <li class="f-pre">
+场景：在gitlib上我fork一个项目，目前是在x.8.5上开发，这些天新建的x.8.6，我在本地查看x.8.5的远程分支，没看到8.1.6，但在gitlib上看到主项目有8.1.6，这个证明主项目新建的分支不会主动同步到子分支，现在有个bug需要在8.1.5上改，8.1.6也得改，怎么做？
+
+  git pull git@xx.xx.xx.xx:username/projectName.git x.1.6:x.1.6 弄到本地
+  git push origin x.1.6 推送到远程
+  接下来就同x.1.5上一样了
+
+  </li>
+
+  <li class="f-pre">
+场景：有个小bug需要在x.1.5和x.1.6上修改，最后在gitlib上发起请求时，发现x.1.6中只有我的修改，但x.1.5却有别人的修改。原因不太明了
+
+  本地回退到我的上一个功能版本，强制push上我的远程（reset后要强制）
+  修改代码，commit后拉取远程
+  推送
+  </li>
+
+  <li class="f-pre">
+场景：查看某文件的某一行是否是自己添加的
+
+    git blame -L 500,+10 file
+  </li>
+
+  <li class="f-pre">
+场景：同一个bug需要在新旧版本（2个分支）上修复，如何保证只写一次代码？
+
+  使用git stash即可   
+
+  <a href="https://juejin.im/post/5a7a5860f265da4e8409175c">git apply</a> 好像也可以 
+  </li>
+
+  <li class="f-pre"></li>
 </ul>
 <!--
 <a href="https://www.cnblogs.com/patchouli/p/6511251.html" target="_blank">github 中fork的使用</a>
