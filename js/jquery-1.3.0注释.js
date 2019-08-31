@@ -1812,8 +1812,7 @@ Sizzle.filter = function(expr, set, inplace, not){
     return curLoop;
 };
 
-// 用于加工、筛选过滤和简单查找
-// 先用ID,NAME,TAG查找，没找到就找上下文所有的元素，然后在过滤，所以过滤函数特别多
+// 用于加工、筛选过滤和简单查找（先用ID,NAME,TAG查找，没找到就找上下文所有的元素，然后在过滤，所以过滤函数特别多）
 var Expr = Sizzle.selectors = {
     order: [ "ID", "NAME", "TAG" ],
     // 与下面的filter对应，匹配上了，则用filter对应的函数去过滤
