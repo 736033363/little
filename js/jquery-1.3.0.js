@@ -1722,6 +1722,7 @@ var Expr = Sizzle.selectors = {
 				}
 			}
 		},
+		
 		"": function(checkSet, part, isXML){
 			var doneName = "done" + (done++), checkFn = dirCheck;
 

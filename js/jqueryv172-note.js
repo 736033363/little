@@ -4884,6 +4884,7 @@ var sortOrder, siblingCheck;
 if ( document.documentElement.compareDocumentPosition ) {
 	sortOrder = function( a, b ) {
 		if ( a === b ) {
+			// 相同节点
 			hasDuplicate = true;
 			return 0;
 		}
@@ -4891,7 +4892,7 @@ if ( document.documentElement.compareDocumentPosition ) {
 		if ( !a.compareDocumentPosition || !b.compareDocumentPosition ) {
 			return a.compareDocumentPosition ? -1 : 1;
 		}
-
+		// a在b前面
 		return a.compareDocumentPosition(b) & 4 ? -1 : 1;
 	};
 
@@ -4903,6 +4904,7 @@ if ( document.documentElement.compareDocumentPosition ) {
 			return 0;
 
 		// Fallback to using sourceIndex (in IE) if it's available on both nodes
+		// ie sourceIndex返回元素在NodeList中的位置
 		} else if ( a.sourceIndex && b.sourceIndex ) {
 			return a.sourceIndex - b.sourceIndex;
 		}
@@ -5339,7 +5341,7 @@ Sizzle.isXML = function( elem ) {
 
 	return documentElement ? documentElement.nodeName !== "HTML" : false;
 };
-
+// 处理伪类中子节点过滤
 var posProcess = function( selector, context, seed ) {
 	var match,
 		tmpSet = [],

@@ -171,7 +171,7 @@ Git提交记住用户名和密码（需验证）
   <li class="f-pre">
 场景：有个小bug需要在x.1.5和x.1.6上修改，最后在gitlib上发起请求时，发现x.1.6中只有我的修改，但x.1.5却有别人的修改。原因不太明了
 
-  本地回退到我的上一个功能版本，强制push上我的远程（reset后要强制）
+  本地回退到我的上一个功能版本，强制push（...push -f...）上我的远程（reset后要强制）
   修改代码，commit后拉取远程
   推送
   </li>
@@ -188,6 +188,12 @@ Git提交记住用户名和密码（需验证）
   使用git stash即可   
 
   <a href="https://juejin.im/post/5a7a5860f265da4e8409175c">git apply</a> 好像也可以 
+  </li>
+
+  <li class="f-pre">
+场景：将a分支下的4个bug合并到b和c分支中？
+
+  reset到第一个bug，利用git diff HEAD^ > bug1.patch，如此循环，就生成4个bugN.patch，然后stash；然后来到a分支，先下载代码，提交到远程，发起合并，确保没有merge的代码，然后在a分支下导出git apply bug1.patch，最后利用git rm -f bug*.patch删除patch文件，最后提交即可；b分支也类似；
   </li>
 
   <li class="f-pre"></li>

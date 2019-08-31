@@ -1628,7 +1628,7 @@ var Sizzle = function(selector, context, results, seed) {
     if ( !checkSet ) {
         throw "Syntax error, unrecognized expression: " + (cur || selector);
     }
-    // 将NodeList数组华，并放入结果集中
+    // 将NodeList数组化，并放入结果集中
     if ( toString.call(checkSet) === "[object Array]" ) {
         if ( !prune ) {
             results.push.apply( results, checkSet );
@@ -1660,6 +1660,7 @@ Sizzle.matches = function(expr, set){
     return Sizzle(expr, null, null, set);
 };
 
+// 通过id, name, tag顺序查找，若没有找到，直接返回所有子元素，所以jQuery中有许多过滤的方法
 Sizzle.find = function(expr, context){
     var set, match;
 
@@ -1700,6 +1701,7 @@ Sizzle.find = function(expr, context){
     return {set: set, expr: expr};
 };
 
+// 对查找到的集合进一步过滤
 Sizzle.filter = function(expr, set, inplace, not){
     var old = expr, result = [], curLoop = set, match, anyFound;
 
@@ -1713,7 +1715,7 @@ Sizzle.filter = function(expr, set, inplace, not){
         // CLASS: function(elem, match)
         // ATTR: function(elem, match)
         // POS: function(elem, match, i, array)
-            // 为何少NAME
+            // 为何少NAME，难道不需要过滤
             if ( (match = Expr.match[ type ].exec( expr )) != null ) { // natch为数组
                 var filter = Expr.filter[ type ], goodArray = null, goodPos = 0, found, item;
                 anyFound = false;
@@ -1810,7 +1812,7 @@ Sizzle.filter = function(expr, set, inplace, not){
     return curLoop;
 };
 
-// 用于加工、过滤、筛选和简单查找
+// 用于加工、筛选过滤和简单查找
 // 先用ID,NAME,TAG查找，没找到就找上下文所有的元素，然后在过滤，所以过滤函数特别多
 var Expr = Sizzle.selectors = {
     order: [ "ID", "NAME", "TAG" ],
@@ -2314,7 +2316,7 @@ try {
     }
 
     // Check to see if an attribute returns normalized href attributes
-    // ie会返回绝对路径
+    // 处理href，如果第二个参数，ie返回绝对路径
     div.innerHTML = "<a href='#'></a>";
     if ( div.firstChild.getAttribute("href") !== "#" ) {
         // 重写Expr.attrHandle.href
@@ -2441,6 +2443,7 @@ jQuery.filter = Sizzle.filter;
 // Sizzle.selectors中的属性：order、match、attrMap、attrHandle、relative、find、preFilter、filters、setFilters、filter
 jQuery.expr = Sizzle.selectors;
 // 重命名，以:开头伪类，许多都是自定义的
+// 注释掉好像没影响
 jQuery.expr[":"] = jQuery.expr.filters;
 
 // 增加两个伪类:hidden和:visible
