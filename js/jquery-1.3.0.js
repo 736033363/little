@@ -1433,7 +1433,7 @@ var Sizzle = function(selector, context, results, seed) {
 			break;
 		}
 	}
-debugger
+
 	if ( parts.length > 1 && Expr.match.POS.exec( selector ) ) {
 		if ( parts.length === 2 && Expr.relative[ parts[0] ] ) {
 			var later = "", match;
@@ -2335,6 +2335,7 @@ jQuery.event = {
 			handler.guid = this.guid++;
 
 		// if data is passed, bind to handler
+		
 		if ( data !== undefined ) {
 			// Create temporary function pointer to original handler
 			var fn = handler;
@@ -2349,6 +2350,7 @@ jQuery.event = {
 		// Init the element's event structure
 		var events = jQuery.data(elem, "events") || jQuery.data(elem, "events", {}),
 			handle = jQuery.data(elem, "handle") || jQuery.data(elem, "handle", function(){
+				
 				// Handle the second event of a trigger and when
 				// an event is called after a page has unloaded
 				return typeof jQuery !== "undefined" && !jQuery.event.triggered ?
@@ -2406,6 +2408,7 @@ jQuery.event = {
 
 	// Detach an event or set of events from an element
 	remove: function(elem, types, handler) {
+		
 		// don't do events on text and comment nodes
 		if ( elem.nodeType == 3 || elem.nodeType == 8 )
 			return;
@@ -2476,6 +2479,7 @@ jQuery.event = {
 
 	// bubbling is internal
 	trigger: function( event, data, elem, bubbling ) {
+		
 		// Event object or event type
 		var type = event.type || event;
 
@@ -2811,6 +2815,7 @@ jQuery.fn.extend({
 			var event = jQuery.Event(type);
 			event.preventDefault();
 			event.stopPropagation();
+			
 			jQuery.event.trigger( event, data, this[0] );
 			return event.result;
 		}		
@@ -2928,6 +2933,7 @@ jQuery.extend({
 var readyBound = false;
 
 function bindReady(){
+	
 	if ( readyBound ) return;
 	readyBound = true;
 

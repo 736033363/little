@@ -3338,9 +3338,9 @@ jQuery.event = {
 	// Includes some event props shared by KeyEvent and MouseEvent
 	// *** attrChange attrName relatedNode srcElement  are not normalized, non-W3C, deprecated, will be removed in 1.8 ***
 	props: "attrChange attrName relatedNode srcElement altKey bubbles cancelable ctrlKey currentTarget eventPhase metaKey relatedTarget shiftKey target timeStamp view which".split(" "),
-
+	// 给插件的钩子
 	fixHooks: {},
-
+	// 内部只做了keyHooks和mouseHooks钩子
 	keyHooks: {
 		props: "char charCode key keyCode".split(" "),
 		filter: function( event, original ) {
@@ -3421,7 +3421,8 @@ jQuery.event = {
 
 		return fixHook.filter? fixHook.filter( event, originalEvent ) : event;
 	},
-
+	// 用于修正个别事件
+	// 现在允许这些事件通过setup等接口实现DOM事件的各种行为
 	special: {
 		ready: {
 			// Make sure the ready event is setup

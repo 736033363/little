@@ -196,6 +196,11 @@ Git提交记住用户名和密码（需验证）
   reset到第一个bug，利用git diff HEAD^ > bug1.patch，如此循环，就生成4个bugN.patch，然后stash；然后来到a分支，先下载代码，提交到远程，发起合并，确保没有merge的代码，然后在a分支下导出git apply bug1.patch，最后利用git rm -f bug*.patch删除patch文件，最后提交即可；b分支也类似；
   </li>
 
+  <li class="f-pre">
+场景：项目推送到github失败
+
+  第二天好了    
+  </li>
   <li class="f-pre"></li>
 </ul>
 <!--

@@ -23,5 +23,40 @@ aaron jQuery
 知乎 完全理解jQuery源代码，在前端行业算什么水平？
     https://www.zhihu.com/question/20521802
 </div>
+<!-- 
+
+## jQuery
+从
+Sizzle
+开始
+
+1-536行，完成jQuery构造函数，和第一轮jQuery对象能力的扩展
+    构造函数
+    类数组的相关方法
+    属性、样式、文本、包裹wrap、插入append/prepend/before/after、查找find、克隆clone、filter/closest/not/is/hasClass、值val、html、replaceWith、jQuery类数组的方法slice/map
+
+537-612
+    evalScript、extend
+
+613-1236 添加静态方法
+    noConflict、is系列（函数、xml、数组）、nodeName、each（被原型each方法调用）、className系列（add、remove、has）、curCSS、clean、attr、trim、数组的方法（makeArray、inArray、merge、unique、grep、map）
+
+1237-1251 废弃，用于兼容以前的jQuery
+
+1252-1513 原型能力再次扩展（添加一些查找、插入节点、删除节点、删除属性的方法）。构建缓存系统，并将缓存能力赋予原型
+    原型添加一些查找的方法（parent、parents、next、prev、nextAll、prevAll、siblings、children、contents）
+    原型添加新的接口，本质上用的是老接口（appendTo、prependTo、insertBefore、insertAfter、replaceAll）
+    添加原型方法，删除属性、增删类、删除节点、清空节点（removeAttr、addClass、removeClass、toggleClass、remove、empty）
+    给jQuery添加缓存系统，即给jQuery添加cache/data/removeData/queue/dequeue
+    将缓存能力赋予jQuery，即给原型添加方法data/removeData/queue/dequeue
+
+
+# 事件系统
+onXXX、attachEvent、addEventListener都存在一些问题
+DE的事件系统，通过onXXX实现，在当时是划时代的产物
+jQuery发端于DE的事件系统
+    事件代理
+    事件派发机制
+ -->
 </body>
 </html>
