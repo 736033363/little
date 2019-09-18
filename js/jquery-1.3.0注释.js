@@ -2892,6 +2892,8 @@ jQuery.event = {
         return proxy;
     },
     // 自定义事件
+    // jQuery.event 事件机制:http://www.kuitao8.com/20140305/2088.shtml
+    // jQuery.event自定义事件机制-jQuery.event.special范例:https://blog.csdn.net/huangxy10/article/details/40455121
     special: { 
         ready: {
             // Make sure the ready event is setup

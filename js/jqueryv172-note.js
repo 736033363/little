@@ -3456,7 +3456,7 @@ jQuery.event = {
 			}
 		}
 	},
-
+	// 
 	simulate: function( type, elem, event, bubble ) {
 		// Piggyback on a donor event to simulate a different one.
 		// Fake originalEvent to avoid donor's stopPropagation, but if the
