@@ -15,6 +15,20 @@
 <section>
     <h2>插件化</h2>
     <p>模块化是从工作流程上来说，插件化是从功能上说。</p>
+    <pre>
+    一般写法
+        (function($){
+        $.fn.extend({
+          pluginname: function(){
+            return this.each(function(){
+              $(this).text('hello');
+            });
+          }
+        });
+        }(jQuery))
+    </pre>
+    <p>jquery tools（https://www.bootcdn.cn/jquery-tools/）下载到了book文件夹中，并删除了.git文件夹</p>
+    <p>bootstrap相对于 jquery tools有三大改进，tab较dropdown更容易看懂</p>
 </section>
     </body>
 </html>

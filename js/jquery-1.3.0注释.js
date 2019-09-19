@@ -1313,7 +1313,7 @@ jQuery.each({
             state = !jQuery.className.has( this, classNames );
         jQuery.className[ state ? "add" : "remove" ]( this, classNames );
     },
-
+    // 不会把匹配的元素从jQuery对象中删除
     remove: function( selector ) {
         if ( !selector || jQuery.filter( selector, [ this ] ).length ) {
             // Prevent memory leaks

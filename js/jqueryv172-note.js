@@ -3108,6 +3108,7 @@ jQuery.event = {
 			exclusive = true;
 		}
 
+		// jquery的事件命名空间详解 https://www.cnblogs.com/lyzg/p/5347857.html
 		if ( type.indexOf( "." ) >= 0 ) {
 			// Namespaced trigger; create a regexp to match event type in handle()
 			namespaces = type.split(".");

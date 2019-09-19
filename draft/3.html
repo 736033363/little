@@ -9,41 +9,100 @@
       }
  
     </style>
-     <script src='../js/jquery-1.3.0.js'></script>
+     <!-- <script src='../js/jquery-1.3.0.js'></script> -->
+     <script src='../js/jqueryv172.js'></script>
     <script>
       $(function(){
-        $.tabs = function(obj){
-          return (this instanceof $.tabs) ? this.init.apply(this,arguments) : new $.tabs(obj)
+        $.fn.tabs2 = function(){
+          console.log('tabs2');
+        }
+        function Tabs2(el){
+          this.msg = 'msg';
+          this.el = el;
+        }
+        Tabs2.prototype = {
+          constructor: Tabs2,
+          render: function(){
+            $(this.el).html(this.msg);
+          }
+        };
+
+        function Plugin(options){
+          return this.each(function(){
+              var $this = $(this);
+              var data = $this.data('tab');
+              if (!data) {
+                var opt = $.extend(true, {}, {
+                    selectedClass:"dom_tabs_selected",
+                    tabsSelector:">dt a",
+                    panelsSelector:">dd",
+                    click_rename:$.noop,
+                    selected:0
+                  }, typeof options === 'object' ? options : {});
+                $this.data('tab', (data = new Tabs2(this)))
+              }
+              if (typeof option === 'string') {
+                data[option]();
+              }
+          });
+        }
+        var old = $.fn.tabs2;
+        $.fn.tabs2 = Plugin;
+        $.fn.tabs2.Constructor = Tabs2;
+
+        $.fn.tabs2.noConflict = function(){
+          $.fn.tabs2 = old;
+          return Plugin;
+        };
+ 
+        function clickHandler(){
+          Plugin.call($(this), 'render')
+        }
+        $(document).on('click.tab', 'p', clickHandler)
+        ///////////////////////////////////////////
+        // 去除new方式
+        // 直接调用init()方法
+        function Tabs(obj){
+          return (this instanceof Tabs) ? this.init.apply(this,arguments) : new Tabs(obj)
         }
         //主动事件 通过编程触发
         //被动事件 由用户的行为触发
-        $.tabs.prototype = {
+        // 修改tabs的原型对象
+        Tabs.prototype = {
+          // obj是用户传入的配置
           init:function(obj){
             var that = this;
-            //配置属性
+            // 把配置属性存入Tabs实例中
             $.extend(this,{
               selectedClass:"dom_tabs_selected",
               tabsSelector:">dt a",
               panelsSelector:">dd",
-              click:$.noop,
+              click_rename:$.noop,
               selected:0
             }, obj || { })
- 
+            // tabs的容器
             this.ui = $(obj.selector);
             this.tabs =  this.ui.find(this.tabsSelector);
             this.panels = this.ui.find(this.panelsSelector);
-             
+            // 选中对应的tab
             this.select(this.selected)
+            // tabs注册切换事件
             this.tabs.live("click",function(){
               var index = that.tabs.index(this);
               that._switch.call(that,index)
-              that.click.call(this,index,that);
+              // 触发用户传入的click回调
+              that.click_rename.call(this,index,that);
             });
           },
+          // 切换tab
           _switch:function(index){
+            // 选中对应的tab
             this.tabs.removeClass(this.selectedClass).eq(index).addClass(this.selectedClass);
+            // 显示相应的panel
             this.panels.hide().eq(index).show();
           },
+          // 切换tab
+          // callback(index, tab实例)
           select:function(index,callback){
             index = ~~index;
             this._switch(index);
@@ -56,32 +115,41 @@
             callback && callback.call(this.tabs[index],index,this);
           }
         }
- 
-        var tabs = $.tabs({
+        $.tabs = Tabs;
+
+        // 创建tabs
+        /*var tabs = $.tabs({
           selector:"#aaa",
           selected:1,
-          click:function(index,instance){
+          click_rename:function(index,instance){
              alert(index+"  |  "+this.tagName+" | "+instance.panels.eq(index).text())
           }
-        });
+        });*/
       });
- 
+
     </script>
   </head>
   <body>
-    <!-- <dl id="aaa">
-      <dt><a>切换卡1</a><a>切换卡2</a><a>切换卡3</a></dt>
-      <dd>内容1</dd>
-      <dd>内容2</dd>
-      <dd>内容3</dd>
-    </dl> -->
+   <!--  <dl id="aaa">
+     <dt><a>切换卡1</a><a>切换卡2</a><a>切换卡3</a></dt>
+     <dd>内容1</dd>
+     <dd>内容2</dd>
+     <dd>内容3</dd>
+   </dl> -->
+   <p>1</p>
+   <p>2</p>
+   <p>3</p>
 
-    <p></p>
-    <p></p>
-    <p></p>
+
+
+   
+
+
   </body>
   <script>
-(function($){
+  
+
+/*!function($){
 $.fn.extend({
   pluginname: function(){
     return this.each(function(){
@@ -89,9 +157,18 @@ $.fn.extend({
     });
   }
 });
-}(jQuery))
+}(jQuery)
 
-// $('p').pluginname();
+$('p').pluginname();*/
+
+/*function A(){
+  return (this instanceof A) ? this.hello() : new A();
+}
+A.prototype.hello = function(){
+  this.name = 'aaron'
+}
+
+var a = A();*/
   </script>
 </html>
 <!-- 
