@@ -16,84 +16,25 @@
         $.fn.tabs2 = function(){
           console.log('tabs2');
         }
-        function Tabs2(el){
-          this.msg = 'msg';
-          this.el = el;
+        function Tabs2(opts){
+          var that = this;
+          this.opts = opts;
+          // tabs的容器
+          this.ui = $(this);
+          this.tabs =  this.ui.find(opts.tabsSelector);
+          this.panels = this.ui.find(opts.panelsSelector);
+
+          // tabs注册切换事件
+          this.tabs.live("click", function(){
+            var index = that.tabs.index(this);
+            that._switch.call(that, index)
+            // 触发用户传入的click回调
+            that.click_rename.call(this, index, that);
+          });
+
         }
         Tabs2.prototype = {
           constructor: Tabs2,
-          render: function(){
-            $(this.el).html(this.msg);
-          }
-        };
-
-        function Plugin(options){
-          return this.each(function(){
-              var $this = $(this);
-              var data = $this.data('tab');
-              if (!data) {
-                var opt = $.extend(true, {}, {
-                    selectedClass:"dom_tabs_selected",
-                    tabsSelector:">dt a",
-                    panelsSelector:">dd",
-                    click_rename:$.noop,
-                    selected:0
-                  }, typeof options === 'object' ? options : {});
-                $this.data('tab', (data = new Tabs2(this)))
-              }
-              if (typeof option === 'string') {
-                data[option]();
-              }
-          });
-        }
-        var old = $.fn.tabs2;
-        $.fn.tabs2 = Plugin;
-        $.fn.tabs2.Constructor = Tabs2;
-
-        $.fn.tabs2.noConflict = function(){
-          $.fn.tabs2 = old;
-          return Plugin;
-        };
- 
-        function clickHandler(){
-          Plugin.call($(this), 'render')
-        }
-        $(document).on('click.tab', 'p', clickHandler)
-        ///////////////////////////////////////////
-        // 去除new方式
-        // 直接调用init()方法
-        function Tabs(obj){
-          return (this instanceof Tabs) ? this.init.apply(this,arguments) : new Tabs(obj)
-        }
-        //主动事件 通过编程触发
-        //被动事件 由用户的行为触发
-        // 修改tabs的原型对象
-        Tabs.prototype = {
-          // obj是用户传入的配置
-          init:function(obj){
-            var that = this;
-            // 把配置属性存入Tabs实例中
-            $.extend(this,{
-              selectedClass:"dom_tabs_selected",
-              tabsSelector:">dt a",
-              panelsSelector:">dd",
-              click_rename:$.noop,
-              selected:0
-            }, obj || { })
-            // tabs的容器
-            this.ui = $(obj.selector);
-            this.tabs =  this.ui.find(this.tabsSelector);
-            this.panels = this.ui.find(this.panelsSelector);
-            // 选中对应的tab
-            this.select(this.selected)
-            // tabs注册切换事件
-            this.tabs.live("click",function(){
-              var index = that.tabs.index(this);
-              that._switch.call(that,index)
-              // 触发用户传入的click回调
-              that.click_rename.call(this,index,that);
-            });
-          },
           // 切换tab
           _switch:function(index){
             // 选中对应的tab
@@ -114,17 +55,56 @@
             this.panels.eq(index).remove();
             callback && callback.call(this.tabs[index],index,this);
           }
-        }
-        $.tabs = Tabs;
+        };
 
-        // 创建tabs
-        /*var tabs = $.tabs({
-          selector:"#aaa",
-          selected:1,
+        function Plugin(opts, method){
+          // deal Plugin('select')
+          if (arguments.length == 1 && typeof opts === 'string'){
+            opts = null;
+            method = opts;
+          }
+          return this.each(function(){
+              var $this = $(this);
+              var ui = $this.data('tab');
+              if (!ui) {
+                var opts = $.extend(true, {}, {
+                    selectedClass:"dom_tabs_selected",
+                    tabsSelector:">dt a",
+                    panelsSelector:">dd",
+                    click_rename:$.noop,
+                    selected:0
+                  }, typeof opts === 'object' ? opts : {});
+                $this.data('tab', (ui = new Tabs2(opts, this)));
+
+              }
+              // 选中对应的tab
+              ui.select(ui.opts.selected);
+              if (typeof method === 'string' && typeof ui[methods] === 'function') {
+                data[method]();
+              }
+          });
+        }
+        var old = $.fn.tabs2;
+        $.fn.tabs2 = Plugin;
+        $.fn.tabs2.Constructor = Tabs2;
+
+        $.fn.tabs2.noConflict = function(){
+          $.fn.tabs2 = old;
+          return Plugin;
+        };
+ 
+        // function clickHandler(){
+        //   Plugin.call($(this), 'render')
+        // }
+        // $(document).on('click.tab', 'p', clickHandler)
+ 
+      
+       $('#aaa').tabs2({selected:1,
           click_rename:function(index,instance){
              alert(index+"  |  "+this.tagName+" | "+instance.panels.eq(index).text())
-          }
-        });*/
+          }});
+
+    
       });
 
     </script>
