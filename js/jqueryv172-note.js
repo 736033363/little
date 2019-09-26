@@ -1663,6 +1663,7 @@ jQuery.extend({
 
 	// The following elements throw uncatchable exceptions if you
 	// attempt to add expando properties to them.
+	// 这三种标签不缓存
 	noData: {
 		"embed": true,
 		// Ban all objects except for Flash (which handle expandos)
@@ -1966,7 +1967,7 @@ jQuery.fn.extend({
 		});
 	}
 });
-
+// 处理h5的data-*
 function dataAttr( elem, key, data ) {
 	// If nothing was found internally, try to fetch any
 	// data from the HTML5 data-* attribute
@@ -2040,7 +2041,7 @@ jQuery.extend({
 
 	_mark: function( elem, type ) {
 		if ( elem ) {
-			type = ( type || "fx" ) + "mark";
+			type = ( type || "fx" ) + "mark"; // 创建一个以mask为后缀的字段，记录？？个数
 			jQuery._data( elem, type, (jQuery._data( elem, type ) || 0) + 1 );
 		}
 	},
@@ -3424,6 +3425,7 @@ jQuery.event = {
 	},
 	// 用于修正个别事件
 	// 现在允许这些事件通过setup等接口实现DOM事件的各种行为
+	// special用于装载、卸载等特别事件或自定义事件
 	special: {
 		ready: {
 			// Make sure the ready event is setup
@@ -6499,6 +6501,7 @@ jQuery.extend({
 			deleteExpando = jQuery.support.deleteExpando;
 
 		for ( var i = 0, elem; (elem = elems[i]) != null; i++ ) {
+			// 代码防御
 			if ( elem.nodeName && jQuery.noData[elem.nodeName.toLowerCase()] ) {
 				continue;
 			}
@@ -6571,6 +6574,7 @@ jQuery.fn.css = function( name, value ) {
 jQuery.extend({
 	// Add in style property hooks for overriding the default
 	// behavior of getting and setting a style property
+	// cssHooks用于css属性的获取与设置
 	cssHooks: {
 		opacity: {
 			get: function( elem, computed ) {

@@ -9,146 +9,24 @@
       }
  
     </style>
-     <!-- <script src='../js/jquery-1.3.0.js'></script> -->
-     <script src='../js/jqueryv172.js'></script>
+     <script src='../js/jquery-1.3.0.js'></script>
+     <!-- <script src='../js/jqueryv172.js'></script> -->
     <script>
-      $(function(){
-        $.fn.tabs2 = function(){
-          console.log('tabs2');
-        }
-        function Tabs2(opts){
-          var that = this;
-          this.opts = opts;
-          // tabs的容器
-          this.ui = $(this);
-          this.tabs =  this.ui.find(opts.tabsSelector);
-          this.panels = this.ui.find(opts.panelsSelector);
-
-          // tabs注册切换事件
-          this.tabs.live("click", function(){
-            var index = that.tabs.index(this);
-            that._switch.call(that, index)
-            // 触发用户传入的click回调
-            that.click_rename.call(this, index, that);
-          });
-
-        }
-        Tabs2.prototype = {
-          constructor: Tabs2,
-          // 切换tab
-          _switch:function(index){
-            // 选中对应的tab
-            this.tabs.removeClass(this.selectedClass).eq(index).addClass(this.selectedClass);
-            // 显示相应的panel
-            this.panels.hide().eq(index).show();
-          },
-          // 切换tab
-          // callback(index, tab实例)
-          select:function(index,callback){
-            index = ~~index;
-            this._switch(index);
-            callback && callback.call(this.tabs[index],index,this);
-          },
-          remove:function(index,callback){
-            index = ~~index;
-            this.tabs.eq(index).remove();
-            this.panels.eq(index).remove();
-            callback && callback.call(this.tabs[index],index,this);
-          }
-        };
-
-        function Plugin(opts, method){
-          // deal Plugin('select')
-          if (arguments.length == 1 && typeof opts === 'string'){
-            opts = null;
-            method = opts;
-          }
-          return this.each(function(){
-              var $this = $(this);
-              var ui = $this.data('tab');
-              if (!ui) {
-                var opts = $.extend(true, {}, {
-                    selectedClass:"dom_tabs_selected",
-                    tabsSelector:">dt a",
-                    panelsSelector:">dd",
-                    click_rename:$.noop,
-                    selected:0
-                  }, typeof opts === 'object' ? opts : {});
-                $this.data('tab', (ui = new Tabs2(opts, this)));
-
-              }
-              // 选中对应的tab
-              ui.select(ui.opts.selected);
-              if (typeof method === 'string' && typeof ui[methods] === 'function') {
-                data[method]();
-              }
-          });
-        }
-        var old = $.fn.tabs2;
-        $.fn.tabs2 = Plugin;
-        $.fn.tabs2.Constructor = Tabs2;
-
-        $.fn.tabs2.noConflict = function(){
-          $.fn.tabs2 = old;
-          return Plugin;
-        };
- 
-        // function clickHandler(){
-        //   Plugin.call($(this), 'render')
-        // }
-        // $(document).on('click.tab', 'p', clickHandler)
- 
-      
-       $('#aaa').tabs2({selected:1,
-          click_rename:function(index,instance){
-             alert(index+"  |  "+this.tagName+" | "+instance.panels.eq(index).text())
-          }});
-
-    
-      });
+     
 
     </script>
   </head>
   <body>
-   <!--  <dl id="aaa">
-     <dt><a>切换卡1</a><a>切换卡2</a><a>切换卡3</a></dt>
-     <dd>内容1</dd>
-     <dd>内容2</dd>
-     <dd>内容3</dd>
-   </dl> -->
-   <p>1</p>
-   <p>2</p>
-   <p>3</p>
-
-
-
-   
-
-
+    <select name="select-name" id="select-id">
+      <option value="a">a-option</option>
+      <option>b-option</option>
+      <option value="">c-option &</option>
+    </select>
   </body>
   <script>
-  
+var sel = $('select')[0]
+var ops = $('option').get();
 
-/*!function($){
-$.fn.extend({
-  pluginname: function(){
-    return this.each(function(){
-      $(this).text('hello');
-    });
-  }
-});
-}(jQuery)
-
-$('p').pluginname();*/
-
-/*function A(){
-  return (this instanceof A) ? this.hello() : new A();
-}
-A.prototype.hello = function(){
-  this.name = 'aaron'
-}
-
-var a = A();*/
   </script>
 </html>
 <!-- 

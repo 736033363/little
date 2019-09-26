@@ -1,0 +1,118 @@
+<!doctype html>
+<html>
+  <head>
+    <meta charset="utf-8">
+    <title>$.tabs</title>
+    <style>
+      .dom_tabs_selected {
+        background: #6363c1;
+      }
+ 
+    </style>
+     <!-- <script src='../js/jquery-1.3.0.js'></script> -->
+     <script src='../js/jqueryv172.js'></script>
+    <script>
+      $(function(){
+        $.fn.tabs = function(){
+          console.log('tabs');
+        }
+        function Tabs(el, opts){
+          var that = this;
+          this.opts = opts;
+          // tabs的容器
+          this.ui = $(el);
+          this.tabs =  this.ui.find(opts.tabsSelector);
+          this.panels = this.ui.find(opts.panelsSelector);
+
+          // tabs注册切换事件
+          this.tabs.on("click", function(){
+            var index = that.tabs.index(this);
+            that._switch.call(that, index)
+            // 触发用户传入的click回调
+            that.opts.click.call(this, index, that);
+          });
+
+        }
+        Tabs.prototype = {
+          constructor: Tabs,
+          // 切换tab
+          _switch:function(index){
+            // 选中对应的tab
+            this.tabs.removeClass(this.opts.selectedClass).eq(index).addClass(this.opts.selectedClass);
+            // 显示相应的panel
+            this.panels.hide().eq(index).show();
+          },
+          // 切换tab
+          // callback(index, tab实例)
+          select:function(index,callback){
+            index = ~~index;
+            this._switch(index);
+            callback && callback.call(this.tabs[index],index,this);
+          },
+          remove:function(index,callback){
+            index = ~~index;
+            this.tabs.eq(index).remove();
+            this.panels.eq(index).remove();
+            callback && callback.call(this.tabs[index],index,this);
+          }
+        };
+
+        function Plugin(opts, method){
+          // deal Plugin('select')
+          if (arguments.length == 1 && typeof opts === 'string'){
+            opts = null;
+            method = opts;
+          }
+          return this.each(function(){
+              var $this = $(this);
+              var ui = $this.data('kylin.tab');
+              if (!ui) {
+                opts = $.extend(true, {}, {
+                    selectedClass:"dom_tabs_selected",
+                    tabsSelector:">dt a",
+                    panelsSelector:">dd",
+                    click:$.noop,
+                    selected:0
+                  }, typeof opts === 'object' ? opts : {});
+                $this.data('kylin.tab', (ui = new Tabs(this, opts)));
+
+              }
+              // 选中对应的tab
+              ui.select(ui.opts.selected);
+              if (typeof method === 'string' && typeof ui[methods] === 'function') {
+                data[method]();
+              }
+          });
+        }
+        var old = $.fn.tabs;
+        $.fn.tabs = Plugin;
+        $.fn.tabs.Constructor = Tabs;
+
+        $.fn.tabs.noConflict = function(){
+          $.fn.tabs = old;
+          return Plugin;
+        };
+       
+       $('#aaa').tabs({selected:1,
+          click:function(index,instance){
+             alert(index+"  |  "+this.tagName+" | "+instance.panels.eq(index).text())
+          }});
+      });
+
+    </script>
+  </head>
+  <body>
+    <dl id="aaa">
+     <dt><a>切换卡1</a><a>切换卡2</a><a>切换卡3</a></dt>
+     <dd>内容1</dd>
+     <dd>内容2</dd>
+     <dd>内容3</dd>
+   </dl>
+  </body>
+  <script>
+  </script>
+</html>
+<!-- 
+  <script src='../js/jqueryv172.js'></script>
+  <link rel="stylesheet" href="../css/css-library.css" />
+  <script src='../js/jquery-1.3.0.js'></script> -->

@@ -424,7 +424,7 @@
 
   <a href="https://developer.mozilla.org/zh-CN/docs/Web/API/Element/scrollHeight#判定元素是否滚动到底">判断元素是否滚动到底 mdn</a>
 
-  cloneNode，若为false则不克隆任何子节点
+  cloneNode，若为false则不克隆任何子节点，会克隆id，class，data-，test，elem.id，但不会复制elem.test2，也就是克隆针对标签的属性
   insertBefore(newElement, referenceElement)，如果referenceElement是null，新节点则插入parentElement末尾节点
   appendChild
 </div>

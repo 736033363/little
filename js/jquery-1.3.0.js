@@ -34,6 +34,7 @@ var
 
 jQuery.fn = jQuery.prototype = {
 	init: function( selector, context ) {
+
 		// Make sure that a selection was provided
 		selector = selector || document;
 
@@ -83,8 +84,10 @@ jQuery.fn = jQuery.prototype = {
 
 		// HANDLE: $(function)
 		// Shortcut for document ready
-		} else if ( jQuery.isFunction( selector ) )
+		} else if ( jQuery.isFunction( selector ) ){
+
 			return jQuery( document ).ready( selector );
+		}
 
 		// Make sure that old selector state is passed along
 		if ( selector.selector && selector.context ) {
@@ -2379,10 +2382,10 @@ jQuery.event = {
 			// Init the event handler queue
 			if (!handlers) {
 				handlers = events[type] = {};
-
 				// Check for a special event handler
 				// Only use addEventListener/attachEvent if the special
 				// events handler returns false
+				
 				if ( !jQuery.event.special[type] || jQuery.event.special[type].setup.call(elem, data, namespaces) === false ) {
 					// Bind the global event handler to the element
 					if (elem.addEventListener)
@@ -2789,6 +2792,7 @@ jQuery.fn.extend({
 	},
 
 	one: function( type, data, fn ) {
+
 		var one = jQuery.event.proxy( fn || data, function(event) {
 			jQuery(this).unbind(event, one);
 			return (fn || data).apply( this, arguments );
@@ -2846,6 +2850,7 @@ jQuery.fn.extend({
 	},
 
 	ready: function(fn) {
+		console.log('ready')
 		// Attach the listeners
 		bindReady();
 
@@ -2865,7 +2870,6 @@ jQuery.fn.extend({
 	live: function( type, fn ){
 		var proxy = jQuery.event.proxy( fn );
 		proxy.guid += this.selector + type;
-
 		jQuery(document).bind( liveConvert(type, this.selector), this.selector, proxy );
 
 		return this;
@@ -2908,6 +2912,7 @@ jQuery.extend({
 	readyList: [],
 	// Handle when the DOM is ready
 	ready: function() {
+
 		// Make sure that the DOM is not already loaded
 		if ( !jQuery.isReady ) {
 			// Remember that the DOM is ready
@@ -2933,7 +2938,6 @@ jQuery.extend({
 var readyBound = false;
 
 function bindReady(){
-	
 	if ( readyBound ) return;
 	readyBound = true;
 
@@ -2992,6 +2996,7 @@ jQuery.each( ("blur,focus,load,resize,scroll,unload,click,dblclick," +
 // Prevent memory leaks in IE
 // And prevent errors on refresh with events like mouseover in other browsers
 // Window isn't included so as not to unbind existing unload events
+
 jQuery( window ).bind( 'unload', function(){ 
 	for ( var id in jQuery.cache )
 		// Skip the window

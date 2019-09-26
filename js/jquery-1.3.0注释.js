@@ -6,18 +6,24 @@ var
     window = this,
     undefined,
     // 接下来要用到jQuery、$变量名，先将这两个变量的值存起来，
-    // 后面可以通过方法在将这两个变量还给window
+    // 后面可以通过方法将这两个变量还给window
     _jQuery = window.jQuery,
     _$ = window.$,
 
     jQuery = window.jQuery = window.$ = function( selector, context ) {
         // 返回一个jQuery对象
+        // $()的构造函数其实是jQuery.fn.init，下文会将构造函数的原型指定为jQuery.fn
+        // 所以$()就可以访问jQuery.fn上的属性、方法
         return new jQuery.fn.init( selector, context );
     },
 
     // 判定是否是html字符串与id
+    // 是就调用jQuery.clean()方法或document.getElementById()方法
     quickExpr = /^[^<]*(<(.|\s)+>)[^>]*$|^#([\w-]+)$/,
     // 是否是简单选择器
+    // 以任何字符开头，后面不跟着: # [ . ,
+    // 也就是不跟着id，属性，组，类等
+    // p可以，.p可以，a.p不可以
     isSimple = /^.[^:#\[\.,]*$/;
 
 jQuery.fn = jQuery.prototype = {
@@ -35,11 +41,8 @@ jQuery.fn = jQuery.prototype = {
             return this;
         }
         // 如果传入的是string
-        // 一种是html字符串或id
-        // 一种是剩余字符串的处理
         if ( typeof selector === "string" ) {
             var match = quickExpr.exec( selector );
-
             // 是html字符串或id
             if ( match && (match[1] || !context) ) {
 
@@ -68,6 +71,8 @@ jQuery.fn = jQuery.prototype = {
 
         // 著名的domReady
         } else if ( jQuery.isFunction( selector ) )
+            // $(document).ready(function(){}) 的简写
+            // $(function(){})
             return jQuery( document ).ready( selector );
 
         // Make sure that old selector state is passed along
@@ -75,7 +80,9 @@ jQuery.fn = jQuery.prototype = {
             this.selector = selector.selector;
             this.context = selector.context;
         }
-        // 确保以jQuery的类数组返回
+        // 确保jQuery返回类数组
+        // 为什么要返回对象，而不直接返回数组？这里其实是两全其美的解决方案，一方面可以使用jQuery的方法
+        // 一方面可以将其做数组使用
         return this.setArray(jQuery.makeArray(selector));
     },
 
@@ -94,7 +101,6 @@ jQuery.fn = jQuery.prototype = {
             this[ num ];
     },
 
-   
     // find(),slice(),map(),eq()等常用方法都调用了这个入栈方法
     // end()方法利用了pushStack中的prevObject
     pushStack: function( elems, name, selector ) {
@@ -102,8 +108,9 @@ jQuery.fn = jQuery.prototype = {
         var ret = jQuery( elems );
         // 将旧对象添加到堆栈中
         ret.prevObject = this;
-
+        // context可能是搜索的起点
         ret.context = this.context;
+        // 把selector标记成一个特殊的字符串，以后可能在解析成jQuery对象
         if ( name === "find" )
             ret.selector = this.selector + (this.selector ? " " : "") + selector;
         else if ( name )
@@ -135,6 +142,7 @@ jQuery.fn = jQuery.prototype = {
 
     // 非常复杂的方法
     // 通过参数类型判定是读方法，还是写方法
+    // 下面的css()也调用这里
     attr: function( name, value, type ) {
         var options = name;
         if ( typeof name === "string" )
@@ -160,7 +168,7 @@ jQuery.fn = jQuery.prototype = {
                 );
         });
     },
-
+    // 可读可写，调用了attr
     css: function( key, value ) {
         // ignore negative width and height values
         if ( (key == 'width' || key == 'height') && parseFloat(value) < 0 )
@@ -169,6 +177,7 @@ jQuery.fn = jQuery.prototype = {
     },
 
     // 与attr类似，可读可写
+    // 可以用textContent替代
     text: function( text ) {
         if ( typeof text !== "object" && text != null )
             return this.empty().append( (this[0] && this[0].ownerDocument || document).createTextNode( text ) );
@@ -293,6 +302,7 @@ jQuery.fn = jQuery.prototype = {
     // 先复制dom在复制事件
     clone: function( events ) {
         var ret = this.map(function(){
+            // IE会克隆事件，标准的不会克隆事件
             if ( !jQuery.support.noCloneEvent && !jQuery.isXMLDoc(this) ) {
                 // IE copies events bound via attachEvent when
                 // using cloneNode. Calling detachEvent on the
@@ -315,12 +325,21 @@ jQuery.fn = jQuery.prototype = {
         // Need to set the expando to null on the cloned set if it exists
         // removeData doesn't work here, IE removes it from the original as well
         // this is primarily for IE but the data expando shouldn't be copied over in any browser
+        // elem[expando]，通过原生的cloneNode克隆的元素是不会有expando属性的
+        // 这里andSelf()方法里面会给元素分配expando属性
         var clone = ret.find("*").andSelf().each(function(){
             if ( this[ expando ] !== undefined )
                 this[ expando ] = null;
         });
 
-        // 许多是后面的方法，到时再说
+        // 将元素的事件克隆，重新调用event.add方法进行注册
+        // event:{
+        //     eventType: {
+        //         1: fn1
+        //         2: fn2
+        //         ...
+        //     }
+        // }
         if ( events === true )
             this.find("*").andSelf().each(function(i){
                 if (this.nodeType == 3)
@@ -335,7 +354,8 @@ jQuery.fn = jQuery.prototype = {
         // Return the cloned set
         return ret;
     },
-    // 如果参数是函数则用jQuery.grep，否则用jQuery.multiFilter
+    // 如果参数是函数则用jQuery.grep，否则用jQuery.multiFilter（即Sizzle）
+    // jQuery.grep其实类似es中的filter
     filter: function( selector ) {
         return this.pushStack(
             jQuery.isFunction( selector ) &&
@@ -348,8 +368,10 @@ jQuery.fn = jQuery.prototype = {
             }) ), "filter", selector );
     },
     // 筛选最近的元素
+    // 与原生closest()类似
     closest: function( selector ) {
         // 判断是否用于方位的
+        // POS: /:(nth|eq|gt|lt|first|last|even|odd)(?:\((\d*)\))?(?=[^-]|$)/
         var pos = jQuery.expr.match.POS.test( selector ) ? jQuery(selector) : null;
         // 进一步筛选
         return this.map(function(){
@@ -361,11 +383,14 @@ jQuery.fn = jQuery.prototype = {
             }
         });
     },
-    // 用于反选，内部调用filter
+    // 用于反选
+    // 传入字符串其实是调用的Sizzle
+    // 内部调用filter
     not: function( selector ) {
         if ( typeof selector === "string" )
             // test special case where just one selector is passed in
             if ( isSimple.test( selector ) )
+                // true是not的标记
                 return this.pushStack( jQuery.multiFilter( selector, this, true ), "not", selector );
             else
                 selector = jQuery.multiFilter( selector, this );
@@ -376,6 +401,7 @@ jQuery.fn = jQuery.prototype = {
         });
     },
     // 添加新元素
+    // 其中jQuery.unique()会给元素分配一个id，即elem[expando]
     add: function( selector ) {
         return this.pushStack( jQuery.unique( jQuery.merge(
             this.get(),
@@ -385,7 +411,6 @@ jQuery.fn = jQuery.prototype = {
         )));
     },
     // 类似Array的some()方法
-    // 后面再讲jQuery.multiFilter
     is: function( selector ) {
         return !!selector && jQuery.multiFilter( selector, this ).length > 0;
     },
@@ -395,15 +420,16 @@ jQuery.fn = jQuery.prototype = {
     },
     // 用于获取或设置元素的value属性
     // 与attr类似，可读可写
-    // 读，特殊处理select和option
-    // 写，特殊处理slelect和radio与checkbox
+    // 方法挺长，但不复杂
     val: function( value ) {
+        // 读，特殊处理select和option
         if ( value === undefined ) {            
             var elem = this[0];
 
             if ( elem ) {
                 if( jQuery.nodeName( elem, 'option' ) )
                     // 检查属性是否有指定的值
+                    // 如果在文档中设置了属性值，则 specified 属性返回 true
                     return (elem.attributes.value || {}).specified ? elem.value : elem.text;
                 
                 // We need to handle select boxes special
@@ -418,6 +444,7 @@ jQuery.fn = jQuery.prototype = {
                         return null;
 
                     // Loop through all the selected options
+                    // 选择一个和选择多个写在一起处理
                     for ( var i = one ? index : 0, max = one ? index + 1 : options.length; i < max; i++ ) {
                         var option = options[ i ];
 
@@ -444,13 +471,16 @@ jQuery.fn = jQuery.prototype = {
 
             return undefined;
         }
-
+        // 数字转为字符串
         if ( typeof value === "number" )
             value += '';
+        // 写，特殊处理slelect和radio与checkbox
         return this.each(function(){
+            // 排除非元素
             if ( this.nodeType != 1 )
                 return;
             // 例如：$("input").val(["check2", "radio1"]);
+            // 值或者name在数组value中，则选中
             if ( jQuery.isArray(value) && /radio|checkbox/.test( this.type ) )
                 this.checked = (jQuery.inArray(this.value, value) >= 0 ||
                     jQuery.inArray(this.name, value) >= 0);
@@ -459,6 +489,7 @@ jQuery.fn = jQuery.prototype = {
                 var values = jQuery.makeArray(value);
 
                 jQuery( "option", this ).each(function(){
+                    // 值或者文本text在数组中，则选中
                     this.selected = (jQuery.inArray( this.value, values ) >= 0 ||
                         jQuery.inArray( this.text, values ) >= 0);
                 });
@@ -470,7 +501,8 @@ jQuery.fn = jQuery.prototype = {
                 this.value = value;
         });
     },
-    // 就是innerHTML
+    // 读，使用innerHTML
+    // 写，通过append，也可以用insertAdjacentHTM
     html: function( value ) {
         return value === undefined ?
             (this[0] ?
@@ -485,6 +517,7 @@ jQuery.fn = jQuery.prototype = {
 
     // 把指定索引的dom对象从jQuery中取出
     eq: function( i ) {
+        // 告诉我原生的slice的参数支持字符串，例如[...].slice('3', +('3') + 1 )
         return this.slice( i, +i + 1 );
     },
     // 类似数组的slice，不过这里操作的是jQuery对象
@@ -536,6 +569,7 @@ jQuery.fn = jQuery.prototype = {
 jQuery.fn.init.prototype = jQuery.fn;
 
 // jQuery对象第一阶段的能力就告一段落，要不对象体更长。像一个茧，jQuery对象包裹的1个或复数个dom对象，jQuery对象的能力来自其prototype。
+
 // 接下来添加新功能就使用jQuery.extend方法，或者将独立的方法名和方法体作为参数加入目标对象，因为光在对象体中搞，没有私有变量，有时我们需要这些作为胶水连接我们的方法，因此打散有打散写的好处，而且jQuery整个在闭包中，也不用担心变量逃逸到外边去，影响我们的业务代码
 
 
@@ -1189,7 +1223,7 @@ jQuery.extend({
         try {
 
             for ( var i = 0, length = array.length; i < length; i++ ) {
-                // 取得ID，一个内部的唯一标记
+                // 取得ID，给元素分配唯一标记 elem[expando]
                 var id = jQuery.data( array[ i ] );
 
                 if ( !done[ id ] ) {
@@ -3082,17 +3116,20 @@ jQuery.fn.extend({
     hover: function(fnOver, fnOut) {
         return this.mouseenter(fnOver).mouseleave(fnOut);
     },
-
+    // 默认就会被执行一次
     ready: function(fn) {
         // Attach the listeners
+        // 只会执行一次
         bindReady();
 
         // If the DOM is already ready
+        // 已经加载完毕，则立即调用fn
         if ( jQuery.isReady )
             // Execute the function immediately
             fn.call( document, jQuery );
 
         // Otherwise, remember the function for later
+        // 先将回调放入readyList数组中
         else
             // Add the function to the wait list
             jQuery.readyList.push( fn );
@@ -3148,11 +3185,13 @@ jQuery.extend({
     // Handle when the DOM is ready
     ready: function() {
         // Make sure that the DOM is not already loaded
+        // ready在load和DOMContentLoaded都注册，防止多次执行
         if ( !jQuery.isReady ) {
             // Remember that the DOM is ready
             jQuery.isReady = true;
 
             // If there are functions bound, to execute
+            // 将数组里的回调拿出来执行
             if ( jQuery.readyList ) {
                 // Execute all of them
                 jQuery.each( jQuery.readyList, function(){
@@ -3164,6 +3203,7 @@ jQuery.extend({
             }
 
             // Trigger any bound ready events
+            // jQuery的自定义事件，可以这样写$(document).bind('ready', function(){});
             jQuery(document).triggerHandler("ready");
         }
     }
@@ -3328,6 +3368,7 @@ jQuery( window ).bind( 'unload', function(){
 
     // Figure out if the W3C box model works as expected
     // document.body must exist before we can do this
+    // 执行了$(function(){})
     jQuery(function(){
         var div = document.createElement("div");
         div.style.width = "1px";
