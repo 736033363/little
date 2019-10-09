@@ -45,11 +45,11 @@ jQuery.fn = jQuery.prototype = {
             var match = quickExpr.exec( selector );
             // 是html字符串或id
             if ( match && (match[1] || !context) ) {
-
+                // html对应的是match[1]
                 if ( match[1] )
                     // 用字符串创建DOM元素
                     selector = jQuery.clean( [ match[1] ], context );
-
+                // id对应的是match[3]
                 else {
                     var elem = document.getElementById( match[3] );
 
@@ -153,6 +153,7 @@ jQuery.fn = jQuery.prototype = {
             else {
                 // 写方法，设置相应属性
                 // 一个代理对象
+                // 让$(...).attr({id: 'id_value', class: 'class_value'...})也能被统一处理
                 options = {};
                 options[ name ] = value;
             }
@@ -177,13 +178,13 @@ jQuery.fn = jQuery.prototype = {
     },
 
     // 与attr类似，可读可写
-    // 可以用textContent替代
+    // 可以用textContent替代，但jQuery有批量操作
     text: function( text ) {
         if ( typeof text !== "object" && text != null )
             return this.empty().append( (this[0] && this[0].ownerDocument || document).createTextNode( text ) );
 
         var ret = "";
-
+        // text用于递归调用自己
         jQuery.each( text || this, function(){
             jQuery.each( this.childNodes, function(){
                 // 不是注释节点
@@ -204,7 +205,7 @@ jQuery.fn = jQuery.prototype = {
             var wrap = jQuery( html, this[0].ownerDocument ).clone();
             if ( this[0].parentNode )
                 wrap.insertBefore( this[0] );
-
+            // 遍历wrap这个数组，返回jQuery对象，里面是wrap每项的位置（即firstChild.firstChild...）,
             wrap.map(function(){
                 var elem = this;
                 while ( elem.firstChild )
@@ -221,6 +222,7 @@ jQuery.fn = jQuery.prototype = {
     // $('p').wrapInner('<i></i>') =><p><i>a</i></p><p><i>b</i></p><p><i>c</i></p>
     wrapInner: function( html ) {
         return this.each(function(){
+            // contents()，获取元素的子元素，包装为jQuery对象返回
             jQuery( this ).contents().wrapAll( html );
         });
     },
@@ -246,6 +248,7 @@ jQuery.fn = jQuery.prototype = {
      // 
      // 内部都是调用domManip()，它的价值就是兼容火狐，火狐不兼容ie的insertAdjacentXXX系列
     append: function() {
+        // domManip会调用clean来生成节点，然后传入回调函数，最后利用原生接口appendChild来实现append函数
         return this.domManip(arguments, true, function(elem){
             if (this.nodeType == 1)
                 this.appendChild( elem );
@@ -267,11 +270,13 @@ jQuery.fn = jQuery.prototype = {
 
     after: function() {
         return this.domManip(arguments, false, function(elem){
+            // 原生接口可以这么使用来实现after接口
             this.parentNode.insertBefore( elem, this.nextSibling );
         });
     },
 
     // 返回上次的查询的dom
+    // 对应pushStack入栈，这里是查找堆栈
     end: function() {
         return this.prevObject || jQuery( [] );
     },
@@ -282,11 +287,14 @@ jQuery.fn = jQuery.prototype = {
 
     // jQuery强大的css选择器
     // 真正起作用是jQuery.find()
+    // 感觉只留else中的也可以，if可能仅仅只是一种优化
     find: function( selector ) {
         if ( this.length === 1 && !/,/.test(selector) ) {
             var ret = this.pushStack( [], "find", selector );
             ret.length = 0;
+            // jQuery.find = Sizzle;
             // 分别为表达式，上下文，新元素集
+            // Sizzle = function(query, context, extra, seed){
             jQuery.find( selector, this[0], ret );
             return ret;
         } else {
@@ -344,10 +352,12 @@ jQuery.fn = jQuery.prototype = {
             this.find("*").andSelf().each(function(i){
                 if (this.nodeType == 3)
                     return;
+                // 取得源元素的事件缓存
                 var events = jQuery.data( this, "events" );
 
                 for ( var type in events )
                     for ( var handler in events[ type ] )
+                        // 事件源、事件类型、处理函数、数据（数据会放入event中，即通过event.data获取）
                         jQuery.event.add( clone[ i ], type, events[ type ][ handler ], events[ type ][ handler ].data );
             });
 
@@ -367,7 +377,7 @@ jQuery.fn = jQuery.prototype = {
                 return elem.nodeType === 1;
             }) ), "filter", selector );
     },
-    // 筛选最近的元素
+    // 筛选离当前元素最近的祖先元素（也可以是当前元素本身）
     // 与原生closest()类似
     closest: function( selector ) {
         // 判断是否用于方位的
@@ -383,7 +393,7 @@ jQuery.fn = jQuery.prototype = {
             }
         });
     },
-    // 用于反选
+    // 用于反选，过滤元素或过滤通过字符串查询出来的元素
     // 传入字符串其实是调用的Sizzle
     // 内部调用filter
     not: function( selector ) {
@@ -394,14 +404,14 @@ jQuery.fn = jQuery.prototype = {
                 return this.pushStack( jQuery.multiFilter( selector, this, true ), "not", selector );
             else
                 selector = jQuery.multiFilter( selector, this );
-        // 处理NodeList
+        
         var isArrayLike = selector.length && selector[selector.length - 1] !== undefined && !selector.nodeType;
         return this.filter(function() {
             return isArrayLike ? jQuery.inArray( this, selector ) < 0 : this != selector;
         });
     },
-    // 添加新元素
-    // 其中jQuery.unique()会给元素分配一个id，即elem[expando]
+    // 添加新元素，并去重
+    // 其中jQuery.unique()会给元素分配一个id，即elem[expando]（分析克隆clone()时带来了困惑）
     add: function( selector ) {
         return this.pushStack( jQuery.unique( jQuery.merge(
             this.get(),
@@ -412,9 +422,11 @@ jQuery.fn = jQuery.prototype = {
     },
     // 类似Array的some()方法
     is: function( selector ) {
+        // jQuery.multiFilter简单来说就是一个过滤函数
         return !!selector && jQuery.multiFilter( selector, this ).length > 0;
     },
     // 基于is方法，提供另一个接口
+    // !!selector表明作者一个思路，能简单在自己这里解决就不用麻烦别的接口
     hasClass: function( selector ) {
         return !!selector && this.is( "." + selector );
     },
@@ -423,7 +435,8 @@ jQuery.fn = jQuery.prototype = {
     // 方法挺长，但不复杂
     val: function( value ) {
         // 读，特殊处理select和option
-        if ( value === undefined ) {            
+        if ( value === undefined ) {  
+            // 只处理第一个元素          
             var elem = this[0];
 
             if ( elem ) {
@@ -435,7 +448,7 @@ jQuery.fn = jQuery.prototype = {
                 // We need to handle select boxes special
                 if ( jQuery.nodeName( elem, "select" ) ) {
                     var index = elem.selectedIndex,
-                        values = [],
+                        values = [], // 单选返回一个值，多选返回数组
                         options = elem.options,
                         one = elem.type == "select-one";
 
@@ -444,7 +457,7 @@ jQuery.fn = jQuery.prototype = {
                         return null;
 
                     // Loop through all the selected options
-                    // 选择一个和选择多个写在一起处理
+                    // 选择一个和选择多个统一处理
                     for ( var i = one ? index : 0, max = one ? index + 1 : options.length; i < max; i++ ) {
                         var option = options[ i ];
 
@@ -465,16 +478,18 @@ jQuery.fn = jQuery.prototype = {
                 }
 
                 // Everything else, we just grab the value
+                // \r 匹配一个回车符
                 return (elem.value || "").replace(/\r/g, "");
 
             }
-
+            // 没有元素则返回undefined
             return undefined;
         }
         // 数字转为字符串
         if ( typeof value === "number" )
             value += '';
         // 写，特殊处理slelect和radio与checkbox
+        // 返回原jQuery对象
         return this.each(function(){
             // 排除非元素
             if ( this.nodeType != 1 )
@@ -486,6 +501,7 @@ jQuery.fn = jQuery.prototype = {
                     jQuery.inArray(this.name, value) >= 0);
 
             else if ( jQuery.nodeName( this, "select" ) ) {
+                // 一个值多个值都统一处理
                 var values = jQuery.makeArray(value);
 
                 jQuery( "option", this ).each(function(){
@@ -502,7 +518,8 @@ jQuery.fn = jQuery.prototype = {
         });
     },
     // 读，使用innerHTML
-    // 写，通过append，也可以用insertAdjacentHTM
+    // 写，通过append，也可以用insertAdjacentHTML
+    // HTML 5 中指定不执行由 innerHTML 插入的 <script> 标签。但其他执行script的方式是阻止不了的（详见MDN innerHTML）
     html: function( value ) {
         return value === undefined ?
             (this[0] ?
@@ -531,16 +548,19 @@ jQuery.fn = jQuery.prototype = {
             return callback.call( elem, i, elem );
         }));
     },
-    // 把之前放入prevObject的DOM元素拿出来，加入现在的DOM数组中
+    // 把之前放入prevObject的DOM元素拿出来，加入到现在的DOM数组中
     andSelf: function() {
         return this.add( this.prevObject );
     },
-
+    // 主要用于生成节点供原型方法append、prepend、before、after使用
+    // 调用clean()方法将元素或html转为节点放入文档碎片，若有script元素或生成了script节点，也会去执行该脚本
     domManip: function( args, table, callback ) {
         // 如果jQuery对象有dom，则取其文档，调用其createDocumentFragment方法
         if ( this[0] ) {
             var fragment = (this[0].ownerDocument || this[0]).createDocumentFragment(),
-                // args指向arguments，jQuery.clean生成纯dom元素
+                // args指向arguments（即上面4个方法传入的参数）
+                // jQuery.clean生成纯dom元素，会将生成的元素放入fragment中
+                // scripts里面放着的是生成的script脚本元素，如果有
                 scripts = jQuery.clean( args, (this[0].ownerDocument || this[0]), fragment ),
                 first = fragment.firstChild,
                 extra = this.length > 1 ? fragment.cloneNode(true) : fragment;
@@ -551,14 +571,18 @@ jQuery.fn = jQuery.prototype = {
                     callback.call( root(this[i], first), i > 0 ? extra.cloneNode(true) : fragment );
             // deal: "<script>xxx</script>"
             if ( scripts )
+                // 为什么不直接将script元素全部放入<head>中
+                // 可能是要删除掉这些script元素——不删除script不行吗
+                // 下面这种方式就是执行一个script，然后删除它
                 jQuery.each( scripts, evalScript );
         }
 
         return this;
-        // 检测elem是不是table，是就检查tbody是否存在，没有则创建
+        // 检测elem是不是table，是就检查tbody是否存在，没有则创建，并返回tbody元素
         function root( elem, cur ) {
             return table && jQuery.nodeName(elem, "table") && jQuery.nodeName(cur, "tr") ?
                 (elem.getElementsByTagName("tbody")[0] ||
+                // 语法 var child = node.appendChild(child);
                 elem.appendChild(elem.ownerDocument.createElement("tbody"))) :
                 elem;
         }
@@ -572,7 +596,16 @@ jQuery.fn.init.prototype = jQuery.fn;
 
 // 接下来添加新功能就使用jQuery.extend方法，或者将独立的方法名和方法体作为参数加入目标对象，因为光在对象体中搞，没有私有变量，有时我们需要这些作为胶水连接我们的方法，因此打散有打散写的好处，而且jQuery整个在闭包中，也不用担心变量逃逸到外边去，影响我们的业务代码
 
-
+/*
+执行一个script标签元素
+  思路：
+    外链，走ajax
+    内嵌，走globalEval，将script中的text放入一个新建的script元素，再将新script加入head，最后删除新的script
+        ps: 这种方式虽然可以将script插入文档，但不会执行，而globalEval的方式会执行
+            var elt = $('<script type="text/javascript">alert(1)</script>')[0];
+            document.body.insertBefore( elt, document.body.firstChild );
+    删除script
+ */ 
 function evalScript( i, elem ) {
     if ( elem.src )
         jQuery.ajax({
@@ -593,28 +626,45 @@ function now(){
 }
 
 // jQuery能力扩展的核心函数
+// 小复杂
 // 要求有一个继承者与一个授权者，通常继承者在左，授权者在右，授权者通常是一个属性包
 jQuery.extend = jQuery.fn.extend = function() {
     // copy reference to target object
     var target = arguments[0] || {}, i = 1, length = arguments.length, deep = false, options;
-
-    if ( typeof target === "boolean" ) { // 如果第一个参数是布尔值，处理deep拷贝
+    
+    // 如果第一个参数是布尔值，处理deep拷贝
+    // $.extend({a:{b:'b'}}, {a:{c:'c'}}) -> {a:{c:'c'}}
+    // $.extend(true, {a:{b:'b'}}, {a:{c:'c'}}) -> {a:{b:'b', c:'c'}}
+    if ( typeof target === "boolean" ) { 
         deep = target;
         target = arguments[1] || {}; // 设置继承者
         // skip the boolean and the target
+        // 从授权者开始
         i = 2;
     }
 
     // Handle case when target is a string or something (possible in deep copy)
+    // 继承者只能是对象或者函数（jQuery就是函数）
+    // $.extend(1,{a: 'a'}) => 输出 {a: 'a'}
     if ( typeof target !== "object" && !jQuery.isFunction(target) )
         target = {};
 
     // 如果没有指定继承能力的对象，则扩展自身
+    // 例如 $.extend({})   $.fn.extend(true,{})
+    // 通过一个特殊的点来判断
+    /*
+    输入种类大致分为4种，其中②和③的共性就可以看做是这个特殊点
+        ① $.extend(true, 继承者, 授权者)
+        ② $.extend(true, 授权者)
+        ③ $.extend(授权者)
+        ④ $.extend(继承者, 授权者)
+     */
     if ( length == i ) {
         target = this;
         --i;
     }
-
+    // 将授权者一个一个拿出来赋给继承者
+    // i经过上面的处理，指向了第一个授权者
     for ( ; i < length; i++ )
         // 过滤null、undefined
         if ( (options = arguments[ i ]) != null )
@@ -642,21 +692,25 @@ jQuery.extend = jQuery.fn.extend = function() {
             }
 
     // Return the modified object
+    // 返回继承者
     return target;
 };
 
-/* 定义一些位于闭包顶层的变量，准备新一轮功能的扩展 */
+// 定义一些位于闭包顶层的变量，准备新一轮功能的扩展
 
 // exclude the following css properties to add px
 // 这些css属性不添加px
 var exclude = /z-?index|font-?weight|opacity|zoom|line-?height/i,
     // cache defaultView
-    // 存储defaultView，
+    // 返回与文档相关的window
+    // 最顶上不是有window的引用，那defaultView是干嘛用？只看到与getComputedStyle有关
     defaultView = document.defaultView || {},
     toString = Object.prototype.toString;
 
 // 添加一些列静态方法
 jQuery.extend({
+    // 解决命名冲突
+    // 原理很简单
     noConflict: function( deep ) {
         window.$ = _$;
 
@@ -672,7 +726,7 @@ jQuery.extend({
     isFunction: function( obj ) {
         return toString.call(obj) === "[object Function]";
     },
-
+    // 可用Array.isArray替代
     isArray: function( obj ) {
         return toString.call(obj) === "[object Array]";
     },
@@ -684,7 +738,8 @@ jQuery.extend({
     },
 
     // Evalulates a script in a global context
-    // 把一段文本解析成脚本，利用script的text属性
+    // 把一段文本解析成脚本
+    // ie利用script的text属性
     globalEval: function( data ) {
         data = jQuery.trim( data );
 
@@ -737,6 +792,8 @@ jQuery.extend({
                     if ( callback.call( object[ name ], name, object[ name ] ) === false )
                         break;
             } else
+                // 回调返回false，则中断接下来的遍历
+                // 非得写得如此精巧，可读性不太好
                 for ( var value = object[0];
                     i < length && callback.call( value, i, value ) !== false; value = object[++i] ){}
         }
@@ -751,6 +808,7 @@ jQuery.extend({
             value = value.call( elem, i );
 
         // Handle passing in a number to a CSS property
+        // exclude = /z-?index|font-?weight|opacity|zoom|line-?height/i,
         // 不是z-index、line-height这些属性，值得加上px单位
         return typeof value === "number" && type == "curCSS" && !exclude.test( name ) ?
             value + "px" :
@@ -768,7 +826,7 @@ jQuery.extend({
         },
 
         // internal only, use removeClass("class")
-        // 什么都用自定义方法，效率有点低
+        // 什么都用自定义方法，效率有点低——可能安全
         // 用grep()方法返回过滤的数组
         remove: function( elem, classNames ) {
             if (elem.nodeType == 1)
@@ -790,27 +848,28 @@ jQuery.extend({
     swap: function( elem, options, callback ) {
         var old = {};
         // Remember the old values, and insert the new ones
+        // 记录旧值，插入新值
         for ( var name in options ) {
             old[ name ] = elem.style[ name ];
             elem.style[ name ] = options[ name ];
         }
-
+        // 交换后调用测试函数
         callback.call( elem );
 
         // Revert the old values
+        // 测试后还原，还原旧值
         for ( var name in options )
             elem.style[ name ] = old[ name ];
     },
 
-    // 原型css->原型attr->静态attr
     // 读方法，取得元素的css样式值，真正起作用是curCSS方法
     css: function( elem, name, force ) {
-        
+        // 处理宽和高，因为ie不能正确返回以px为单位的精确值
+        // 如果可以，直接用getComputedStyle替代
         if ( name == "width" || name == "height" ) {
             // props用于swap，值得学习
             var val, props = { position: "absolute", visibility: "hidden", display:"block" }, which = name == "width" ? [ "Left", "Right" ] : [ "Top", "Bottom" ];
-            // offsetWidth标准模式包括width、padding、border（不是很准确）
-            // width = offsetWidth - padding - border
+            // offsetWidth标准模式包括width、padding、border
             function getWH() {
                 val = name == "width" ? elem.offsetWidth : elem.offsetHeight;
                 var padding = 0, border = 0;
@@ -818,13 +877,13 @@ jQuery.extend({
                     padding += parseFloat(jQuery.curCSS( elem, "padding" + this, true)) || 0;
                     border += parseFloat(jQuery.curCSS( elem, "border" + this + "Width", true)) || 0;
                 });
+                // 四舍五入取得整数
                 val -= Math.round(padding + border);
             }
 
             if ( jQuery(elem).is(":visible") )
                 getWH();
             else
-                // 获取隐藏了的元素的宽、高
                 // 如果display:none就求不出offsetWidht与offsetHeight，swap一下在getWH
                 jQuery.swap( elem, props, getWH );
 
@@ -858,6 +917,8 @@ jQuery.extend({
             ret = style[ name ];
 
         // 标准
+        // getComputedStyle返回的是解析值，大多数属性返回computed value，对于一些旧属性（宽、高），使用的是used value
+        // 但display:none时，width:50% 或 width:auto，返回50%或auto
         else if ( defaultView.getComputedStyle ) {
 
             // Only "float" is needed here
@@ -2497,7 +2558,7 @@ Sizzle.selectors.filters.animated = function(elem){
         return elem === fn.elem;
     }).length;
 };
-
+// 过滤函数
 jQuery.multiFilter = function( expr, elems, not ) {
     if ( not ) {
         expr = ":not(" + expr + ")";
@@ -3285,7 +3346,7 @@ jQuery( window ).bind( 'unload', function(){
         script = document.createElement("script"),
         div = document.createElement("div"),
         id = "script" + (new Date).getTime();
-
+    // 用于浏览器测试，例如是否支持opacity，href是否等于'/a'等
     div.style.display = "none";
     div.innerHTML = '   <link/><table></table><a href="/a" style="color:red;float:left;opacity:.5;">a</a><select><option>text</option></select><object><param/></object>';
 
