@@ -626,7 +626,7 @@ function now(){
 }
 
 // jQuery能力扩展的核心函数
-// 小复杂
+// 功能强大，小复杂
 // 要求有一个继承者与一个授权者，通常继承者在左，授权者在右，授权者通常是一个属性包
 jQuery.extend = jQuery.fn.extend = function() {
     // copy reference to target object
@@ -682,6 +682,7 @@ jQuery.extend = jQuery.fn.extend = function() {
                 if ( deep && copy && typeof copy === "object" && !copy.nodeType )
                     target[ name ] = jQuery.extend( deep, 
                         // Never move original objects, clone them
+                        // 授权者是对象或数组，继承者的初始值也是对象或数组
                         src || ( copy.length != null ? [ ] : { } )
                     , copy );
 
@@ -705,12 +706,14 @@ var exclude = /z-?index|font-?weight|opacity|zoom|line-?height/i,
     // 返回与文档相关的window
     // 最顶上不是有window的引用，那defaultView是干嘛用？只看到与getComputedStyle有关
     defaultView = document.defaultView || {},
+    // 下面用于判断是否是函数、数组
     toString = Object.prototype.toString;
 
-// 添加一些列静态方法
+// 第二阶段是添加一些列静态方法（第一阶段是添加原型方法）
+// 原型方法通常是批量处理，而静态方法通常是单个处理，例如$.nodeName
 jQuery.extend({
     // 解决命名冲突
-    // 原理很简单
+    // 原理很简单：就是还名字
     noConflict: function( deep ) {
         window.$ = _$;
 
@@ -738,14 +741,17 @@ jQuery.extend({
     },
 
     // Evalulates a script in a global context
-    // 把一段文本解析成脚本
+    // 把一段文本解析成脚本（相当于内联脚本，外联脚本是走ajax那条路）
     // ie利用script的text属性
+    // 具体点：创建一个script元素，指定type类型，将传入的参数（即脚本的内容）放入新script元素中
+    // 将新script元素插入head第一个前面，最后在删除新script元素
     globalEval: function( data ) {
         data = jQuery.trim( data );
 
         if ( data ) {
             // Inspired by code by Andrea Giammarchi
             // http://webreflection.blogspot.com/2007/08/global-scope-evaluation-and-dom.html
+            // chorme 57 测试 可以将脚本插入到head元素的上面
             var head = document.getElementsByTagName("head")[0] || document.documentElement,
                 script = document.createElement("script");
 
@@ -763,6 +769,7 @@ jQuery.extend({
         }
     },
     // 检测elem.nodeName是否等于第二个参数name
+    // nodeName(ele, 'p')
     nodeName: function( elem, name ) {
         return elem.nodeName && elem.nodeName.toUpperCase() == name.toUpperCase();
     },
@@ -802,6 +809,7 @@ jQuery.extend({
     },
 
     // 修复css属性值（数字）的单位px
+    // 即给某些css属性添加单位px
     prop: function( elem, value, type, i, name ) {
         // Handle executable functions
         if ( jQuery.isFunction( value ) )
@@ -818,7 +826,10 @@ jQuery.extend({
 // 接下来是样式的处理
     className: {
         // internal only, use addClass("class")
+        // 可以一次性添加多个class，以空格分隔即可，例如 "classA classB"
         add: function( elem, classNames ) {
+            // ('  aa  bb  ').split(/\s+/) => ["", "aa", "bb", ""]
+            // 空格加不进去，所以无需担心，最后className的内容这样：class='aa bb'
             jQuery.each((classNames || "").split(/\s+/), function(i, className){
                 if ( elem.nodeType == 1 && !jQuery.className.has( elem.className, className ) )
                     elem.className += (elem.className ? " " : "") + className;
@@ -826,8 +837,7 @@ jQuery.extend({
         },
 
         // internal only, use removeClass("class")
-        // 什么都用自定义方法，效率有点低——可能安全
-        // 用grep()方法返回过滤的数组
+        // grep()方法 - 返回过滤的数组
         remove: function( elem, classNames ) {
             if (elem.nodeType == 1)
                 elem.className = classNames !== undefined ?
@@ -844,7 +854,7 @@ jQuery.extend({
     },
 
     // A method for quickly swapping in/out CSS properties to get correct calculations
-    // 获取不可见元素的宽、高，而进行交换css属性
+    // 交换函数，用于获取不可见元素的宽、高，而进行交换css属性，思路很好
     swap: function( elem, options, callback ) {
         var old = {};
         // Remember the old values, and insert the new ones
@@ -863,6 +873,7 @@ jQuery.extend({
     },
 
     // 读方法，取得元素的css样式值，真正起作用是curCSS方法
+    // 只读方法，因为真正做事的jQuery.curCSS()是只读的
     css: function( elem, name, force ) {
         // 处理宽和高，因为ie不能正确返回以px为单位的精确值
         // 如果可以，直接用getComputedStyle替代
@@ -886,7 +897,8 @@ jQuery.extend({
             else
                 // 如果display:none就求不出offsetWidht与offsetHeight，swap一下在getWH
                 jQuery.swap( elem, props, getWH );
-
+            // Math.max(0, 'a') => NaN
+            // Math.max(0, '-1', '-2') => 0
             return Math.max(0, val);
         }
 

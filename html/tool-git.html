@@ -203,6 +203,20 @@ Git提交记住用户名和密码（需验证）
   +1   
   </li>
   <li class="f-pre"></li>
+
+  <li class="f-pre">
+场景：我要在zj的仓库的xxx-os分支中提交代码，之前我fork了zj的项目（对应到本地是xxx/projectName），由于在gitlib中pxxxhxx/projectName只能存在一个，所以当时就将这个名字给让出来，让这个名字重新fork kycd/projectName，在本地xxx/projectName中做了4个提交，最后发现提交到了pxxxhxx/projectName，而不是之前fork zj的那个仓库pxxxhxx_重命名/projectName
+
+  1. gitlab不懂，但在pxxxhxx/projectName中打开git，通过命令git remote -v查看远程库，发现对应的是“pxxxhxx/projectName”，而非“pxxxhxx_重命名/projectName”
+
+  2. 重新下载pxxxhxx_重命名/projectName，通过命令git am xxx.patch 应用补丁（git format-patch -4将最近的4个提交导出补丁）
+
+  3. 推送即可
+
+  format-patch参考：
+    https://www.cnblogs.com/openix/p/3983554.html
+    https://www.cnblogs.com/viewcozy/p/5054003.html
+  </li>
 </ul>
 <!--
 <a href="https://www.cnblogs.com/patchouli/p/6511251.html" target="_blank">github 中fork的使用</a>
