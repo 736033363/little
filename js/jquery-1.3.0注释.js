@@ -848,6 +848,7 @@ jQuery.extend({
         },
 
         // internal only, use hasClass("class")
+        // className不支持以空格分隔的多个类
         has: function( elem, className ) {
             return jQuery.inArray( className, (elem.className || elem).toString().split(/\s+/) ) > -1;
         }
@@ -925,6 +926,7 @@ jQuery.extend({
             name = styleFloat;
 
         // 样式直接设置在style中，快速返回
+        // style不能取得从层叠样式表而来或者继承而来的css样式
         if ( !force && style && style[ name ] )
             ret = style[ name ];
 
@@ -938,6 +940,7 @@ jQuery.extend({
                 name = "float"; //把cssFloat转换为float，在computedStyle支持float，而不是cssFloat
 
             // 把驼峰转为连字符风格
+            // backgroundColor 转为 background-color
             name = name.replace( /([A-Z])/g, "-$1" ).toLowerCase();
 
             var computedStyle = defaultView.getComputedStyle( elem, null );
@@ -948,7 +951,7 @@ jQuery.extend({
             // We should always get a number back from opacity
             if ( name == "opacity" && ret == "" )
                 ret = "1";
-
+        // ie的currentStyle，没看
         } else if ( elem.currentStyle ) {
             // 把连字符转为驼峰
             var camelCase = name.replace(/\-(\w)/g, function(all, letter){
@@ -982,6 +985,7 @@ jQuery.extend({
     },
     // 将字符串转为dom元素的纯数组
     // elems是字符串数组
+    // 如果传入fragment，那么传入的字符串生成的dom元素，脚本就通过script返回，其他元素则放入fragment
     clean: function( elems, context, fragment ) {
         context = context || document;
 
@@ -1119,6 +1123,8 @@ jQuery.extend({
 
     // 可读可写方法
     // 针对元素的attr属性（id,class,data-自定义...）、样式style属性（background-color、color）
+    // elem也可能是elem.style
+    // 有些乱，有些复杂
     attr: function( elem, name, value ) {
         // don't set attributes on text and comment nodes
         // 文本节点，注释节点不处理
@@ -1161,6 +1167,7 @@ jQuery.extend({
 
             // If applicable, access the attribute via the DOM 0 way
             // elem中有属性name，不是xml，也不是特殊的属性
+            // 'className' in elem => true
             if ( name in elem && notxml && !special ) {
                 if ( set ){
                     // We can't allow the type property to be changed (since it causes problems in IE)
@@ -1173,8 +1180,8 @@ jQuery.extend({
 
                 // browsers index elements by id/name on forms, give priority to attributes.
                 // jquery bug提到 https://bugs.jquery.com/ticket/8628
+                // 没搞明白！
                 // getAttribute 通常用于替换getAttributeNode方法，来获得元素的属性值。性能也更快.  性能对比是 element.id 大于 element.getAttribute('id') 大于 element.getAttributeNode('id').nodeValue.
-                // ？
                 if( jQuery.nodeName( elem, "form" ) && elem.getAttributeNode(name) )
                     return elem.getAttributeNode( name ).nodeValue;
 
@@ -1185,6 +1192,7 @@ jQuery.extend({
                     var attributeNode = elem.getAttributeNode( "tabIndex" );
                     return attributeNode && attributeNode.specified
                         ? attributeNode.value
+                        // 只有a|area|button|input|object|select|textarea这些元素才有tabIndex属性
                         : elem.nodeName.match(/^(a|area|button|input|object|select|textarea)$/i)
                             ? 0
                             : undefined;
@@ -1199,7 +1207,7 @@ jQuery.extend({
             if ( set )
                 // convert the value to a string (all browsers do this but IE) see #1070
                 elem.setAttribute( name, "" + value );
-
+            // src和href应该都是相同处理
             var attr = !jQuery.support.hrefNormalized && notxml && special
                     // Some attributes require a special call on IE
                     // IE 默认取得href的绝对路径，加参数2得到我们所需要的相对路径
@@ -1210,6 +1218,7 @@ jQuery.extend({
             return attr === null ? undefined : attr;
         }
 
+        // 下面是当elem是style的情况在执行
         // elem is actually elem.style ... set the style
 
         // IE uses filters for opacity
@@ -1270,7 +1279,8 @@ jQuery.extend({
         return -1;
     },
     // 把第二个数组加入到第一个数组中
-    // 类似concat
+    // 支持类数组，会忽略注释节点
+    // concat的简化版
     merge: function( first, second ) {
         // We have to loop this way because IE & Opera overwrite the length
         // expando of getElementsByTagName
@@ -1289,6 +1299,7 @@ jQuery.extend({
         return first;
     },
     // 过滤重复元素
+    // 原理，通过jQuery.data给每个元素分配一个uuid，然后通过一个对象给该uuid对应的值设置为true，过滤即可
     unique: function( array ) {
         // 用普通对象done做过滤器
         var ret = [], done = {};
@@ -1312,8 +1323,7 @@ jQuery.extend({
         return ret;
     },
     // 类似filter的方法，这个方法起得真不好，grep通常与正则相关
-    // callback前的!是防止函数没有返回值
-    // !inv也是因为可能没传
+    // inv支持反转，默认函数返回true，该元素会被保留
     grep: function( elems, callback, inv ) {
         var ret = [];
 
@@ -1325,7 +1335,7 @@ jQuery.extend({
 
         return ret;
     },
-    // 类似数组的map，但有点点不同
+    // 类似数组的map，但有点不同（更扁平，过滤null和undefined）
     map: function( elems, callback ) {
         var ret = [];
 
@@ -1337,7 +1347,10 @@ jQuery.extend({
             if ( value != null ) // 不会出现[1,undefined,3]
                 ret[ ret.length ] = value;
         }
-        // 更扁平 $.map([1,2,[3,4]], (v)=>v)
+        // 更扁平
+        // 批量查找的时候有用，例如$(...).children()
+        // [1,2,3].map(function(v){return [v]}) => [[1],[2],[3]]
+        // $.map([1,2,3], function(v){return [v]}) => [1, 2, 3]
         return ret.concat.apply( [], ret );
     }
 });
@@ -1375,13 +1388,14 @@ jQuery.each({
         // 过滤一下
         if ( selector && typeof selector == "string" )
             ret = jQuery.multiFilter( selector, ret );
-
+        // 去重
         return this.pushStack( jQuery.unique( ret ), name, selector );
     };
 });
 
 // 把appendTo,prependTo...等方法加入到原型对象上
 // 利用现存的方法append,prepend...
+// appendTo - 例如 $('<span>span</span>').appendTo('p', 'h1')，现将span移到p中，接着将span元素放入h1中
 jQuery.each({
     appendTo: "append",
     prependTo: "prepend",
@@ -1399,7 +1413,8 @@ jQuery.each({
     };
 });
 
-// 再次添加一些原型方法：删除属性、增删类、删除节点、清空节点
+// 再次添加一些原型方法：删除属性、增删类、删除节点、清空节点；
+// 这几个方法都是针对单个元素进行处理；
 jQuery.each({
     removeAttr: function( name ) {
         jQuery.attr( this, name, "" );
@@ -1414,9 +1429,10 @@ jQuery.each({
     removeClass: function( classNames ) {
         jQuery.className.remove( this, classNames );
     },
-
+    // state是boolean时，classNames支持以空格分隔的多个类
     toggleClass: function( classNames, state ) {
         if( typeof state !== "boolean" )
+            // 因为要取反，所以加!
             state = !jQuery.className.has( this, classNames );
         jQuery.className[ state ? "add" : "remove" ]( this, classNames );
     },
@@ -1425,7 +1441,7 @@ jQuery.each({
         if ( !selector || jQuery.filter( selector, [ this ] ).length ) {
             // Prevent memory leaks
             jQuery( "*", this ).add([this]).each(function(){
-                jQuery.event.remove(this);
+                jQuery.event.remove(this); //★★★★★
                 jQuery.removeData(this);
             });
             if (this.parentNode)
@@ -1438,6 +1454,7 @@ jQuery.each({
         jQuery( ">*", this ).remove();
 
         // Remove any remaining nodes
+        // 删除文本节点
         while ( this.firstChild )
             this.removeChild( this.firstChild );
     }
@@ -1460,6 +1477,7 @@ jQuery.extend({
     cache: {},
 
     // 给元素缓存，能读能写
+    // 非常简单
     data: function( elem, name, data ) {
         // 坚决不指染window
         elem = elem == window ?
@@ -1511,7 +1529,7 @@ jQuery.extend({
 
                 for ( name in jQuery.cache[ id ] )
                     break;
-
+                // 缓存对象里面没有任何东西，则将改缓存对象都删除
                 if ( !name )
                     jQuery.removeData( elem );
             }
@@ -1554,12 +1572,12 @@ jQuery.extend({
     },
 
     // 对元素的类数组缓存进行dequeue，也就是shift()
+    // 给$.fn.dequeue使用
     dequeue: function( elem, type ){
         var queue = jQuery.queue( elem, type ),
             // 队列，先进先出
             fn = queue.shift();
-        // 此方法给内部用的，下面的逻辑应该有什么作用
-        if( !type || type === "fx" )
+        if( !type || type === "fx" ) // 不明白
             fn = queue[0];
             
         if( fn !== undefined )
@@ -1568,7 +1586,7 @@ jQuery.extend({
 });
 
 // 给jQuery对象赋予缓存的能力
-// 都是调用上面的静态方法，最终的缓存体还是jQuery.cache
+// 没看懂
 jQuery.fn.extend({
     // 看完事件再回来看
     data: function( key, value ){

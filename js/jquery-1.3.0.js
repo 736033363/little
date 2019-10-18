@@ -1195,9 +1195,11 @@ jQuery.each({
 	replaceAll: "replaceWith"
 }, function(name, original){
 	jQuery.fn[ name ] = function() {
+		debugger
 		var args = arguments;
 
 		return this.each(function(){
+			debugger
 			for ( var i = 0, length = args.length; i < length; i++ )
 				jQuery( args[ i ] )[ original ]( this );
 		});
@@ -1229,7 +1231,7 @@ jQuery.each({
 		if ( !selector || jQuery.filter( selector, [ this ] ).length ) {
 			// Prevent memory leaks
 			jQuery( "*", this ).add([this]).each(function(){
-				jQuery.event.remove(this);
+				jQuery.event.remove(this); 
 				jQuery.removeData(this);
 			});
 			if (this.parentNode)
