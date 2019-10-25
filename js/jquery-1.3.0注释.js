@@ -1651,6 +1651,10 @@ var chunker = /((?:\((?:\([^()]+\)|[^()]+)+\)|\[(?:\[[^[\]]*\]|[^[\]]+)+\]|\\.|[
     toString = Object.prototype.toString;
 
 // 主程序
+// 细节没看太懂，大致流程基本明白：
+//  将传入的选择器取得一个最基本单元，其他的则放入extra继续递归调用
+//  一种是匹配Expr.match.POS，相应处理
+//  其他的先用Sizzle.find查找，接着用Sizzle.filter过滤
 var Sizzle = function(selector, context, results, seed) {
     results = results || []; // 上次递归的结果集
     context = context || document;
@@ -1665,7 +1669,7 @@ var Sizzle = function(selector, context, results, seed) {
     var parts = [], m, set, checkSet, check, mode, extra, prune = true;
     
     // Reset the position of the chunker regexp (start from head)
-    // 重置lastIndex，从头开始匹配
+    // 重置lastIndex，从头开始匹配（可能因为递归调用）
     chunker.lastIndex = 0;
     
     while ( (m = chunker.exec(selector)) !== null ) {
@@ -1785,7 +1789,11 @@ Sizzle.matches = function(expr, set){
     return Sizzle(expr, null, null, set);
 };
 
-// 通过id, name, tag顺序查找，若没有找到，直接返回所有子元素，所以jQuery中有许多过滤的方法
+// 简单查找，所做的工作较少
+// 代码细节有的没看懂，大致流程基本明白：
+//  通过将expr表达式依次匹配id,name,tag甚至className，若匹配则调用对应的查找方法，
+//  并及时返回结果集（包含去除匹配部分的表达式expr和匹配元素）
+//  如果没有找到则返回作用域context的所有子孙节点
 Sizzle.find = function(expr, context){
     var set, match;
 
@@ -1809,6 +1817,7 @@ Sizzle.find = function(expr, context){
             if ( left.substr( left.length - 1 ) !== "\\" ) {
                 // 把\去掉，"\id" 转为 id
                 match[1] = (match[1] || "").replace(/\\/g, "");
+                // Expr.find上是与Expr.order对应的查找函数，例如通过id,name,tag查找，并返回结果集
                 set = Expr.find[ type ]( match, context );
                 if ( set != null ) {
                     // 将匹配上的那部分选择器去掉
@@ -1827,6 +1836,11 @@ Sizzle.find = function(expr, context){
 };
 
 // 对查找到的集合进一步过滤
+// 细节没看懂，大致流程：
+//  必须有set和expr，即什么东西要过滤什么
+//  依次迭代Expr.filter中的过滤函数
+//  匹配上则调用对应的Expr.preFilter来处理一下字符串，接着调用filter方法过滤，找到则存储
+//  最后返回匹配的集合
 Sizzle.filter = function(expr, set, inplace, not){
     var old = expr, result = [], curLoop = set, match, anyFound;
 
@@ -1937,7 +1951,7 @@ Sizzle.filter = function(expr, set, inplace, not){
     return curLoop;
 };
 
-// 用于加工、筛选过滤和简单查找（先用ID,NAME,TAG查找，没找到就找上下文所有的元素，然后在过滤，所以过滤函数特别多）
+// 用于加工（例如preFilter）、筛选过滤和简单查找（先用ID,NAME,TAG查找，没找到就找上下文所有的元素，然后在过滤，所以过滤函数特别多）
 var Expr = Sizzle.selectors = {
     order: [ "ID", "NAME", "TAG" ],
     // 与下面的filter对应，匹配上了，则用filter对应的函数去过滤
@@ -1964,13 +1978,16 @@ var Expr = Sizzle.selectors = {
     },
     // + ~ "" > 
     // 组合选择器就这四种
+    // 感觉relative中的方法都是过滤作用
     relative: {
         // 相邻选择器
         "+": function(checkSet, part){
             for ( var i = 0, l = checkSet.length; i < l; i++ ) {
                 var elem = checkSet[i];
                 if ( elem ) {
+                    // 难道是从右往左查找，所以不用nextSibling？
                     var cur = elem.previousSibling;
+                    // 找到上一个元素为止
                     while ( cur && cur.nodeType !== 1 ) {
                         cur = cur.previousSibling;
                     }
@@ -2012,6 +2029,8 @@ var Expr = Sizzle.selectors = {
             }
         },
         // 后代选择器
+        // 本质是调用dirCheck或dirNodeCheck，用于获取合适的祖先或兄长节点
+        // dirCheck在功能上好像是包含dirNodeCheck
         "": function(checkSet, part, isXML){
             var doneName = "done" + (done++), checkFn = dirCheck;
 
@@ -2022,7 +2041,7 @@ var Expr = Sizzle.selectors = {
             // nodeCheck在checkFn中没用到
             checkFn("parentNode", part, doneName, checkSet, nodeCheck, isXML);
         },
-        // 通用兄弟选择器
+        // 兄弟选择符。A~B 选择A元素之后所有同层级B元素。
         "~": function(checkSet, part, isXML){
             var doneName = "done" + (done++), checkFn = dirCheck;
 
@@ -2131,6 +2150,7 @@ var Expr = Sizzle.selectors = {
             return match;
         }
     },
+    // 这些都是伪类，也有一些jQuery自定义的伪类，例如:parent
     filters: { // 都返回布尔值，猜测是过滤函数
         enabled: function(elem){
             // 不能为隐藏域
@@ -2323,16 +2343,18 @@ var Expr = Sizzle.selectors = {
     }
 };
 // 重写Expr.match正则，让其更严谨
-// ID为例 Expr.match.ID.exec('#aabb]')不行, 但#aa[bb]可以
 for ( var type in Expr.match ) {
     Expr.match[ type ] = RegExp( Expr.match[ type ].source + /(?![^\[]*\])(?![^\(]*\))/.source );
 }
 
-// 将array转为数组，并放入结果集
+// 将array转为数组，主要针对NodeList
+// 此方法不可以转化，下面会重写makeArray方法
 var makeArray = function(array, results) {
     array = Array.prototype.slice.call( array );
 
     if ( results ) {
+        // results也可能是一个jQuery对象，将dom元素放入jQuery对象中，返回jQuery对象
+        // 让array里面的元素更偏平的放入results
         results.push.apply( results, array );
         return results;
     }
@@ -2390,14 +2412,15 @@ try {
     // The workaround has to do additional checks after a getElementById
     // Which slows things down for other browsers (hence the branching)
     if ( !!document.getElementById( id ) ) {
-        // 找的不对，怎么补救，没看懂
         Expr.find.ID = function(match, context){
             if ( context.getElementById ) {
                 var m = context.getElementById(match[1]);
+                // 没找到返回[]
+                // 找到则验证id是否匹配，匹配则返回[m]，否则返回undefined
                 return m ? m.id === match[1] || m.getAttributeNode && m.getAttributeNode("id").nodeValue === match[1] ? [m] : undefined : [];
             }
         };
-
+        // 覆盖之前的id方法，前后方法感觉怎么是一样的
         Expr.filter.ID = function(elem, match){
             var node = elem.getAttributeNode && elem.getAttributeNode("id");
             return elem.nodeType === 1 && node && node.nodeValue === match;
@@ -2455,9 +2478,10 @@ if ( document.querySelectorAll ) (function(){
     
     Sizzle = function(query, context, extra, seed){
         context = context || document;
-
         if ( !seed && context.nodeType === 9 ) {
             try {
+                // 返回jQuery对象
+                // extra是一个jQuery对象
                 return makeArray( context.querySelectorAll(query), extra );
             } catch(e){}
         }
@@ -2519,6 +2543,7 @@ function dirCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
             var match = false;
 
             while ( elem && elem.nodeType ) {
+                // elem[doneName]值为0的情况是否有问题？搞不懂
                 if ( elem[doneName] ) {
                     match = checkSet[ elem[doneName] ];
                     break;
@@ -2568,6 +2593,7 @@ jQuery.filter = Sizzle.filter;
 jQuery.expr = Sizzle.selectors;
 // 重命名，以:开头伪类，许多都是自定义的
 // 注释掉好像没影响
+// 以:开头的有很多jQuery自定义的伪类，例如:parent
 jQuery.expr[":"] = jQuery.expr.filters;
 
 // 增加两个伪类:hidden和:visible
@@ -2596,6 +2622,7 @@ jQuery.multiFilter = function( expr, elems, not ) {
 
     return Sizzle.matches(expr, elems);
 };
+// 实现parents，nextAll，prevAll接口
 // 把路径上的元素放到结果中，dir为parentNode,previousSibling,nextSibling
 jQuery.dir = function( elem, dir ){
     var matched = [], cur = elem[dir];
@@ -2606,8 +2633,8 @@ jQuery.dir = function( elem, dir ){
     }
     return matched;
 };
+// 实现next和prev接口
 // 内部调用result都为2，dir为nextSibling或previousSibling
-// 用于子元素过滤
 jQuery.nth = function(cur, result, dir, elem){
     result = result || 1;
     var num = 0;
@@ -2619,7 +2646,7 @@ jQuery.nth = function(cur, result, dir, elem){
     return cur;
 };
 
-// 查找不等于elem的兄弟元素节点
+// 实现siblings（查找不等于elem的兄弟元素节点）和children接口
 jQuery.sibling = function(n, elem){
     var r = [];
 
@@ -2646,6 +2673,8 @@ jQuery.event = {
     // Bind an event to an element
     // Original by Dean Edwards
     // 对每个元素每种事件只绑定一次
+    // 例如给元素注册click，blur等多类事件，每一类只会执行一次addEventListener，
+    // 而上面的回调总是同一个handle - jQuery.data(elem, "handle")
     add: function(elem, types, handler, data) {
         // 忽略注释节点和文本节点
         if ( elem.nodeType == 3 || elem.nodeType == 8 )
@@ -2679,6 +2708,7 @@ jQuery.event = {
         // 初始化元素的事件结构
         // 根据elem的uuid在jQuery.cache中设置一个events对象
         var events = jQuery.data(elem, "events") || jQuery.data(elem, "events", {}),
+            // 一个元素只有一个handle和一个events
             handle = jQuery.data(elem, "handle") || jQuery.data(elem, "handle", function(){
                 // Handle the second event of a trigger and when
                 // an event is called after a page has unloaded
@@ -2819,6 +2849,8 @@ jQuery.event = {
 
     // bubbling is internal
     // fire
+    // 细节看不懂，模糊的感觉这个方法就是手动触发事件
+    // 自定义事件也是相同处理
     trigger: function( event, data, elem, bubbling ) {
         // Event object or event type
         var type = event.type || event;
@@ -2901,6 +2933,7 @@ jQuery.event = {
         }
     },
     // DE的handleEvent
+    // 逻辑还算简单，就是从缓存中获取回调执行
     handle: function(event) {
         // returned undefined or false
         var all, handlers;
@@ -3051,6 +3084,7 @@ jQuery.event = {
 // 返回一个普通实例，不再是浏览器给我们的那个event
 jQuery.Event = function( src ){
     // Allow instantiation without the 'new' keyword
+    // 很灵活
     if( !this.preventDefault )
         return new jQuery.Event(src);
     

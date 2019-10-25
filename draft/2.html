@@ -1,81 +1,29 @@
-seajs添加版本号刷新本地缓存的方法 https://blog.csdn.net/u014181418/article/details/53321075
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>jquery ui</title>
+    <link rel="stylesheet" href="../css/jquery-uiv1.11.4.css" />
+    
+</head>
+<body>
+<button>一个 button 元素</button>
+ 
+<input type="submit" value="一个提交按钮">
+ 
+<a href="#">一个锚</a>
 
-// 参考ace-require.js
-require.config({
-    baseUrl: '.',
-    paths: {
-        jquery: '../components/jquery/dist/jquery',
-        bootstrap: '../components/bootstrap/dist/js/bootstrap',
-        ace: '../assets/js/ace',
-        aceElements: '../assets/js/ace-elements',
-    },
-    shim: {
-      'bootstrap':{
-        deps: ['jquery']
-      },
-      'ace': {
-        deps: ['jquery', 'bootstrap']
-      },
-      'aceElements': {
-        deps: ['ace']
-      }
-    }
-})
-require(['jquery','aceElements'], function($,aceElements) {
-  $('#p1').show();
+<script src="../js/jquery2.2.1.js"></script>
+<!-- <script src="../js/bootstrap-v3.3.6.js"></script> -->
+<script src="../js/jquery-uiv1.11.4.js"></script>
+<script>
+$(function() {
+  $( "input[type=submit], a, button" )
+    .button()
+    .click(function( event ) {
+      event.preventDefault();
+    });
 });
-
-【seajs】
-
-<script src="../components/seajs/2.1.0/sea.js"></script>
-
-jquery 不支持cmd，需要修改
-if ( typeof define === "function" && define.amd ) {
-if ( typeof define === "function" ) {
-
-var version='0.0.1';
-// seajs 的简单配置
-seajs.config({
-  map:[
-      ['.js','.js?v='+version]//映射规则
-  ],
-  base: "./../components/",
-  alias: {
-    "jquery": "jquery/dist/jquery.js"
-  }
-})
-// 加载入口模块
-seajs.use("../assets/js/ace-sea")
-
-jquery不是cmd https://github.com/seajs/seajs/issues/962
-Seajs的使用(粗看是好文章) https://www.jianshu.com/p/e780565d728b
-Seajs的使用(粗看是好文章) https://www.cnblogs.com/zqzjs/p/5299450.html
-Can't load Bootstrap with RequireJS https://stackoverflow.com/questions/16259098/cant-load-bootstrap-with-requirejs
-
-
-
-# nodejs 系列1：node初识
-
-从”2016年前端技术观察“得知，nodejs当前有两个作用，一个是做工具，一个是服务器开发，但进军服务器开发，当前是失败的。
-
-新部门用到了node，所以为了工作需要学习。
-
-## 七天学会NodeJS - http://nqdeng.github.io/7-days-nodejs/#1.5.6
-问：什么是nodejs？
-答：语言都需要一个运行环境，node就是js的一个运行环境。js最常见的运行环境是浏览器，在浏览器中，js的主要用途是操作Dom，所以浏览器这个运行环境提供了dom、bom。而在node中，js的主要用途是操作磁盘文件或搭建HTTP服务，所以node这个运行环境提供了fs、http等。
-
-问：如何运行？
-答：$ node hello-world.js
-
-问：模块化？
-答：每个文件就是一个模块，文件路径就是模块名。每个模块都有三个预先定义的变量：require、exports、module。
-    require，加载一个模块，可以省略js后缀，如： var foo1 = require('./foo');
-    exports，当前模块导出对象，如：exports.hello = function () {console.log('Hello World!'); };
-    module，可以访问当前模块的一些相关信息，如：module.exports = function () {console.log('Hello World!'); };
-
-问：主模块？
-答：传给nodejs用以启动整个程序的模块，如：$ node main.js
-
-问：模块初始化？
-答：并没有因为被require了两次而初始化两次（不好表达）
-
+</script>
+</body>
+</html>

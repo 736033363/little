@@ -1,23 +1,95 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/bootstrap-v3.3.6.css" />
+    
+</head>
+<body>
+<div>
+
+  <!-- Nav tabs -->
+ <!--  <ul class="nav nav-tabs" role="tablist">
+   <li role="presentation" class="active"><a href="#home" aria-controls="home" role="tab" data-toggle="tab">Home</a></li>
+   <li role="presentation"><a href="#profile" aria-controls="profile" role="tab" data-toggle="tab">Profile</a></li>
+   <li role="presentation"><a href="#messages" aria-controls="messages" role="tab" data-toggle="tab">Messages</a></li>
+   <li role="presentation"><a href="#settings" aria-controls="settings" role="tab" data-toggle="tab">Settings</a></li>
+ </ul>
  
-<!doctype html>
-<title>dom contains 方法 by 司徒正美</title>
-<meta charset="utf-8"/>
-<meta name="keywords" content="dom contains方法 by 司徒正美" />
-<meta name="description" content="dom contains方法 by 司徒正美" />
+ Tab panes
+ <div class="tab-content">
+   <div role="tabpanel" class="tab-pane active" id="home">home...</div>
+   <div role="tabpanel" class="tab-pane" id="profile">profile...</div>
+   <div role="tabpanel" class="tab-pane" id="messages">messages...</div>
+   <div role="tabpanel" class="tab-pane" id="settings">settings...</div>
+ </div>
+ 
+ </div>
+ 
+ <hr /> -->
 
-<script type="text/javascript">
 
-  window.onload = function(){
-    var A = document.getElementById('parent'),
-    B = document.getElementById('child');
-    alert(A.compareDocumentPosition(B));//A包含B 16    B与A不相连，B在A的后面，B被A包含 4+16 = 20
-    alert(B.compareDocumentPosition(A));//A与B不相连，A在B的前面，A包含B 2+8 = 10
-  }
-</script>
-<h2 style="text-align:center">compareDocumentPosition方法</h2>
-
-<div id="parent">
-  <p>
-    <strong id="child" >本例子请在标准浏览器中运行。</strong>
-  </p>
+<div class="dropdown">
+  <button id="dLabel" type="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+    Dropdown trigger
+    <span class="caret"></span>
+  </button>
+  <ul class="dropdown-menu" aria-labelledby="dLabel">
+    <li>a</li>
+    <li>a</li>
+    <li>a</li>
+  </ul>
 </div>
+
+    <script src="../js/jquery2.2.1.js"></script>
+    <!-- <script src="../js/jqueryv172.js"></script> -->
+    <script src="../js/bootstrap-v3.3.6.js"></script>
+
+
+    <div id="tree">
+aa
+    </div>
+    <script>
+    //  var Tree = function(element, options) {
+    //     var $tree = this.$tree = $(element);
+    //     //监听init事件，触发
+    //     $tree.on('init.tree.aaron', $.proxy(options.onInit, this));
+    //     this.init();
+    // };
+
+    // Tree.prototype.init = function() {
+    //     console.log('init1 被调用');
+    //     // 触发init事件
+    //     this.$tree.trigger('init.tree.aaron');
+    // };
+
+    // // 实例化1
+    // var tree = new Tree('#tree', {
+    //     onInit: function() {
+    //         console.log('触发 init evetn 1');
+    //     }
+    // });
+
+    // var Dragable = function(element, options) {
+    //     var $element = this.$element = $(element);
+    //     //监听init事件，触发
+    //     $element.on('init.drag.ph', $.proxy(options.onInit, this));
+    //     this.init();
+    // };
+
+    // Dragable.prototype.init = function() {
+    //     console.log('init2 被调用');
+    //     debugger
+    //     this.$element.trigger('init.drag.ph');
+    // };
+
+    // // 实例化2
+    // var drag = new Dragable('#tree', {
+    //     onInit: function() {
+    //         console.log('触发 init event 2');
+    //     }
+    // });
+    </script>
+</body>
+</html>

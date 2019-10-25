@@ -3110,7 +3110,12 @@ jQuery.event = {
 		}
 
 		// jquery的事件命名空间详解 https://www.cnblogs.com/lyzg/p/5347857.html
-		if ( type.indexOf( "." ) >= 0 ) {
+		// 事件名称+命名空间
+		// 例如注册init.tree.aaron和init.drag.ph
+		// trigger('init') 执行两个
+		// trigger('init.aaron') 或 trigger('init.drag') 执行一个
+		// trigger('ph') 不执行，因为没有指定事件
+		if ( type.indexOf( "." ) >= 0 ) { // 存在命名空间，就踢掉第一个事件名
 			// Namespaced trigger; create a regexp to match event type in handle()
 			namespaces = type.split(".");
 			type = namespaces.shift();

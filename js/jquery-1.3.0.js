@@ -1195,11 +1195,9 @@ jQuery.each({
 	replaceAll: "replaceWith"
 }, function(name, original){
 	jQuery.fn[ name ] = function() {
-		debugger
 		var args = arguments;
 
 		return this.each(function(){
-			debugger
 			for ( var i = 0, length = args.length; i < length; i++ )
 				jQuery( args[ i ] )[ original ]( this );
 		});
@@ -1570,7 +1568,7 @@ Sizzle.find = function(expr, context){
 
 Sizzle.filter = function(expr, set, inplace, not){
 	var old = expr, result = [], curLoop = set, match, anyFound;
-
+	// 要过滤，必须要有set和expr
 	while ( expr && set.length ) {
 		for ( var type in Expr.filter ) {
 			if ( (match = Expr.match[ type ].exec( expr )) != null ) {
@@ -1739,6 +1737,7 @@ var Expr = Sizzle.selectors = {
 			checkFn("parentNode", part, doneName, checkSet, nodeCheck, isXML);
 		},
 		"~": function(checkSet, part, isXML){
+
 			var doneName = "done" + (done++), checkFn = dirCheck;
 
 			if ( typeof part === "string" && !part.match(/\W/) ) {
@@ -2170,23 +2169,29 @@ if ( document.documentElement.getElementsByClassName ) {
 	};
 }
 
+// checkSet 是元素
+// dir是previousSibling
 function dirNodeCheck( dir, cur, doneName, checkSet, nodeCheck, isXML ) {
+	
+	// 依次迭代元素
 	for ( var i = 0, l = checkSet.length; i < l; i++ ) {
 		var elem = checkSet[i];
 		if ( elem ) {
+			// 找大哥
 			elem = elem[dir];
 			var match = false;
-
+			// 找到了
 			while ( elem && elem.nodeType ) {
+
 				var done = elem[doneName];
 				if ( done ) {
 					match = checkSet[ done ];
 					break;
 				}
-
+				// done就是一个标记，若没标记过，则
 				if ( elem.nodeType === 1 && !isXML )
 					elem[doneName] = i;
-
+				// 若这个大哥是要找的大哥，则将其放入checkSet相应的位置
 				if ( elem.nodeName === cur ) {
 					match = elem;
 					break;
@@ -2533,6 +2538,7 @@ jQuery.event = {
 
 		// Trigger the event, it is assumed that "handle" is a function
 		var handle = jQuery.data(elem, "handle");
+
 		if ( handle )
 			handle.apply( elem, data );
 
