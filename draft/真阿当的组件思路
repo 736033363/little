@@ -1,0 +1,58 @@
+jQuery UI
+基于Widget构建
+插件都是基于$.widget创建出来
+
+以accordion为例，父类是Widget，$.widget.bridge中有$.fn.accordion的注册，each也隐藏在此
+
+对比真阿当（简称zad）介绍的组件，zad组件主要是2个有点：生命周期（父类是定义接口a,b,c,d,e,f,g，子类只需要实现其中几个零散了，例如b，d，e，然后调用父类的a方法，a方法里面会调用d,b,e）由父类决定、支持自定义事件。
+
+
+accordion的构造函数中会调用$.Widget原型上的方法_createWidget()，里面依次绑定事件（_on），配置项，_create（每个组件自己需要做的一些事情），...其他方法
+
+
+
+创建一个Widget的类，定义一个实例属性boundingBox来指向最外层容器
+给Widget添加原型方法
+    on(type, callback) - 将事件保存在实例对象的handle属性上
+    fire(type, data) - 触发该类事件的所有回调
+    renderUI - 接口，添加dom节点
+    bindUI - 接口，添加事件
+    syncUI - 初始化组件属性
+    render - 渲染组件，依次调用
+        添加dom节点
+        this.handle = {} ?
+        添加事件
+        初始化组件属性
+        将最外层容器添加到文档中
+
+    destructor - 接口，销毁前处理函数
+    destroy - 销毁，依次调用
+        销毁前处理函数
+        最外层容器boundingBox.remove()
+
+创建弹框Dialog，定义一个实例属性config，初始化配置
+设置Dialog的原型
+
+调用alert执行什么？
+new Dialog().alert()
+创建弹框实例，初始化实例的配置
+调用父类的render()方法
+
+$.Widget主要被$.widget使用
+
+// 通过$.widget("ui.accordion",...)创建插件accordion
+// 所有插件都有一个父类Widget
+// $.widget是一个工厂，以Widget为基石，最后调用$.widget.bridge来注册$.fn.accordion
+// each批量执行隐藏在$.widget.bridge里面
+// var acc = $( "#accordion" );
+
+// acc.accordion({heightStyle:'fill', active:3}); // 直接创建，取得最终配置options，最后刷新_refresh即可
+acc.accordion(); // 必须先调用，否则直接调用acc.accordion('option','active')或acc.accordion('option','active',3)会报错
+console.log(acc.accordion('option','active')) // $.fn.accordion -> 第一个传参是字符串则进入方法调用 -> 进入Widget的option方法 -> this.options 
+// acc.accordion('option','active',3) // ③父类的option方法 -> 父类_setOptions -> 调用子类的_setOption（父类也有这个方法）
+// acc.accordion('option','disabled', true) // 同③一样
+// acc.accordion('option','disabled', !true)
+// acc.accordion('disable') // // ③父类的option方法 -> 父类disable方法 -> 父类_setOptions -> 调用子类的_setOption -> 调用父类_setOption（里面有对应的逻辑）
+// acc.accordion('enable')
+// acc.accordion('destroy')
+// acc.accordion('widget')
