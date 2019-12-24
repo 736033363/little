@@ -881,7 +881,7 @@ jQuery.extend({
         if ( name == "width" || name == "height" ) {
             // props用于swap，值得学习
             var val, props = { position: "absolute", visibility: "hidden", display:"block" }, which = name == "width" ? [ "Left", "Right" ] : [ "Top", "Bottom" ];
-            // offsetWidth标准模式包括width、padding、border
+            // offsetWidth标准模式包括width、padding、border，还包括竖向的滚动条
             function getWH() {
                 val = name == "width" ? elem.offsetWidth : elem.offsetHeight;
                 var padding = 0, border = 0;

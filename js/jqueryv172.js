@@ -2949,7 +2949,7 @@ jQuery.event = {
 		// jQuery(...).bind("mouseover mouseout", fn);
 		types = jQuery.trim( hoverHack(types) ).split( " " );
 		for ( t = 0; t < types.length; t++ ) {
-			debugger
+			
 			tns = rtypenamespace.exec( types[t] ) || [];
 			type = tns[1];
 			namespaces = ( tns[2] || "" ).split( "." ).sort();

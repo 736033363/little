@@ -354,6 +354,12 @@ p{margin-bottom:10px;}
 /* unit.css */
 .u-hr,.u-hr2{display:block;margin-top:20px;margin-bottom:20px;border:0;border-top:1px solid #eee;}
 .u-hr2{margin-top:40px;margin-bottom:40px;}
+.u-dot{display:inline-block;height:1em;line-height:1;overflow:hidden;vertical-align:-.2em;}
+.u-dot::before{display:block;content: '...\A..\A.';white-space:pre-wrap;animation:dot 3s infinite step-start;}
+@keyframes dot{
+  33%{transform:translateY(-2em)}
+  66%{transform:translateY(-1em)}
+}
 /* 单行代码 */
 .u-code{display:block;padding:2px 4px;border-radius:4px;font-size:90%;color:#c7254e;background-color:#f9f2f4;white-space:normal;word-wrap:break-word;/* 长单词换行，防止溢出 */}
 /* 多行代码 参考zhangxinxu */

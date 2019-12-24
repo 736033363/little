@@ -5473,7 +5473,6 @@ jQuery.fn.extend({
 	},
 
 	closest: function( selectors, context ) {
-		debugger
 		var ret = [], i, l, cur = this[0];
 
 		// Array (deprecated as of jQuery 1.7)

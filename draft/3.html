@@ -1,95 +1,60 @@
-<!doctype html>
+<!DOCTYPE html>
 <html>
-  <head>
-    <meta charset="utf-8">
-    <title>$.tabs</title>
-    <style>
-      .dom_tabs_selected {
-        background: #6363c1;
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <script src="avalon.js"></script>
+        <script>
+
+        </script>
+        <style>
+
+
+      .box {
+      text-align: justify;
+      width:360px;
+      border:1px solid ;
       }
- 
-    </style>
-    <script src='../js/jquery-1.3.0.js'></script>
-    <!-- <script src='../js/jqueryv172.js'></script> -->
-    <script>
-      $(function(){
-        $.tabs = function(obj){
-          return (this instanceof $.tabs) ? this.init.apply(this,arguments) : new $.tabs(obj)
-        }
-        //主动事件 通过编程触发
-        //被动事件 由用户的行为触发
-        $.tabs.prototype = {
-          init:function(obj){
-            var that = this;
-            //配置属性
-            $.extend(this,{
-              selectedClass:"dom_tabs_selected",
-              tabsSelector:">dt a",
-              panelsSelector:">dd",
-              click:$.noop,
-              selected:0
-            }, obj || { })
- 
-            this.ui = $(obj.selector);
-            this.tabs =  this.ui.find(this.tabsSelector);
-            this.panels = this.ui.find(this.panelsSelector);
-             
-            this.select(this.selected)
-            this.tabs.live("click",function(){
-              var index = that.tabs.index(this);
-              that._switch.call(that,index)
-              that.click.call(this,index,that);
-            });
-          },
-          _switch:function(index){
-            this.tabs.removeClass(this.selectedClass).eq(index).addClass(this.selectedClass);
-            this.panels.hide().eq(index).show();
-          },
-          select:function(index,callback){
-            index = ~~index;
-            this._switch(index);
-            callback && callback.call(this.tabs[index],index,this);
-          },
-          remove:function(index,callback){
-            index = ~~index;
-            this.tabs.eq(index).remove();
-            this.panels.eq(index).remove();
-            callback && callback.call(this.tabs[index],index,this);
-          }
-        }
- 
-        var tabs = $.tabs({
-          selector:"#aaa",
-          selected:1,
-          click:function(index,instance){
-             alert(index+"  |  "+this.tagName+" | "+instance.panels.eq(index).text())
-          }
-        });
-      });
- 
+      .justify-fix {
+      display: inline-block;
+      width: 96px;
+      border:1px solid red;
+      }
 
- function test(options){
-  var args = [].slice.call(arguments, 1);
-  console.log(args)
- }
 
-test('a', 'b', 'c', 'd');
+      .dib-baseline {
+      display: inline-block;
+      width: 150px; height: 150px;
+      border: 1px solid #cad5eb;
+      background-color: #f0f3f9;
+      }
 
-    </script>
-  </head>
-  <body>
-    <dl id="aaa">
-      <dt><a>切换卡1</a><a>切换卡2</a><a>切换卡3</a></dt>
-      <dd>内容1</dd>
-      <dd>内容2</dd>
-      <dd>内容3</dd>
-    </dl>
-  </body>
+</style>
+    </head>
+    <body>
+ 
+    <div class="box">
+    <img src="../img/1.jpg" width="96">
+    <img src="../img/1.jpg" width="96">
+    <img src="../img/1.jpg" width="96">
+    <img src="../img/1.jpg" width="96">
+    <i class="justify-fix"></i>
+    <i class="justify-fix"></i>
+    <i class="justify-fix"></i>
+    </div>
+
+<hr />
+
+
+<span class="dib-baseline"></span>
+<span class="dib-baseline">x-baseline</span>
+
+
+<p>Lorem ipsum dolor Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non dolorum totam rem voluptatem error necessitatibus, repudiandae illum obcaecati dolorem, magnam repellendus nisi quo? Ipsam eaque sed facilis explicabo</p>
+<hr />
+<p>Lorem ipsum dolor Lorem ipsum dolor sit amet, consectetur adipisicing elit. Non dolorum totam rem voluptatem error necessitatibus, repudiandae illum obcaecati dolorem, magnam repellendus nisi quo? Ipsam eaque sed facilis explicabo voluptatibus tempore nostrum hic quo perferendis. Corrupti nulla vel beatae debitis, repellendus! Iusto sequi, asperiores quos porro qui doloribus, ea nesciunt impedit id accusamus dignissimos, hic tempore voluptate inventore sunt numquam, voluptates assumenda harum aperiam <span>啊啊啊啊</span>ex! Sequi alias suscipit eum assumenda autem provident modi illum maxime, rerum dolore, dolorem sit sed beatae totam fugiat ratione aspernatur, earum temporibus iste optio minima quaerat facilis eius. Laborum incidunt veritatis doloremque quo. Quisquam mollitia vel illum, architecto harum tempore consectetur perferendis, dolorem nobis quia iste. Laborum. sit <, consectetur adipisicing elit. Fuga, esse.</p>
+<script>
+  
+
+</script>
+    </body>
 </html>
-
-     
-
-<!-- 
-  <script src='../js/jqueryv172.js'></script>
-  <link rel="stylesheet" href="../css/css-library.css" />
-  <script src='../js/jquery-1.3.0.js'></script> -->

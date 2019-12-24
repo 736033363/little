@@ -255,7 +255,7 @@
     /#(?:\d+)/.test(color);
     RegExp.$1; => ""
 
-  前瞻，匹配时抢先去看一下，但不捕获。有(?!exp)和(?=exp)
+  前瞻，匹配时抢先去看一下，但不捕获，也不会匹配。有(?!exp)和(?=exp)
     ('bedroom').match(/(bed(?=room))/) => ["bed", "bed"]
 </div>
   </section>
