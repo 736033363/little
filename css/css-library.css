@@ -595,7 +595,9 @@ p{margin-bottom:10px;}
 .f-fr{float:right;}
 /* 清除浮动 */
 .f-cb{clear:both;}
-.f-clearfix::after{display:block;height:0;visibility:hidden;/* 仍会占据该位置 */content:'.';clear:both;/* 来自《精通CSS：高级Web标准解决方案》 */}
+.f-clearfix::after{display:block;content:'';clear:both;/* 来自《mdn》和《css世界》 */}
+.f-clearfix2::after{display:block;height:0;visibility:hidden;/* 仍会占据该位置 */content:'.';clear:both;/* 来自《精通CSS：高级Web标准解决方案》 */}
+
 .f-vam,.f-vama *{vertical-align:middle;/* 该属性可以继承 */}
 .f-pr{position:relative;}
 .f-pa{position:absolute;}

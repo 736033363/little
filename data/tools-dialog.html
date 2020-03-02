@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+        <script src='../js/jqueryv172.js'></script>
+        <link rel="stylesheet" href="../css/css-library.css" />
+    </head>
+    <style>
+    .m-dialog-wrap{position:fixed;left:0;right:0;top:0;bottom:0;background:rgba(0,0,0,0.3);text-align:center;overflow:auto;font-size:0;}
+    .m-dialog-wrap::after{content:'';display:inline-block;height:100%;vertical-align:middle;}
+    .m-dialog{display:inline-block;width:300px;min-height:100px;vertical-align:middle;text-align:left;font-size:14px;background-color:#fff;}
+    .m-dialog .m-dialog-header,.m-dialog .m-dialog-body,.m-dialog .m-dialog-footer{padding:10px;}
+    .m-dialog-header{position:relative;}
+    .m-dialog-header .close{position:absolute;top:10px;right:10px;cursor:pointer;}
+    .m-dialog-footer{text-align:center;}
+    .m-dialog-footer .u-btn + .u-btn{margin-left:20px;}
+    .f-dn{display:none;}
+    </style>
+    <body>
+    <div id='m-dialog-wrap' class="m-dialog-wrap f-dn">
+        <div class="m-dialog">
+            <div class="m-dialog-header">
+                <h3>title</h3>
+                <span class="close" data-dismiss='dialog'>X</span>
+            </div>
+            <div class="m-dialog-body">
+                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Quia, distinctio!</p>
+            </div>
+            <div class="m-dialog-footer">
+                <a href="" class="u-btn u-btn-c1">取消</a>
+                <a href="" class="u-btn">确定</a>
+            </div>
+        </div>
+    </div>
+    <div class="f-m30">
+        <h3 class='u-font-lg'>弹框 v1.0.0</h3>
+        <p>eg. <a href="#" data-controls-dialog='#m-dialog-wrap'>dialog</a></p>
+    </div>
+<script>
+// 立即执行函数
++function($){
+    'use strict';
+    /*
+    desc：类似bootstrap的modal
+    1. 无需js即可激活弹框，用data-controls-dialog指定选择器
+        <a href="#" data-controls-dialog='#m-dialog-wrap' data-keyboard='true'>dialog</a>
+    2. options
+        keyboard 默认true
+        show 默认true
+        remote
+            eg. <a data-controls-dialog='#m-dialog-wrap' href="../draft/test1.html">remote</a>
+    3. Methods
+        .dialog(options) 参数
+        .dialog('show') .dialog('hide') .dialog('destory') 执行方法
+    4. Event
+        show/hide
+        eg.
+        $('#myModal').on('hide', function (e) {
+          // do something
+        })
+    ps: 
+        1. 关闭弹框 - 给元素添加属性data-dismiss="dialog"
+        2. 弹框显示隐藏通过增删类class="f-dn"来实现
+     */
+    // 类
+    function Dialog(element, options){
+        this.$element = $(element);
+        this.options = options;
+        this.isShown = null;
+        this.$element.on('click.dismiss.dialog', '[data-dismiss="dialog"]', $.proxy(this.hide, this));
+        this.options.remote && this.$element.find('.m-dialog-body').load(this.options.remote);
+    }
+    Dialog.VERTION = '1.0.0';
+    // 默认配置
+    Dialog.DEFAULTS = {
+        show: true,
+        keyboard: true,
+    };
+    Dialog.prototype = {
+        constructor: Dialog,
+        // 显示
+        show: function(_relatedTarget){
+            if(this.isShown){return;}
+            // 触发事件
+            this.$element.trigger('show');
+            this.$element.appendTo('body').show();
+            this.$element.removeClass('f-dn');
+            this.isShown = true;
+            this.escape();
+        },
+        // 隐藏
+        hide: function(e){
+            if(!this.isShown){return;}
+            e && e.preventDefault(); // 阻止a标签跳转
+            // 触发事件
+            this.$element.trigger('hide');
+            this.$element.addClass('f-dn').hide();
+            this.isShown = false;
+            this.escape();
+        },
+        // 销毁
+        destroy: function(){
+            this.$element.remove();
+        },
+        // Closes the dialog when escape key is pressed
+        escape: function(){
+            if(this.isShown && this.options.keyboard){
+                $(document).on('keyup.dismiss.dialog', $.proxy(function(e){
+                    if( e.which === 27 || (e.key && e.key.toUpperCase() === 'ESCAPE')){
+                        this.hide();
+                    }
+                },this));
+            } else if(!this.isShown){
+                $(document).off('keyup.dismiss.dialog');
+            }
+        }
+    };
+
+    function Plugin(option, _relatedTarget){
+        // 总是返回jQuery对象
+        return this.each(function(){
+            var $this = $(this);
+            var data = $this.data('dialog');
+            var options = $.extend(true, {}, Dialog.DEFAULTS, $this.data(), typeof option === 'object' && option );
+            
+            if(!data){
+                $this.data('dialog', (data = new Dialog(this, options)));
+            }
+            // 执行方法
+            if(typeof option === 'string'){
+                data[option](_relatedTarget);
+            } else if(options.show){
+                data.show(_relatedTarget);
+            }
+        });
+    }
+
+    var old = $.fn.dialog;
+
+    $.fn.dialog = Plugin;
+    // 暴露类名，方便扩展
+    $.fn.dialog.Constructor = Dialog;
+
+    // 无冲突处理
+    $.fn.dialog.noConflict = function(){
+        $.fn.dialog = old;
+        // this就等于Plugin
+        return this;
+    };   
+
+    // 事件代理，智能初始化
+    $(document).on('click.dialog.data-api', '[data-controls-dialog]', function(e){
+        var $this = $(this);
+        var href = $this.data('href') || $this.attr('href');
+        $this.is('a') && e.preventDefault();
+        var $target = $($this.data('controls-dialog'));
+        var option = $.extend({}, {remote: !/#/.test(href) && href}, $target.data(), $this.data());
+        Plugin.call($target, option, $this);
+    });
+}(jQuery);
+
+// test
+$(function(){
+    $('#m-dialog-wrap').on('show', function(e){
+        console.log('show')
+    });
+    $('#m-dialog-wrap').on('hide', function(e){
+        console.log('hide')
+    })
+});
+</script>    
+    </body>
+</html>

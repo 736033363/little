@@ -1,56 +1,66 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <title>template</title>
-    <!-- <link rel="stylesheet" href="../css/jquery-uiv1.11.4.css" /> -->
-    <!-- <link rel="stylesheet" href="../css/css-library.css" /> -->
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <!-- <script src="avalon.js"></script> -->
+        <script src="../js/jqueryv172.js"></script>
+        <!-- <script src="../js/jquery-1.3.0.js"></script> -->
+        <!-- <link rel="stylesheet" href="../css/css-library.css" /> -->
+        <script>
+
+        </script>
 <style>
-.container {
-position: fixed;
-top: 0; right: 0; bottom: 0; left: 0;
-background-color: rgba(0,0,0,.5);
- text-align: center;
-/*font-size: 0;*/
-white-space: nowrap;
-overflow: auto; 
+
+body{padding:20px;}
+
+
+.box {
+    width: 280px;
+    line-height: 128px;
+    background-color: #f0f3f9;
+    font-size: 16px;
 }
- .container:after {
-    content: '';
-    display: inline-block;
-    height: 100%;
+.box img {
+    height: 96px;
     vertical-align: middle;
-} 
- .dialog {
-    display: inline-block;
-    vertical-align: middle;
-    /*border-radius: 6px;*/
-    background-color: #fff;
-     font-size: 14px;
-text-align: left;
-/*white-space: normal; */
-} 
- /*.content {
-    width: 240px;
-    height: 120px;
-    padding: 20px;
-} */
+}
 </style>
-</head>
-<body >
-<div class="container">
-    <div class="dialog">
-        <div class="content">xxx</div>
-    </div>
+    </head>
+    <body>
+
+<div class="box">
+    <img src="../img/1.jpg" >x
 </div>
-<!-- <button id='id_val' >aaa</button>
-<span id='id_val2' >aaa</span> -->
-<script src="../js/jquery2.2.1.js"></script>
-<!-- <script src="../js/jquery2.1.4.js"></script> -->
-<!-- <script src="../js/bootstrap-v3.3.6.js"></script> -->
-<!-- <script src="../js/jquery-uiv1.11.4.js"></script> -->
+
+
 <script>
+var el = $('div');
+
+el.data('aa.bb')
+// setTimeout(function(){
+// document.querySelector('img').src='../img/1.jpg'
+// }, 3000)
+// 
+var data = [[10,0],[20,0],[30,0],[40,0],[50,0],[60,0],[70,0],[80,0],[90,0],[100,0],[110,0],[120,0]];
+function getData(data, count=5){
+    // debugger
+    if(!Array.isArray(data)) return;
+    var ret = [];
+    ret.push(data[0])
+    for(var i = 1, len = data.length; i < len; i++){
+        var current = data[i][0];
+        var pre = data[i-1][0];
+        var value = current - pre; // max - min
+        var seed = Math.floor(value/count); // 向下取整
+        for(var j = 0; j < count; j++){
+            (pre+seed*(j+1) < current) && ret.push([pre+seed*(j+1), 0]);
+        }
+        ret.push(data[i])
+    }
+    return ret;
+}
+
 
 </script>
-</body>
+    </body>
 </html>

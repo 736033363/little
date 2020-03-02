@@ -3207,7 +3207,6 @@ jQuery.event = {
 
 			handle = ( jQuery._data( cur, "events" ) || {} )[ event.type ] && jQuery._data( cur, "handle" );
 			if ( handle ) {
-				debugger
 				handle.apply( cur, data );
 			}
 			// Note that this is a bare JS function and not a jQuery handler
