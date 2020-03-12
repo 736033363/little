@@ -1,19 +1,30 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8" />
-    <title></title>
-</head>
+<html>
+    <head>
+        <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
+        <!-- <script src="avalon.js"></script> -->
+        <script src="../js/jqueryv172.js"></script>
+        <!-- <script src="../js/jquery-1.3.0.js"></script> -->
+        <link rel="stylesheet" href="../css/css-library.css" />
+        <script>
+
+        </script>
 <style>
 
-div{height:200px;outline:1px solid;}
-p{background:red;height:50%;}
-</style>
-<body>
-   
+body{padding:20px;}
 
-<div>
-    <p>p</p>
-</div>
-</body>
+div{width:150px;height:50px;padding:10px;padding-bottom:10px;border:10px solid;overflow:hidden;}
+
+div{overflow:auto;}
+</style>
+    </head>
+    <body>
+<div><img src="../img/1.jpg" alt="" /></div>
+<script>
+setTimeout(function(){
+
+alert(document.querySelector('div').scrollHeight)
+},1000);
+</script>
+    </body>
 </html>

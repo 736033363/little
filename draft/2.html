@@ -3,63 +3,35 @@
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <!-- <script src="avalon.js"></script> -->
-        <script src="../js/jqueryv172.js"></script>
-        <!-- <script src="../js/jquery-1.3.0.js"></script> -->
-        <!-- <link rel="stylesheet" href="../css/css-library.css" /> -->
+        <!-- <script src="../js/jqueryv172.js"></script> -->
+        <script src="../js/jquery-1.3.0.js"></script>
+        <link rel="stylesheet" href="../css/css-library.css" />
         <script>
 
         </script>
 <style>
 
-body{padding:20px;}
+/*body{padding:20px;}*/
+body{margin:.5em;}
 
+.u-plus,.u-minus{position:relative;display:inline-block;width:16px;height:16px;background:#2096ff;}
+.u-plus::before,.u-plus::after,.u-minus::before{content:'';position:absolute;left:0;right:0;top:0;bottom:0;margin:43.75% 18.75%;background:#fff;}
+.u-plus::after{transform:rotate(90deg);}
 
-.box {
-    width: 280px;
-    line-height: 128px;
-    background-color: #f0f3f9;
-    font-size: 16px;
-}
-.box img {
-    height: 96px;
-    vertical-align: middle;
-}
+/*.u-plus::before{content:'\3000 ax';}*/
+/*p{line-height:16px;}*/
+
 </style>
     </head>
     <body>
-
-<div class="box">
-    <img src="../img/1.jpg" >x
-</div>
-
+<p style=''>
+    <i class="u-plus"></i>x你好
+</p>
+<p>
+    <i class="u-minus"></i>x你好
+</p>
 
 <script>
-var el = $('div');
-
-el.data('aa.bb')
-// setTimeout(function(){
-// document.querySelector('img').src='../img/1.jpg'
-// }, 3000)
-// 
-var data = [[10,0],[20,0],[30,0],[40,0],[50,0],[60,0],[70,0],[80,0],[90,0],[100,0],[110,0],[120,0]];
-function getData(data, count=5){
-    // debugger
-    if(!Array.isArray(data)) return;
-    var ret = [];
-    ret.push(data[0])
-    for(var i = 1, len = data.length; i < len; i++){
-        var current = data[i][0];
-        var pre = data[i-1][0];
-        var value = current - pre; // max - min
-        var seed = Math.floor(value/count); // 向下取整
-        for(var j = 0; j < count; j++){
-            (pre+seed*(j+1) < current) && ret.push([pre+seed*(j+1), 0]);
-        }
-        ret.push(data[i])
-    }
-    return ret;
-}
-
 
 </script>
     </body>

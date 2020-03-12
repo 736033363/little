@@ -461,6 +461,10 @@ p{margin-bottom:10px;}
 .u-img2-br{border-radius:5px;}
 /* 图片高度自适应 */
 .u-img2 img{display:block;/* 与下面紧邻元素没有间隙 */width:100%;}
+/* 加号、减号*/
+.u-plus,.u-minus{position:relative;display:inline-block;width:16px;height:16px;background:#2096ff;}
+.u-plus::before,.u-plus::after,.u-minus::before{content:'';position:absolute;left:0;right:0;top:0;bottom:0;margin:43.75% 18.75%;/* 长度10，宽度2 */background:#fff;}
+.u-plus::after{transform:rotate(90deg);}
 
 /* module.css */
 /* 多行式面包屑导航（默认竖线分隔） */

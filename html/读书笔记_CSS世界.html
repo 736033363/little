@@ -65,102 +65,19 @@
      3． vertial-align:middle 与近似垂直居中
      5.3.5 深入理解 vertical-align 文本类属性值
 
-
-
-
-
-
-
-
-
-
-
-第三节 流、元素与基本尺寸
-    display:inline-block可以想象成由两个盒子组成
-    display:inline-table和display:table-cell的使用
-    一柱擎天的现象
-    鑫三无准则？
-    一行居中，多行居左（包裹性）
-    凹凸（首选最小宽度）
-    box-sizing有content-box和border-box（background-clip、background-origin）
-    margin-box和offsetWidth冲突
-    
-
-
-
-3.1 块级元素
-    - 块级元素不是display:block；list-item用起来怪怪的，需要配合margin-left使用，padding-left好像不行；
-3.1.1 为什么list-item元素会出现项目符号
-    - block有两个盒子
-3.1.2 display:inline-table的盒子是怎样组成的
-    - table-cell可直接放在inline-table中
-3.2 width/height作用的具体细节
-3.2.1 深藏不露的width:auto
-    - input按钮，默认是不换行，需要修改white-space属性
-    - 包裹性的使用：一行文字居中，多行文字左对齐
-    - CSS世界中，文字和图片的权重大于布局；最小宽度可以实现凹凸的效果；
-3.2.2 width值作用的细节
-    - border-box可能更像现实
-3.2.3 CSS流体布局下的宽度分离原则
-    - 宽度分离
-    - “无宽度”网页布局
-3.2.4 改变width/height作用细节的box-sizing
-    - 如何评价*{box-sizing:border-box;}
-    - box-sizing发明初衷，解决替换元素自适应问题
-3.2.5 相对简单而单纯的height:auto
-    - 为何height:100%无效
-    - 如何让元素支持height:100%效果
-        绝对定位元素的百分比和非绝对定位元素的百分比计算是有区别的
-        图片左右半区点击分别上一张图下一张图效果（小细节：父容器行高设为0） 
-3.3 CSS min-width/max-width和min-height/max-height二三事
-3.3.1 为流体而生的min-width/max-width
-3.3.2 与众不同的初始值
-    - max-系列是none，min-系列初始值是auto;
-3.3.3 超越!important，超越最大
-    - max-width会覆盖width
-    - min-width超越max-width
-3.3.4 任意高度元素的展开收起动画技术
-    - 移动端的js框架没有动画模块？
-    - 0到auto是无法计算的，因此无法形成动画效果
-3.4 内联元素
-    - css中内联元素最重要，比块级元素解析更为复杂
-3.4.1 哪些元素是内联元素
-    - 内联元素的内联指外在盒子，为啥
-    - 浮动元素为啥不是内联元素，有啥研究的
-    - 内容区域，简单理解为内容选中区域
-    - 内联盒子和匿名内联盒子
-    - 行框盒子
-    - 包含盒子
-    - 幽灵空白节点
-第四章 盒尺寸四大家族
-4.1 深入理解content（很强大）
-    - 替换元素的display是inline,block,inline-block都相同
-    - 将图片设置块级，尺寸规则还是和内联相同
-    - object-fit
-    - 替换元素与非替换元素之间只隔了一个src属性
-    - 辅助实现两端对齐
-    - 点点点loading技术
-    - 外链标记
-    - content:attr(data-tip)
-    - content计数器
-4.2 温和的padding
-    - 增大点击区域
-    - 垂直分隔符
-    - hash定位上留间距
-    - padding的百分比值
-    - padding的百分比值作用在内联元素
-    - 三道杠和双层圆点
-4.3 激进的margin
-    - 4/3-1.php margin与一栏定宽的两栏自适应布局实例页面
-    - table-cell是天然等高
-    - margin:auto是为了填充这个闲置的尺寸而设计
-4.4 功勋卓越的border
-    - border-width不支持百分比
-    - 4/4-1.php 带加号的上传按钮
-    - 右下方background定位的技巧
-    - 优雅的增加点击区域大小
-    - 三角等图形绘制
-    - border等高布局
-第5章 内联元素与流
-5.1 字母x——CSS世界中隐藏的举足轻重的角色
-    - 5/1-1.php 基于ex的垂直居中对齐
+第 6 章 流的的破破坏坏与与保保护
+    float 都有哪些有意思的特性呢？
+    一是“浮动锚点”（ float anchor），二是“浮动参考”（ float reference）
+    6.1.4 float 与流体布局
+    clear:both 只能在一定程度上消除浮动的影响，要想完美地去除浮动
+    BFC 的结界特性最重要的用途
+    如果 BFC 自适应布局真那
+    最后，我们可以提炼出两套 IE7 及以上版本浏览器适配的自适应解决方案
+    6.4 最佳结界 overflow
+    则当子元素内容超出容器宽度高度限制的时候，剪裁的边界是
+    深入探讨一下 overflow 属性的一个很经典的不兼容问题
+    这种相似性很容易让大家产生一个误区，认为只要 overflow-x 和 overflow-y 设置了
+    6.4.3 overflow 与滚动条
+    6.4.4 依赖 overflow 的样式表现
+    1．锚点定位行为的触发条件
+    2．锚点定位作用的本质

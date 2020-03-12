@@ -890,7 +890,7 @@ jQuery.extend({
                     border += parseFloat(jQuery.curCSS( elem, "border" + this + "Width", true)) || 0;
                 });
                 // 四舍五入取得整数
-                val -= Math.round(padding + border);
+                                                                    -= Math.round(padding + border);
             }
 
             if ( jQuery(elem).is(":visible") )
