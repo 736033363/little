@@ -14,22 +14,33 @@
 /*body{padding:20px;}*/
 body{margin:.5em;}
 
-.u-plus,.u-minus{position:relative;display:inline-block;width:16px;height:16px;background:#2096ff;}
-.u-plus::before,.u-plus::after,.u-minus::before{content:'';position:absolute;left:0;right:0;top:0;bottom:0;margin:43.75% 18.75%;background:#fff;}
-.u-plus::after{transform:rotate(90deg);}
+
 
 /*.u-plus::before{content:'\3000 ax';}*/
 /*p{line-height:16px;}*/
-
+div{width:800px;border:1px solid rgba(0,0,0,.3);color:pink;}
+p{padding:0 10px;line-height:21px}
+p{font-size:0;}
+span{display:inline-block;border-bottom:4px solid;box-sizing:border-box;}
+.b1{width:100%;}
+.b3{width:50%;}
+span
 </style>
     </head>
     <body>
-<p style=''>
-    <i class="u-plus"></i>x你好
-</p>
-<p>
-    <i class="u-minus"></i>x你好
-</p>
+<div>
+    <p>
+        <span class='b1'></span>
+    </p>
+    <p>
+        <span class='b1'></span>
+    </p>
+    <p>
+        <span class='b3'></span>
+        <span class='b3'></span>
+        <!-- <span class='b3'></span> -->
+    </p>
+</div>
 
 <script>
 
