@@ -14,20 +14,36 @@
 /*body{padding:20px;}*/
 body{margin:.5em;}
 
-.a{width:500px;position:relative;}
-.b{width:200px;}
-.c{position:absolute;}
+/*.c{width:40px;padding:10px;border:10px solid red;}*/
+span{font-size:36px;}
+
+.m-imageAlignText{padding-left:20px;}
+.m-imageAlignText .icon{
+  position: absolute;
+  margin-left:-20px;
+  width:20px; 
+  background:no-repeat center/20px;
+}
+.m-imageAlignText .icon::before{content:'\3000';}
+.m-imageAlignText .icon-del{background-image: url(../img/del.png);}
+.m-imageAlignText .icon-hot{background-image:url(../img/hot.gif);}
+
 </style>
     </head>
     <body>
 <div class='a'>
   <div class="b">
-      <div class="c">啊啊啊</div>
+      <div class="c">
+        <span class='m-imageAlignText'><i class='icon icon-del'></i>图片和文字水平对齐</span>
+      </div>
   </div>
 </div>
 
 <script>
-
+{
+  let a=1;
+  var b = 2;
+}
 </script>
     </body>
 </html>

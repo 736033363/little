@@ -13,18 +13,26 @@
 
 body{padding:20px;}
 
-div{width:150px;height:50px;padding:10px;padding-bottom:10px;border:10px solid;overflow:hidden;}
+:root { --color: purple; }
+div { --color: green; }
+#alert { --color: red; }
+* { color: var(--color); }
 
-div{overflow:auto;}
 </style>
     </head>
     <body>
-<div><img src="../img/1.jpg" alt="" /></div>
-<script>
-setTimeout(function(){
 
-alert(document.querySelector('div').scrollHeight)
-},1000);
+
+<p>我的紫色继承于根元素</p>
+<div>我的绿色来自直接设置</div>
+<div id='alert'>
+  ID选择器权重更高，因此阿拉是红色！
+  <p>我也是红色，占了继承的光</p>
+</div>
+
+
+<script>
+
 </script>
     </body>
 </html>
