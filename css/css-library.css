@@ -467,6 +467,36 @@ p{margin-bottom:10px;}
 .u-plus::after{transform:rotate(90deg);}
 
 /* module.css */
+/* 分成N等份，使用了N等份 */
+.m-bar{display:inline-block;width:100%;font-size:0;}
+.m-bar::before{content:'\3000'line-height:34px;vertical-align:2px;/* 垂直居中 */}
+.m-bar [class^=b]{display:inline-block;height:5px;background:#279f57 content-box;padding-right:4px;box-sizing:border-box;}
+.m-bar [class^=b]::last-child{padding-right:0;}
+.m-bar .z-used{background-color:#9f2727;}
+.m-bar .b1{width:100%;}
+.m-bar .b2{width:50%;}
+.m-bar .b3{width:33.333333333333336%;}
+.m-bar .b4{width:25%;}
+.m-bar .b5{width:20%;}
+.m-bar .b6{width:16.666666666666668%;}
+.m-bar .b7{width:14.285714285714286%;}
+.m-bar .b8{width:12.5%;}
+.m-bar .b9{width:11.11111111111111%;}
+.m-bar .b10{width:10%;}
+.m-bar .b11{width:9.090909090909092%;}
+.m-bar .b12{width:8.333333333333334%;}
+.m-bar .b13{width:7.6923076923076925%;}
+.m-bar .b14{width:7.142857142857143%;}
+.m-bar .b15{width:6.666666666666667%;}
+.m-bar .b16{width:6.25%;}
+/* 分成N等份，使用了N等份 */
+/* 图片垂直对齐文本 from css世界 */
+.m-imageAlignText{padding-left:20px;}
+.m-imageAlignText .icon{position: absolute;width:20px;margin-left:-20px;background:no-repeat center/20px;}
+.m-imageAlignText .icon::before{content:'\3000';/* 让行高生效 */}
+.m-imageAlignText .icon-del{background-image: url(../img/del.png);}
+.m-imageAlignText .icon-hot{background-image:url(../img/hot.gif);}
+/* /图片垂直对齐 */
 /* 多行式面包屑导航（默认竖线分隔） */
 .m-crumb{display:block;overflow:hidden;/* 溢出隐藏、清除浮动 */}
 .m-crumb ul{margin-left:-20px;}

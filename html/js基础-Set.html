@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+<section>
+    <h3>Set - 唯一的类数组</h3>
+    <p>
+        <b>项目中应该可以使用。</b>mdn看其兼容性很好，说ie11支持，本地测试某些用法无效，比如构造函数中传入[3,4,5,3,4,5]，获取size为0
+    </p>
+    <p>构造函数可以放数组、类数组、字符串</p>
+    <p>类似===，但NaN在Set中是相等的</p>
+    <p> Set 可以很容易地实现并集（Union）、交集（Intersect）和差集</p>
+</section>    
+    </body>
+    <script>
+function setDemo(){
+    console.log('****Set****');
+
+    const s = new Set();
+    [2, 3, 5, 4, 5, 2, 2].forEach(x => s.add(x));
+    let result = [];
+    for (let i of s) {
+      result.push(i);
+    }
+    console.log('Set构造函数 %s', result);
+
+    const set = new Set(document.querySelectorAll('*'));
+    console.log('接受类似数组 %s', set.size)
+
+    console.log('数组去除重复 %s', [...new Set([2, 3, 5, 4, 5, 2, 2])])
+
+    console.log('去除字符串里面的重复字符 %s', new Set('ababbc').size);
+
+    const s2 = new Set([NaN,NaN,{},{}]);
+    console.log('NaN相等，空对象不相等 %s', s2.size)
+}
+
+setDemo();
+    </script>
+</html>

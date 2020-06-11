@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+<h1>前后端分离，需要传递参数</h1>
+
+<h3>后端想接收&dns=[{a:'xx1'},{a:'xx2'}]&</h3>
+<p>暂时想法是传递{dns: "[{a:'xx1'},{a:'xx2'}]"}，而{dns: ['xx1', 'xx2']}可能需要后端转一下，再有就是试试$.ajax({type: 'post', processData: false, contentType: false})</p>
+
+<h3>后端：第一次请求该字段可以传null</h3>
+<p>$.get(url, {test: null, test2: 'null'})，后端接收时，test应该是空，前端没传，test2会接收一个null的字符串</p>
+
+<h3>开启和关闭，前端说传0或1，后端说传'on'或'off'，true或false也可以</h3>
+<p>那么就传on 或 off</p>
+    </body>
+</html>
+

@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+    <script>
+    {
+        function a(){alert('a的作用域在顶级')}
+    }
+    let obj = {};
+    {
+        obj.test = function(){
+            a();
+        }
+        {
+            function b(){alert('b的作用域在顶级')}
+        }
+    }
+
+    obj.test();
+    </script>
+    </body>
+</html>

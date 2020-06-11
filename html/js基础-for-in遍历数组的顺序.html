@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+<p>我发现jquery树组件，从后端传来的是一个对象，如何保证顺序呢？mdn：不要用for in遍历数组。发现有人说es3，for in的顺序就是定义属性的顺序，而es5又没有在规定顺序，而运行下面程序，在ie11、chrome、firefox都是相同的顺序，而且规律好像都是：“先遍历整数属性，在遍历其他顺序”。说有一个保证顺序的取巧的方式是每个key前给一个加号，例如+12。</p>
+<p>由于这个解释或这个方法不是正统，所以尽量避免</p>
+<p>参考：<a href="https://learnku.com/articles/7684/what-is-the-order-of-object-attributes-that-javascript-for-in-circulate">①</a></p>
+    
+<section>
+    <h3>demo</h3>
+    <div id="info"></div>
+</section>
+    <script type="text/javascript">
+      window.onload = function(){
+        var obj = {
+          city: "Beijing",
+          12: 12,
+          7: 7,
+          0: 0,
+          "-2": -2,
+          "age": 15,
+          "-3.5": -3.5,
+          7.7: 7.7,
+          _: "___",
+          online: true,
+          3: 3,
+          "23": "23",
+          "44": 44,
+        },
+        info = document.getElementById("info"), key;
+
+        for(key in obj){
+          info.innerHTML += key + " : " + obj[key] + "<br/>";
+        }
+      }
+    </script>
+    </body>
+</html>
