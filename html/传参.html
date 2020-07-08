@@ -14,6 +14,9 @@
 
 <h3>开启和关闭，前端说传0或1，后端说传'on'或'off'，true或false也可以</h3>
 <p>那么就传on 或 off</p>
+
+<h3>传后端一个完整的json</h3>
+<p>后端通常有转为json的方法，例如def json = request.getJson() log.info '------' log.info json，前端写法$.ajax({url:url, data: JSON.stringify(data), type: 'post', contentType: 'application/json;charset=utf-8', success: $.noop}</p>
     </body>
 </html>
 
