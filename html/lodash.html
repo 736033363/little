@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+	Lodash 库爆出严重安全漏洞，波及 400 万 + 项目 - https://www.infoq.cn/article/k7C-ZvXKOHh284ToEy9K
+
+	http://lodash.think2011.net/
+
+
+	深度克隆，先来看司徒的文章《javascript深拷贝》 https://www.cnblogs.com/rubylouvre/archive/2010/03/26/1696600.html
+
+	<script>
+
+	/* var is = function (obj,type) {
+	  var toString = Object.prototype.toString,undefined;
+	  debugger
+	  return (type === "Null" && obj === null) ||
+	    (type === "Undefined" && obj === undefined ) ||
+	    toString.call(obj).slice(8,-1) === type;
+	};
+
+*/
+	</script>
+
+
+   <script type="text/javascript">
+       var oOriginal = {
+       	 fn: function(){},
+         memNum: 1,                                      // number
+         memStr: "I am a string",                      // string
+         memObj: {
+           test1: "Old value"                              // we’ll test
+         },
+         memArr: [                                         // array 
+           "a string",                                       // string member of array
+           {                                                   // object member of array
+             test2: "Try changing me"                 // we'll test
+           }
+         ]
+       };
+
+       dom = {};
+         dom.is = function (obj,type) {
+           var toString = Object.prototype.toString,undefined;
+           return (type === "Null" && obj === null) ||
+             (type === "Undefined" && obj === undefined ) ||
+             toString.call(obj).slice(8,-1) === type;
+         };
+
+         dom.deepCopy = function(result, source){
+           for(var key in source) {
+             var copy = source[key];
+             if(source === copy) continue;//如window.window === window，会陷入死循环
+             if(dom.is(copy,"Object")){
+               result[key] = arguments.callee(result[key] || {}, copy);
+             }else if(dom.is(copy,"Array")){
+               result[key] = arguments.callee(result[key] || [], copy);
+             }else{
+               result[key] = copy;
+             }
+           }
+           return result;
+         };
+
+         var copy = dom.deepCopy({}, oOriginal)
+
+		var copy2 = JSON.parse(JSON.stringify(oOriginal))
+       </script>
+</body>
+
+</html>

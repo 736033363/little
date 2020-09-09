@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+</head>
+<body>
+typeof 无法识别null,Array
+instance 也有陷阱
+isArray实现的方法有很多，因为js的鸭子类型被攻破
+
+Object.prototype.toString，Object.prototype.toString可以被修改
+
+jQuery type在2.0中核心思想的Object.prototype.toString
+
+isPlainObject(){
+	return typeof obj === 'object' && (!Object.getPrototyeoOf(obj) || Object.getPrototypeOf(obj) === Object.prototype)
+}
+</body>
+</html>
