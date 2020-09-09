@@ -13,80 +13,28 @@
 
         
         </script>
-        
-<style>
-<<<<<<< Updated upstream
-=======
-:disabled{border:1px solid lightgray;background:red;}
-:enabled{border:1px solid deepskyblue;background:lightskyblue;}
->>>>>>> Stashed changes
 
-</style>
     </head>
     <body>
-<p>http://this<wbr>.is<wbr>.a<wbr>.really<wbr>.long<wbr>.example<wbr>.com/With<wbr>/deeper<wbr>/level<wbr>/pages<wbr>/deeper<wbr>/level<wbr>/pages<wbr>/deeper<wbr>/level<wbr>/pages<wbr>/deeper<wbr>/level<wbr>/pages<wbr>/deeper<wbr>/level<wbr>/pages</p>
 
-<<<<<<< Updated upstream
-
-    <div id="blog-posts-events-demo">
-      <div :style="{ fontSize: postFontSize + 'em' }">
-        <blog-post
-          v-for="post in posts"
-          v-bind:key="post.id"
-          v-bind:post="post"
-          v-on:enlarge-text="postFontSize += 0.1"
-        ></blog-post>
-      </div>
-    </div>
-
+<div id='p'>
+{{message}}
+<button v-on:click='revise'>反转</button>
+</div>
 
 <script>
-Vue.component('blog-post', {
-  props: ['post'],
-  template: `
-    <div class="blog-post">
-      <h3>{{ post.title }}</h3>
-      <button v-on:click="$emit('enlarge-text')">
-        Enlarge text
-      </button>
-      <div v-html="post.content"></div>
-    </div>
-  `
-})
 
-=======
-<p>http://this.is.a.really.long.example.com/With/deeper/level/pages/deeper/level/pages/deeper/level/pages/deeper/level/pages/deeper/level/pages</p>
-<script>
->>>>>>> Stashed changes
-
-function shuffle(target) {
-    var j, x, i = target.length;
-    var test = 0;
-    for (; i > 0; j = parseInt(Math.random() * i),
-            x = target[--i], target[i] = target[j], target[j] = x) {
-
-<<<<<<< Updated upstream
-new Vue({
-  el: '#blog-posts-events-demo',
-  data: {
-    posts: [
-        {id:1, title:'title1', content:'content1'},
-        {id:2, title:'title2', content:'content2'}
-
-    ],
-    postFontSize: 1
+var v = new Vue({
+  el: '#p',
+  data:{
+    message:'12345'
+  },
+  methods:{
+    revise: function(){
+      this.message = [...this.message].reverse().join('')
+    }
   }
 })
-=======
-        test++
-    }
-    console.log(target + '  ' + test)
-    return target;
-}
-
-shuffle([1,2,3,4,5,6,7,8,9,10])
->>>>>>> Stashed changes
-
 </script>
     </body>
 </html>
