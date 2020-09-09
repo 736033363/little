@@ -236,7 +236,38 @@ Git提交记住用户名和密码（需验证）
 
     我感觉本地应该是干净的。应该是git抽风了
   </li>
+  <li class="f-pre">
+场景：8.1.6的一些功能合到8.1.7，但目前是两个项目，目录结构不同
 
+    手动将patch文件编辑。apply patch是一个事务性的操作，要么全部成功，要么全部失败。
+  </li>
+  
+  <li class="f-pre">
+场景：只提交有效的代码，合并的这些提交不提交
+
+git fetch origin 拿远程分支到本地
+git rebase origin/8.1.7 将拿到本地的origin的8.1.7合并到现在的分支，并不产生merge
+git push ph 8.1.7:8.1.7-test -f 推送到远程分支ph
+
+git rebase -i HEAD~3合并最近两个提交成一个，如果增加一行，在删除该行，分别是最近两个分支，这种情况会失败，因为什么都没干，除非你，哪怕增加一个字符，也可以。
+
+  </li>
+  <li class="f-pre">
+场景：pull vs fetch
+
+git pull xxx 8.1.7 
+
+等于
+
+git fetch origin
+git merge origin/8.1.7
+  </li>
+
+  <li class="f-pre">
+场景：修改某次注释
+
+参考：https://www.jianshu.com/p/098d85a58bf1
+  </li>
 
 </ul>
 <!--

@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+<!-- 
+## 数组去重
+
+```
+function unique(arr){
+    return [...new Set(arr)]
+}
+```
+ -->
+
+<script>
+// asset arr1 and arr2 is Array
+function isEqualOfArray(arr1, arr2){
+    if (arr1.length !== arr2.length || arr1.length === 0){return false;}
+    let a = new Set(arr1);
+    let b = new Set(arr2);
+
+    return new Set([...a, ...b]).size === arr1.length;
+}
+    let a = new Set([1, 2, 3]);
+    let b = new Set([4, 3, 2]);
+
+
+    // // 并集
+    // let union = new Set([...a, ...b]);
+    // // Set {1, 2, 3, 4}
+
+    // // 交集
+    // let intersect = new Set([...a].filter(x => b.has(x)));
+    // // set {2, 3}
+
+    // // （a 相对于 b 的）差集
+    // let difference = new Set([...a].filter(x => !b.has(x)));
+
+    // alert(JSON.stringify([...union]))
+    // alert(JSON.stringify([...intersect]))
+    // alert(JSON.stringify([...difference]))
+</script>
+    </body>
+</html>

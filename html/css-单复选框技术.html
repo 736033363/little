@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+<style>
+/* 自定义单选框 */
+/* 让radio不可见 */
+.u-radio [type='radio']{position:absolute;clip-path:circle(0);}   
+.u-radio .lbl{cursor:pointer;}
+/* 自定义单选框样式 */
+.u-radio .lbl::before{content:'';display:inline-block;width:16px;height:16px;border:1px solid gray;border-radius:50%;box-sizing:border-box;vertical-align:-.25ex;}
+/* 选中状态下的单选框样式 */
+.u-radio :focus + .lbl::before,.u-radio :checked + .lbl::before{padding:2px;border:1px solid deepskyblue;background:deepskyblue;background-clip:content-box;}
+/* disabled状态下的单选框样式*/
+.u-radio :disabled + .lbl{cursor:default;/* 还原cursor */}
+.u-radio :disabled + .lbl::before{opacity:.4;}
+.u-radio :disabled:not(:checked) + .lbl::before{background-color:#f5f5f5;}
+/* /自定义单选框 */
+
+/* 自定义复选框 */
+.u-checkbox [type='checkbox']{position:absolute;clip-path:circle(0);}
+.u-checkbox .lblBox{cursor:pointer;}
+/* 自定义复选框样式 */
+.u-checkbox .lbl{display:inline-block;width:16px;height:16px;border:1px solid;box-sizing:border-box;vertical-align:-.25ex;color:gray;}
+/* 选中状态下的复选框样式 */
+.u-checkbox :checked + .lblBox > .lbl{color:deepskyblue;}
+.u-checkbox :checked + .lblBox > .lbl::before{content:'';display:block;width:8px;height:3px;margin:3px auto 0 auto;border-left:solid 2px;border-bottom:solid 2px;transform:rotate(-45deg);border-color:currentcolor;}
+.u-checkbox :disabled + .lblBox{cursor:default;/* 还原cursor */}
+.u-checkbox :disabled + .lblBox > .lbl{opacity:.4;}
+.u-checkbox :disabled:not(:checked) + .lbl::before{background-color:#f5f5f5;}
+/* /自定义复选框 */
+</style>
+    </head>
+    <body>
+
+<section>
+    <h3>自定义单选框</h3>
+    <label class='u-radio'>
+        <input type="radio"/>
+        <span class="lbl"> 单选框</span>
+    </label>
+    <br />
+    <label class='u-radio'>
+        <input type="radio" checked/>
+        <span class="lbl"> 单选框+checked</span>
+    </label>
+    <br />
+    <label class='u-radio'>
+        <input type="radio" disabled/>
+        <span class="lbl"> 单选框+disabled</span>
+    </label>
+    <br />
+    <label class='u-radio'>
+        <input type="radio" checked disabled/>
+        <span class="lbl"> 单选框+checked+disabled</span>
+    </label>
+    <br />
+</section>
+
+<section>
+    <h3>自定义复选框</h3>
+    <label class='u-checkbox'>
+        <input type="checkbox"/>
+        <span class="lblBox"><i class="lbl"></i> 复选框</span>
+    </label>
+    <br />
+    <label class='u-checkbox'>
+        <input type="checkbox" disabled />
+        <span class="lblBox"><i class="lbl"></i> 复选框+disabled</span>
+    </label>
+    <br />
+    <label class='u-checkbox'>
+        <input type="checkbox" checked disabled/>
+        <span class="lblBox"><i class="lbl"></i> 复选框+checked+disabled</span>
+    </label>
+    <br />
+</section>
+<!--
+# 自定义单选框
+ace的结构：
+
+```
+<label>
+    <input type="radio" class="ace" />
+    <span class="lbl"> radio文案</span>
+</label>
+```
+
+zxx的结构:
+
+```
+<input type="radio" id="radio1" name="radio" >
+<label for="radio1" class="cs-radio"></label>
+<label for="radio1">单选项1</label>
+```
+zxx的思路是：
+1. 将单选框透明度设置为0，并覆盖其他元素
+1. 自定义单选框样式
+1. 选中状态下的单选框样式
+1. 聚焦状态下的单选框样式
+1. 禁用状态下的单选框样式
+
+# 自定义复选框
+实现的思路与单选框类似
+ -->
+    </body>
+</html>

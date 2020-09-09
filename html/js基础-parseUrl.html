@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+    
+<p>在ff、chrome、ie运行fn1，得知ie没有origin，ie的host输出了443，ff和chrome都没有输出端口，可能是https的原因</p>
+
+<p>研究fn2就是因为要解析一个url字符串，获取我需要的东西，比如参数</p>
+
+    <script>
+function fn1(){
+    var url = document.createElement('a');
+    url.href = 'https://developer.mozilla.org/en-US/search?q=URL#search-results-close-container';
+    console.log(url.href);      // https://developer.mozilla.org/en-US/search?q=URL#search-results-close-container
+    console.log(url.protocol);  // https:
+    console.log(url.host);      // developer.mozilla.org
+    console.log(url.hostname);  // developer.mozilla.org
+    console.log(url.port);      // (blank - https assumes port 443)
+    console.log(url.pathname);  // /en-US/search
+    console.log(url.search);    // ?q=URL
+    console.log(url.hash);      // #search-results-close-container
+    console.log(url.origin);    // https://developer.mozilla.org
+}
+
+function fn2(){
+    function parseURL(url) {
+        var a =  document.createElement('a');
+        a.href = url;
+        
+        return {
+            source: url,
+            // a.protocol继承自a的父类HTMLAnchorElement
+            protocol: a.protocol.replace(':',''),
+            // 没有取host属性，host包括端口
+            host: a.hostname,
+            port: a.port,
+            query: a.search,
+            params: (function(){
+                let ret = {},
+                    // ?a=1&b=2 => ['a=1', 'b=2']
+                    seg = a.search.replace(/^\?/,'').split('&');
+
+                for (let i = 0, len = seg.length; i < len; i++) {
+                    // 什么情况为空
+                    if (!seg[i]) { continue; }
+                    let s = seg[i].split('=');
+                    ret[s[0]] = s[1];
+                }
+                return ret;
+            })(),
+            file: (a.pathname.match(/\/([^\/?#]+)$/i) || [,''])[1],
+            hash: a.hash.replace('#',''),
+            // 处理：dir/index.html => /dir/index.html
+            path: a.pathname.replace(/^([^\/])/,'/$1'),
+            relative: (a.href.match(/tps?:\/\/[^\/]+(.+)/) || [,''])[1],
+            segments: a.pathname.replace(/^\//,'').split('/')
+        };
+    }
+    var myURL = parseURL('https://abc.com:8080/dir/index.html?id=255&m=hello#top');
+    console.log(myURL);
+
+    function getParam(path){
+        let result = {};
+        let param = /([^?=&]+)=([^&]+)/ig;
+        let match;
+        while((match = param.exec(path)) != null){
+            result[match[1]] = match[2];
+        }
+        return result;
+    }
+     
+    var path = "http://tieba.baidu.com/f?ct=318767104&tn=baiduKeywordSearch&sc=1&pn=0&rn=50&lm=4&rs4=2&rs3=2&word=%D0%C2%BE%D3%D5%D1%C4%CB&frs=jpq";
+     
+    var r = getParam(path);
+    console.log(r)
+
+    //2010.9.22更新
+    function getParam(name){//获取参数值 by司徒正美
+        var sUrl = window.location.search.substr(1);
+        var r = sUrl.match(new RegExp("(^|&)" + name + "=([^&]*)(&|$)"));
+        return (r == null ? null : unescape(r[2]));
+    }
+}
+
+// fn1();
+// fn2();
+    </script>
+    </body>
+</html>

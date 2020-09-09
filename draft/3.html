@@ -1,44 +1,66 @@
 <!DOCTYPE html>
-<html>
+<html lang='en'>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <!-- <script src="avalon.js"></script> -->
-        <script src="../js/jquery2.1.4.js"></script>
+        <!-- <script src="../js/jquery2.1.4.js"></script> -->
+        <!-- <script src="../js/jqueryv172.js"></script> -->
+        <!-- <link rel="stylesheet" href="../css/css-library.css" /> -->
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script>
+        
 
+
+        
         </script>
+        
 <style>
-div{text-align: center;}
 
 </style>
     </head>
     <body>
 
-<div>
-    <span>span2</span>
-</div>
+
+    <div id="blog-posts-events-demo">
+      <div :style="{ fontSize: postFontSize + 'em' }">
+        <blog-post
+          v-for="post in posts"
+          v-bind:key="post.id"
+          v-bind:post="post"
+          v-on:enlarge-text="postFontSize += 0.1"
+        ></blog-post>
+      </div>
+    </div>
+
+
 <script>
-let data = {name:'aaron', ldap: [{a: '1'}, {a: '2'}]}
-data = {name2:'aaron2', ldap2: "['b#b', 'a.a', 'd,d']", test: null, test2: 'null'}
-$.get('a.json', data, function(json){
+Vue.component('blog-post', {
+  props: ['post'],
+  template: `
+    <div class="blog-post">
+      <h3>{{ post.title }}</h3>
+      <button v-on:click="$emit('enlarge-text')">
+        Enlarge text
+      </button>
+      <div v-html="post.content"></div>
+    </div>
+  `
+})
 
-});
 
 
+new Vue({
+  el: '#blog-posts-events-demo',
+  data: {
+    posts: [
+        {id:1, title:'title1', content:'content1'},
+        {id:2, title:'title2', content:'content2'}
 
+    ],
+    postFontSize: 1
+  }
+})
 
-
-/*$.ajax({
-    url: 'a.json',
-    type: 'post',
-    data: data,
-    processData: false,
-    contentType: false,
-    function(){
-
-    }
-});
-*/
 </script>
     </body>
 </html>
