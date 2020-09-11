@@ -9,32 +9,38 @@
         <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script>
         
-
-
-        
         </script>
-
     </head>
     <body>
 
-<div id='p'>
-{{message}}
-<button v-on:click='revise'>反转</button>
+<div id='id'>
+<ul>
+  
+  <li v-for="(item, name, index) in a" :key="index">{{item}} {{index}}</li>
+</ul>
 </div>
-
 <script>
 
+
+var data = {
+  a:{
+    name: 'ph',
+    age: '22',
+  }
+};
 var v = new Vue({
-  el: '#p',
-  data:{
-    message:'12345'
+  el: '#id',
+  data: data,
+
+  computed:{
+   
   },
   methods:{
-    revise: function(){
-      this.message = [...this.message].reverse().join('')
-    }
+   
   }
-})
+});
+
+
 </script>
     </body>
 </html>
