@@ -4,6 +4,7 @@
         <meta charset="utf-8">
     </head>
     <body>
+<p>根据官网看2.x的教程</p>
 <!-- 
  
 # 背景
@@ -11,7 +12,17 @@
 
 用原来框架重构，工作量来自三点，一是简单的模块（重构简单），一种是复杂的模块（重构困难），最后一种是复杂模块（重构容易）。用vue重构就是全部重写，由于复杂的模块绝大多数重构复杂，而简单的模块用vue重写也不会难，所以重构用vue这种方式较好。
 
-首先我得判断简单的模块用vue重写也比较简单，怎么知道简单？那就是要理解xjx做的工作
+
+# 目标 
+判断第一个模块改成vue是否合适。
+
+如果我能判断出初次试水很成功，那就可以和组员一起讨论下一步的改造计划。
+
+如何判断：
+    参考：官网教程 + Vue.js实战
+    1. 基础篇
+
+
 
 # vue官网教程 2.x
 ## 基础
@@ -67,12 +78,61 @@ demo4-v-show
 ### 列表渲染
 demo1-数组渲染li v-for="(item, index) in items" :key="index"
 demo2-对象渲染li v-for="(value, key, index) in pople"
+demo3-维护状态 
+    ? 没有绑定key，逆序数据，dom顺序也变了
+demo4-变更方法 push pop 
+demo5-显示过滤的结果，并不实际改变原数据
+demo6-v-for中使用范围值
+demo7-v-for用在template上
+demo8-组件中使用v-for，key在2.2.0+上是必须的
+demo9-简单的todo
+### 事件处理
+demo1-事件监听执行一些js代码 @click="count += 1"
+demo2-默认会传递event（原生的dom事件）@click="counter"
+demo3-传递参数 @click="sayHi('hi')"
+demo4-传递event @click="sayHi('hi', $event)"
+demo5-事件修饰符 .prevent .once
+"demo6"-事件修饰符 .stop .capture .self
+demo7-只有修饰符 @submit.prevent
+demo8-按键修饰符 @keyup.enter='add'
+demo9-按键码和别名 13 enter space left delete
+demo10-自定义按键修饰别名 Vue.config.keyCodes
+"demo12"-系统修饰键 alt+c .exact 鼠标按键修饰符
+### 表单输入绑定
+demo1-文本和多行文本  v-model="input1"
+demo2-多个复选框，绑定到同一个数组 value='a1' v-model="checkedNames"
+demo3-单选按钮 type="radio" checked:''
+### 组件基础
+demo1-定义一个组件 Vue.component 
+demo2-data必须是一个函数 data:function(){return {count:1}}
+demo3-通过props向组件传递数据 :msg='v' props:['msg']
+demo4-单个根元素
+demo5-监听子组件事件 @big='biger' @click="$emit('big')"
+demo6-使用事件抛出一个值 @click="$emit('big',1)"
+demo7-在组件上使用v-model ?
+demo8-slot
+demo9-动态组件 ?
+demo10-特殊的is属性来挂在属性 <tbody is="my-component"></tbody>
+    ? slot怎么传递
+## 深入了解组件
+starting
 
+# Vue.js 实战
+v-pre
+过滤器 {{date | formatDate}} filters
+计算属性可以依赖其他实例的数据
+v-cloak
+不会触发试图更新 app.books[3]={...}，可以使用vm.$set 或Vue.set(app.books, 3, {...})
+编写简单购物车，实时显示总价格：商品1 单价 数量 - + 删除
+绑定一个动态数据-radio 选中时，值是属性value的值
+"绑定一个动态数据-复选框" :true-value='value1' :false-value='value2'
+v-model的修饰符 .lazy .number .trim
+
+start page 70
+
+# 其他
 爬坑后的结论：window系统升级node只能到node官网下载window安装包来覆盖之前的node。 - https://www.cnblogs.com/telwanggs/p/10974941.html
 
-声明式渲染
-## 生命周期
-  
  -->    
     </body>
 </html>

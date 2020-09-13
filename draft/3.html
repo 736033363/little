@@ -13,34 +13,34 @@
     </head>
     <body>
 
-<div id='id'>
-<ul>
-  
-  <li v-for="(item, name, index) in a" :key="index">{{item}} {{index}}</li>
-</ul>
-</div>
+<table id="id">
+    <tbody is='tag-a'>oo</tbody>
+</table>
 <script>
-
-
-var data = {
-  a:{
-    name: 'ph',
-    age: '22',
-  }
-};
-var v = new Vue({
-  el: '#id',
-  data: data,
-
-  computed:{
-   
+Vue.component('tag-a', {
+  data: function(){
+    return {
+      count: 1,
+    }
   },
-  methods:{
-   
-  }
+  template: `<div>你好 <slot></slot></div>`
 });
 
+let vm = new Vue({
+  el: '#id',
 
+  data: {
+    size: 1,
+    v: 4
+  },
+
+  methods:{
+
+    biger: function(v){
+      this.size += v;
+    }
+  }
+});
 </script>
     </body>
 </html>
