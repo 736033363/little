@@ -251,6 +251,8 @@ git push ph 8.1.7:8.1.7-test -f 推送到远程分支ph
 
 git rebase -i HEAD~3合并最近两个提交成一个，如果增加一行，在删除该行，分别是最近两个分支，这种情况会失败，因为什么都没干，除非你，哪怕增加一个字符，也可以。
 
+添加远程仓库：
+git remote add test https://gitee.com/neimenggudaxue/test.git  #git remote add 远程仓储名名称唯一即可  远程仓储地址
   </li>
   <li class="f-pre">
 场景：pull vs fetch
@@ -268,6 +270,14 @@ git merge origin/8.1.7
 
 参考：https://www.jianshu.com/p/098d85a58bf1
   </li>
+
+  <li class="f-pre">
+场景：提取某分支的commit
+
+git cherry-pick
+  </li>
+
+  
 
 </ul>
 <!--

@@ -1,0 +1,38 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+<!-- 废除目录.html，重新整理博客 -->
+<h4>书籍</h4>
+<pre>
+<a href="./书.html">书</a>  
+</pre> 
+<h4 title='非常稳定'>快捷键1</h4>
+<pre>
+<a href="https://www.baidu.com/" title='百度：百度翻译、谷歌翻译'>百度一下</a> <a href="https://developer.mozilla.org/zh-CN/docs/Web/CSS/Reference" title='百度：mdn css、mdn 元素参考、mdn 事件'>mdn css</a> 
+</pre>
+<h5 title='较稳定'>快捷键2</h5>
+<pre>
+<a href="https://www.cnblogs.com/moqiutao/">风雨后见彩虹</a>
+</pre>
+<h5 title='不稳定'>快捷键3</h5>
+<pre>
+<a href="http://10.0.0.6/my/page">工作台</a>
+</pre>
+
+ <script>
+function $(selector){
+    return document.querySelectorAll(selector)
+}
+// 给所有的a添加属性target
+for(let aElem of $('a')){
+    aElem.setAttribute('target', '_blank')
+}
+
+ 
+
+ </script>
+    </body>
+</html>
