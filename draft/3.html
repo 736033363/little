@@ -18,11 +18,40 @@
 
 
 let {log:l} = console
+function create(isResolve=true, v=33, delay=2000){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            isResolve ? resolve(v) : reject(v)
+        }, delay)
+    })
+}
+
+// create(false).then(v => {
+//     l(v)
+// }).catch(v => {
+//     l()
+// })
 
 
-const obj = {user:'peng'}
-let {user:person} = obj
-l(person)
+async function fn1(){
+    let response = await create(false)
+    l('response = %s',response)
+}
+
+async function f3(v) {
+    l('here v=%s',v)
+    var z = await Promise.reject(30);
+    l(888)
+}
+async function fn4(){
+    await f3(1);
+    await f3(11);
+    await f3(111);
+}
+fn4();
+日报
+
+
 </script>
     </body>
 </html>
