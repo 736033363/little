@@ -1,15 +1,19 @@
+
 <!DOCTYPE html>
 <html lang='en'>
     <head>
         <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"/>
         <!-- <script src="avalon.js"></script> -->
         <!-- <script src="../js/jquery2.1.4.js"></script> -->
-        <!-- <script src="../js/jqueryv172.js"></script> -->
+        <script src="../js/jqueryv172.js"></script>
         <!-- <link rel="stylesheet" href="../css/css-library.css" /> -->
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
         <script>
         
         </script>
+        <style>
+span{color:red;}
+        </style>
     </head>
     <body>
    <input type="number" name="points" min="1" max="10"/>
@@ -50,6 +54,48 @@ async function fn4(){
 }
 fn4();
 日报
+
+
+
+const obj = {user:'peng'}
+let {user:person} = obj
+l(person)
+
+
+
+<script>
+function l(msg){
+  console.log(msg);
+}
+
+
+
+class MyPromise extends Promise{
+    success(resolve, reject){
+        return this.then(resolve, reject);
+    }
+    failure(reject){
+        return this.catch(reject)
+    }
+}
+
+
+const p1 = new Promise(function(resolve, reject){
+    reject(42)
+});
+let p2 = MyPromise.resolve(p1);
+p2.success(function(v){
+    l(v)
+}).failure(function(v){
+    l('fail ' + v)
+})
+
+
+
+
+
+
+
 
 
 </script>
