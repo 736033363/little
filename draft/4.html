@@ -45,9 +45,20 @@
     <img src="../img/mm2.jpg" style="aposition:relative; az-index:1;opacity:0.5">
     </div> -->
 
-    <img src="../img/mm1.jpg" style="position:absolute;top:0">
-    <img src="../img/mm2.jpg" style="atransform:scale(1);">
+    <img src="./下载.png" >
 
+<script>
+    function image2Base64(img) {
+        var canvas = document.createElement("canvas");
+        canvas.width = img.width;
+        canvas.height = img.height;
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(img, 0, 0, img.width, img.height);
+        var dataURL = canvas.toDataURL("image/png");
+        return dataURL;
+    }
 
+    image2Base64('./下载.png')
+</script>
     </body>
 </html>
