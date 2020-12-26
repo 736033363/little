@@ -162,7 +162,7 @@ Git提交记住用户名和密码（需验证）
   <li class="f-pre">
 场景：在gitlib上我fork一个项目，目前是在x.8.5上开发，这些天新建的x.8.6，我在本地查看x.8.5的远程分支，没看到8.1.6，但在gitlib上看到主项目有8.1.6，这个证明主项目新建的分支不会主动同步到子分支，现在有个bug需要在8.1.5上改，8.1.6也得改，怎么做？
 
-  git pull git@xx.xx.xx.xx:username/projectName.git x.1.6:x.1.6 弄到本地
+  
   git push origin x.1.6 推送到远程
   接下来就同x.1.5上一样了
 
@@ -241,43 +241,7 @@ Git提交记住用户名和密码（需验证）
 
     手动将patch文件编辑。apply patch是一个事务性的操作，要么全部成功，要么全部失败。
   </li>
-  
-  <li class="f-pre">
-场景：只提交有效的代码，合并的这些提交不提交
 
-git fetch origin 拿远程分支到本地
-git rebase origin/8.1.7 将拿到本地的origin的8.1.7合并到现在的分支，并不产生merge
-git push ph 8.1.7:8.1.7-test -f 推送到远程分支ph
-
-git rebase -i HEAD~3合并最近两个提交成一个，如果增加一行，在删除该行，分别是最近两个分支，这种情况会失败，因为什么都没干，除非你，哪怕增加一个字符，也可以。
-
-添加远程仓库：
-git remote add test https://gitee.com/neimenggudaxue/test.git  #git remote add 远程仓储名名称唯一即可  远程仓储地址
-  </li>
-  <li class="f-pre">
-场景：pull vs fetch
-
-git pull xxx 8.1.7 
-
-等于
-
-git fetch origin
-git merge origin/8.1.7
-  </li>
-
-  <li class="f-pre">
-场景：修改某次注释
-
-参考：https://www.jianshu.com/p/098d85a58bf1
-  </li>
-
-  <li class="f-pre">
-场景：提取某分支的commit
-
-git cherry-pick
-  </li>
-
-  
 
 </ul>
 <!--

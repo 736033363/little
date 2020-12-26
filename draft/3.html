@@ -16,19 +16,50 @@ span{color:red;}
         </style>
     </head>
     <body>
-<<<<<<< HEAD
    <input type="number" name="points" min="1" max="10"/>
 <script>
 'use strict'
 
 
 let {log:l} = console
+function create(isResolve=true, v=33, delay=2000){
+    return new Promise((resolve, reject) => {
+        setTimeout(() => {
+            isResolve ? resolve(v) : reject(v)
+        }, delay)
+    })
+}
+
+// create(false).then(v => {
+//     l(v)
+// }).catch(v => {
+//     l()
+// })
+
+
+async function fn1(){
+    let response = await create(false)
+    l('response = %s',response)
+}
+
+async function f3(v) {
+    l('here v=%s',v)
+    var z = await Promise.reject(30);
+    l(888)
+}
+async function fn4(){
+    await f3(1);
+    await f3(11);
+    await f3(111);
+}
+fn4();
+日报
+
 
 
 const obj = {user:'peng'}
 let {user:person} = obj
 l(person)
-=======
 
 
 
@@ -67,7 +98,6 @@ p2.success(function(v){
 
 
 
->>>>>>> 174445e... x
 </script>
     </body>
 </html>
