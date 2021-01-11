@@ -7,29 +7,56 @@
         <!-- <script src="../js/jquery2.1.4.js"></script> -->
         <script src="../js/jqueryv172.js"></script>
         <!-- <link rel="stylesheet" href="../css/css-library.css" /> -->
-        <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
+        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
         <script>
         
         </script>
         <style>
 
-:lang(zh){color:red;}
 
-.test{color:red;}
         </style>
     </head>
     <body>
-left
+<div id="app">
+  {{ message }}
+</div>
+
+<select>
+    <option value="a">a</option>
+    <option value="b">b</option>
+    <option value="c">c</option>
+</select>
+
 <script>
 'use strict'
 
 let {log:l} = console
 
-const arr = [{name:'ph',age:18}]
-arr.some(function({name,age}){
-    l(name)
-    l(age)
+var app = new Vue({
+  el: '#app',
+  data: {
+    message: 'Hello Vue!'
+  }
 })
+
+let obj = {}
+function defineReactive(data, key, value){
+    Object.defineProperty(data, key, {
+        enumerable : true,
+        configurable : true,
+        get() { return value; },
+        set(newValue) { 
+            if(newValue === value) return;
+            value = newValue; 
+            l(value)
+        },
+    })
+}
+
+$('select').on('change', function(e){
+    l(e.target.value)
+})
+
 </script>
     </body>
 </html>
