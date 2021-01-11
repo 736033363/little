@@ -35,17 +35,33 @@ let {log:l} = console
 var app = new Vue({
   el: '#app',
   data: {
-    message: 'Hello Vue!'
+    arr: [1,2,3],
+    message: 'Hello Vue!',
+    a:{
+        b:{
+            c: 'c'
+        }
+    }
   }
 })
+
+// 键路径
+app.$watch('a.b.c', function (newVal, oldVal) {
+    l('做点什么')
+  // 做点什么
+})
+
 
 let obj = {}
 function defineReactive(data, key, value){
     Object.defineProperty(data, key, {
         enumerable : true,
         configurable : true,
-        get() { return value; },
+        get() { 
+            l('get')
+            return value; },
         set(newValue) { 
+            l('set')
             if(newValue === value) return;
             value = newValue; 
             l(value)
@@ -53,9 +69,9 @@ function defineReactive(data, key, value){
     })
 }
 
-$('select').on('change', function(e){
-    l(e.target.value)
-})
+defineReactive(obj, 'age', 18)
+defineReactive(obj, 'wife', ['a', 'b'])
+
 
 </script>
     </body>
