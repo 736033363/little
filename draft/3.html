@@ -18,6 +18,7 @@
     </head>
     <body>
 <div id="app">
+    <p v-for='item in arr'>{{item}}</p>
   {{ message }}
 </div>
 
@@ -27,6 +28,7 @@
     <option value="c">c</option>
 </select>
 
+
 <script>
 'use strict'
 
@@ -35,7 +37,9 @@ let {log:l} = console
 var app = new Vue({
   el: '#app',
   data: {
-    arr: [1,2,3],
+    arr: [11,22,33],
+    d: 1,
+    e: 2,
     message: 'Hello Vue!',
     a:{
         b:{
@@ -45,6 +49,19 @@ var app = new Vue({
   }
 })
 
+// 函数
+app.$watch(
+  function () {
+    // 表达式 `this.a + this.b` 每次得出一个不同的结果时
+    // 处理函数都会被调用。
+    // 这就像监听一个未被定义的计算属性
+    return this.d + this.e
+  },
+  function (newVal, oldVal) {
+      l('%s %s', newVal, oldVal)
+    // 做点什么
+  }
+)
 // 键路径
 app.$watch('a.b.c', function (newVal, oldVal) {
     l('做点什么')
@@ -69,10 +86,68 @@ function defineReactive(data, key, value){
     })
 }
 
-defineReactive(obj, 'age', 18)
-defineReactive(obj, 'wife', ['a', 'b'])
 
 
+[].push(1);
+// debugger
+const arrPrototype = Array.prototype;
+const arrayMethods = Object.create(arrPrototype);
+const origin = arrPrototype.push
+arrayMethods.push = function(...args){
+    l('通知')
+    origin.apply(this, args)
+    
+}
+Object.setPrototypeOf(Array, arrayMethods)
+// Array.prototype = arrayMethods;
+var arr = [];
+arr.__proto__ = arrayMethods;//给需要监听的数组加上拦截器
+arr.push(1)
+/*
+const arrayPrtot = Array.prototype
+    const arrayMethods = Object.create(arrayPrtot);
+    const orig = arrayPrtot.push;//缓存原始方法
+    Object.defineProperty(arrayMethods, 'push', {
+        value: function mutator(...args) {
+            console.log('我使用了push改变了数组哦')
+            return orig.apply(this, args)
+        },
+        enumerable: false,
+        writable: true,
+        configurable: true
+    })
+    var arr = [];
+    arr.__proto__ = arrayMethods;//给需要监听的数组加上拦截器
+    arr.push(1);
+    console.log(arr);
+
+*/
+Object.defineProperty(obj, 'push', {
+    value: function(){
+        l('你好')
+    }
+})
+// l(Array.prototype.push === [].push)
+// // l(String.prototype.trim === ''.trim)
+// Object.setPrototypeOf(Array, {})
+// l(11 + Array.prototype.push)
+// l(String.prototype.trim === ''.trim)
+// 
+const p = new Proxy({}, {
+  set: function(target, prop, value, receiver) {
+    console.log('property set: ' + prop + ' = ' + value);
+    return true;
+  }
+})
+p.a = 10;               // "property set: a = 10"
+let arr3=[]
+const p2 = new Proxy(arr3, {
+  set: function(target, prop, value, receiver) {
+    console.log('通知push: ' + prop + ' = ' + value);
+    return Reflect.set(target, prop, value, receiver);
+  }
+})
+p2.push(1)
 </script>
     </body>
 </html>
