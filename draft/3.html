@@ -18,7 +18,9 @@
     </head>
     <body>
 <div id="app">
-  {{ message }}
+    <div v-for="(val, key) in a">{{val}}</div>
+
+    <div v-for="(val, key) in arr">{{val}}</div>
 </div>
 
 <select>
@@ -31,25 +33,20 @@
 'use strict'
 
 let {log:l} = console
-
-var app = new Vue({
-  el: '#app',
-  data: {
+let rData = {
     arr: [1,2,3],
     message: 'Hello Vue!',
     a:{
-        b:{
-            c: 'c'
-        }
+        a1:'a11',
+        a2:'a22'
     }
-  }
+  };
+var app = new Vue({
+  el: '#app',
+  data: rData
 })
 
-// 键路径
-app.$watch('a.b.c', function (newVal, oldVal) {
-    l('做点什么')
-  // 做点什么
-})
+
 
 
 let obj = {}
@@ -69,8 +66,9 @@ function defineReactive(data, key, value){
     })
 }
 
-defineReactive(obj, 'age', 18)
-defineReactive(obj, 'wife', ['a', 'b'])
+defineReactive(obj, 'k3', {push:function(){
+    l('push')
+}})
 
 
 </script>
