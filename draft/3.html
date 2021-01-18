@@ -21,6 +21,7 @@
     <div v-for="(val, key) in a">{{val}}</div>
 
     <div v-for="(val, key) in arr">{{val}}</div>
+
 </div>
 
 <select>
@@ -29,47 +30,11 @@
     <option value="c">c</option>
 </select>
 
+
 <script>
 'use strict'
 
 let {log:l} = console
-let rData = {
-    arr: [1,2,3],
-    message: 'Hello Vue!',
-    a:{
-        a1:'a11',
-        a2:'a22'
-    }
-  };
-var app = new Vue({
-  el: '#app',
-  data: rData
-})
-
-
-
-
-let obj = {}
-function defineReactive(data, key, value){
-    Object.defineProperty(data, key, {
-        enumerable : true,
-        configurable : true,
-        get() { 
-            l('get')
-            return value; },
-        set(newValue) { 
-            l('set')
-            if(newValue === value) return;
-            value = newValue; 
-            l(value)
-        },
-    })
-}
-
-defineReactive(obj, 'k3', {push:function(){
-    l('push')
-}})
-
 
 </script>
     </body>
