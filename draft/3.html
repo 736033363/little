@@ -18,10 +18,9 @@
     </head>
     <body>
 <div id="app">
-    <div v-for="(val, key) in a">{{val}}</div>
-
-    <div v-for="(val, key) in arr">{{val}}</div>
-
+    <div  >{{a}}</div>
+</div>
+<div id="app2">
 </div>
 
 <select>
@@ -35,6 +34,25 @@
 'use strict'
 
 let {log:l} = console
+
+var vm = new Vue({
+    el: '#app',
+  data: function(){
+    return {
+    a: [...'abcd']
+  };
+  }
+})
+
+var MyComponent = Vue.extend({
+  template: '<div>{{test}}</div>',
+  data: () => ({
+    test: 'hello2'
+  })
+})
+
+// 创建并挂载到 #app (会替换 #app)
+
 
 </script>
     </body>

@@ -1,0 +1,42 @@
+body {
+        margin: 0;
+        padding: 0;
+        background-color: white;
+      }
+      header, section {
+          overflow: hidden;
+      }
+      ul {
+        margin: 0;
+        border: 0;
+        padding: 0;
+      }
+      li {
+        display: block; /* i.e., suppress marker */
+        color: black;
+        height: 4em;
+        width: 25%;
+        margin: 0;
+        float: left;
+        background-color: green;
+        text-align: center;
+        line-height: 4em;
+      }
+      
+      aside {
+        width: 20%;
+        float: left;
+        text-align: center;
+      }
+
+      aside a {
+        display: block;
+        height: 4em;
+        color: blue;
+      }
+
+      article {
+        padding: 2em 0;
+        width: 80%;
+        float: left;
+      }
