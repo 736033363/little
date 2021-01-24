@@ -111,32 +111,36 @@ vue是一个数据驱动的前端框架
 * 框架设计和项目结构
     * 目录结构
     * 框架设计
-* 实例方法和全局API的实现原理
-    * 数据相关实例方法
+* 实例方法的实现原理
+    * 数据
         * vm.$watch vm.$delete vm.$set
-    * 事件相关的实例方法
+    * 事件
         * vm.$on vm.$off vm.$emit vm.$once
-    * 生命周期相关的实例方法
+    * 生命周期
+        * vm.$forceUpdate
+        * vm.$destroy
+        * vm.$nextTick
+            * 事件循环
+        * vm.$mount
+            * 完整版和运行版差异
+* 全局API的实现原理
+    * 略（个数太多，请直接看vue的api）
+* 生命周期之初始阶段
+    * 生命周期图示
+    * new Vue()被调用发生了什么
+    * callHook函数内部原理
+    * errorCaptured和错误处理
+    * 初始化实例属性
 
 
-
-    * 全局API的实现原理
-* 生命周期
+    
 * 指令的奥义
 * 过滤器的奥义
 * 最佳实践
 
 ## 上课
 
-### 生命周期相关的实例方法
-* vm.$forceUpdate
-* vm.$destroy
-
-
-为什么给用户提供的监听是一个一个的Watcher
-
-
-
+### 全局API的实现原理
 
 
 

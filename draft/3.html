@@ -7,7 +7,8 @@
         <!-- <script src="../js/jquery2.1.4.js"></script> -->
         <script src="../js/jqueryv172.js"></script>
         <!-- <link rel="stylesheet" href="../css/css-library.css" /> -->
-        <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script>
+        <script src='../js/vue2.6.12.js'></script>
+        <!-- <script src="https://cdn.jsdelivr.net/npm/vue/dist/vue.js"></script> -->
         <script>
         
         </script>
@@ -17,42 +18,37 @@
         </style>
     </head>
     <body>
-<div id="app">
-    <div  >{{a}}</div>
-</div>
-<div id="app2">
-</div>
-
-<select>
-    <option value="a">a</option>
-    <option value="b">b</option>
-    <option value="c">c</option>
-</select>
-
-
+      <div id="components-demo">
+        <button-counter></button-counter>
+      </div>
 <script>
 'use strict'
 
 let {log:l} = console
 
-var vm = new Vue({
-    el: '#app',
-  data: function(){
-    return {
-    a: [...'abcd']
-  };
+
+Vue.mixin({
+  created: function () {
+    var myOption = this.$options.myOption
+    if (myOption) {
+      console.log(myOption)
+    }
   }
 })
 
-var MyComponent = Vue.extend({
-  template: '<div>{{test}}</div>',
-  data: () => ({
-    test: 'hello2'
-  })
+
+Vue.component('button-counter', {
+  myOption: 'hello!',
+  data: function () {
+    return {
+      count: 0,
+    }
+  },
+  render: Vue.compile('<button v-on:click="count++">You clicked me2 {{ count }} times.</button>').render
+  // template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
 })
 
-// 创建并挂载到 #app (会替换 #app)
-
+new Vue({ el: '#components-demo' })
 
 </script>
     </body>
