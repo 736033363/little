@@ -1,0 +1,4 @@
+- 封装jqgrid
+- resize
+- 单选
+- checkbox初始选中

@@ -3766,6 +3766,7 @@
       // init parent attached events
       var listeners = vm.$options._parentListeners;
       if (listeners) {
+        debugger
         updateComponentListeners(vm, listeners);
       }
     }

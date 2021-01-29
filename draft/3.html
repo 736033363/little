@@ -19,13 +19,24 @@
     </head>
     <body>
       <div id="components-demo">
-        <button-counter></button-counter>
+      {{t1}} {{a}}
+        <button-counter ></button-counter>
+        <input type="text" v-focus/>
       </div>
 <script>
 'use strict'
 
 let {log:l} = console
 
+
+// 注册一个全局自定义指令 `v-focus`
+Vue.directive('focus', {
+  // 当被绑定的元素插入到 DOM 中时……
+  inserted: function (el) {
+    // 聚焦元素
+    el.focus()
+  }
+})
 
 Vue.mixin({
   created: function () {
@@ -39,16 +50,46 @@ Vue.mixin({
 
 Vue.component('button-counter', {
   myOption: 'hello!',
+  props:{
+    age:{
+        default: 101,
+        // required:true
+    }
+  },
   data: function () {
     return {
       count: 0,
     }
   },
+  computed: {
+    // 仅读取
+    aDouble: function () {
+      return this.count * 2
+    }
+},
   render: Vue.compile('<button v-on:click="count++">You clicked me2 {{ count }} times.</button>').render
   // template: '<button v-on:click="count++">You clicked me {{ count }} times.</button>'
 })
+let tt = {
+        a: 'a2'
+    };
+let v = new Vue({ el: '#components-demo',
+    data: () => tt,
+    computed: {
+        t1: function(){
+            let r = '000'
+            setTimeout(() => {
+                r = this.a;
+                l('r = %s', r)
+            },1000)
+            return r;
+        }
+    },
+methods: {
+    increment: function(){
 
-new Vue({ el: '#components-demo' })
+    }
+} })
 
 </script>
     </body>
